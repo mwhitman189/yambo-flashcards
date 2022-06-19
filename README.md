@@ -2,6 +2,18 @@
 
 TODO: Edit me
 
+
+## Branching Policy
+
+main
+- Production ready code. DO NOT COMMIT DIRECTLY
+
+staging
+- Fully tested development code. Development environment code will be merged after a user test. Ready for acceptance testing by clients (to trial new features). DO NOT COMMIT DIRECTLY
+
+develop
+- Automated tests must pass to be pushed. Can merge feature branches in
+
 ## Development Approach
 
 Test-Driven Development(TDD)
