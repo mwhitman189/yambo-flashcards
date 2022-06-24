@@ -35,9 +35,9 @@ jobs:
         with:
           node-version: "16.x"
       - name: Install dependencies
-        run: npm --prefix yambo-front ci
+        run: npm ci
       - name: Run unit tests
-        run: npm npm --prefix yambo-front run test
+        run: npm run test
       - uses: actions/upload-artifact@v3
         if: always()
         with:
@@ -54,10 +54,10 @@ jobs:
         uses: actions/checkout@v3 # リポジトリをチェックアウト
 
       - name: Install Dependencies
-        run: npm --prefix yambo-front ci
+        run: npm install
 
       - name: Build
-        run: npm --prefix yambo-front build
+        run: npm run build
 
   build-deploy-stg:
     needs: [test-unit]
@@ -68,10 +68,10 @@ jobs:
         uses: actions/checkout@v3 # リポジトリをチェックアウト
 
       - name: Install Dependencies
-        run: npm --prefix yambo-front ci
+        run: npm install
 
       - name: Build
-        run: npm --prefix yambo-front build
+        run: npm run build
 
   build-deploy-prod:
     needs: [test-unit]
@@ -82,7 +82,7 @@ jobs:
         uses: actions/checkout@v3 # リポジトリをチェックアウト
 
       - name: Install Dependencies
-        run: npm --prefix yambo-front ci
+        run: npm install
 
       - name: Build
-        run: npm --prefix yambo-front build
+        run: npm run build
