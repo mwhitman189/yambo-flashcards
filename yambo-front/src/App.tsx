@@ -1,14 +1,21 @@
 import React from "react";
-import "./App.css";
 import Header from "./components/Header";
 import CardCreate from "./components/CardCreate";
+import { ThemeProvider } from "styled-components";
+import "./App.css";
+
+const theme = {
+  colorPrimary: "blue"
+};
 
 function App() {
   return (
-    <div className="App">
-      <Header />
-      <CardCreate />
-    </div>
+    <ThemeProvider theme={theme}>
+      <div className="App">
+        <Header />
+        <CardCreate />
+      </div>
+    </ThemeProvider>
   );
 }
 
