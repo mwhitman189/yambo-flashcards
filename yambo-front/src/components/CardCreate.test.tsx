@@ -4,6 +4,6 @@ import CardCreate from "./CardCreate";
 
 test('displays the title "Yambo!"', () => {
   render(<CardCreate />);
-  const headerText = screen.getByText(/Welcome!/);
-  expect(headerText).toBeInTheDocument();
+  const Text = screen.getByText(/Start entering kanji below to generate a new flashcard/);
+  expect(Text).toBeInTheDocument();
 });
