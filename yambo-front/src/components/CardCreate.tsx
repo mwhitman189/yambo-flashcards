@@ -1,4 +1,4 @@
-import React, { FC, ChangeEvent, useState } from "react";
+import React, { FC, ChangeEvent, MouseEvent, useState } from "react";
 import styled from "styled-components";
 
 interface Props {
@@ -60,9 +60,10 @@ const SVG = styled.img`
 `;
 
 const CardContainer = styled.div`
+  width: 100%;
   margin: 0 auto;
   display: grid;
-  height: 25rem;
+  height: 30rem;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
   grid-template-rows: 0.1fr 1fr;
   grid-template-areas:
@@ -83,10 +84,10 @@ const CardControls = styled.div`
   font-size: 18px;
 `;
 
-const CardFront = styled.div<Props>`
+const TabFront = styled.button<Props>`
   grid-area: card-front;
   margin-top: auto;
-  color: #fff;
+  color: ${({ cardView }) => (cardView === "front" ? "#fff" : "#000")};
   background-color: ${({ cardView }) => (cardView === "front" ? "#6a6a6a" : "#b3c2c3")};
   font-size: 18px;
   border-radius: 4px 4px 0 0;
@@ -94,14 +95,16 @@ const CardFront = styled.div<Props>`
   padding: 0 1rem;
 `;
 
-const CardBack = styled.div<Props>`
+const TabBack = styled.button<Props>`
   grid-area: card-back;
   margin-top: auto;
   font-size: 18px;
   border-radius: 4px 4px 0 0;
+  color: ${({ cardView }) => (cardView === "back" ? "#fff" : "#000")};
   background-color: ${({ cardView }) => (cardView === "back" ? "#6a6a6a" : "#b3c2c3")};
   text-align: center;
   padding: 0 1rem;
+  opacity: ${({ disabled }) => (disabled ? ".2" : "1")};
 `;
 
 const CardMain = styled.div`
@@ -111,8 +114,34 @@ const CardMain = styled.div`
   border-radius: 20px 0 20px 20px;
   font-size: 32px;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+`;
+
+const CardTop = styled.div`
+  display: flex;
+  align-items: center;
+  flex: 35%;
+`;
+
+const CardBottom = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  flex: 65%;
+`;
+
+const Divider = styled.div`
+  width: 60%;
+  height: 0.1rem;
+  background-color: #e0bde6;
+  margin: 1rem;
+  border-radius: 4px;
+`;
+
+const HiraganaSection = styled.div`
+  margin-bottom: 0.5rem;
 `;
 
 interface ICard {
@@ -146,15 +175,19 @@ const CardCreate: FC = () => {
     });
   };
 
-  const handleSubmit = (): void => {
-    setCard({
-      kanji: "",
-      hiragana: "",
-      definition: ""
-    });
-  };
+  const handleSubmit = (e: MouseEvent) => {
+    e.preventDefault();
 
-  console.log(cardView);
+    setCard((prevValue) => {
+      return {
+        ...prevValue,
+        hiragana: "ladi dadi",
+        definition: "ladi dadi"
+      };
+    });
+
+    setCardView("back");
+  };
 
   return (
     <CardCreateContainer>
@@ -166,23 +199,33 @@ const CardCreate: FC = () => {
           placeholder="素晴らしい"
           value={kanji}
           onChange={handleChange}
-          onClick={(): void => setCardPlaceholder("")}></FormInput>
+          onClick={(e: MouseEvent) => setCardPlaceholder("")}></FormInput>
         <ButtonSubmit onClick={handleSubmit} type="submit">
           <SVG src="./plus-icon.svg"></SVG>
         </ButtonSubmit>
       </Form>
       <CardContainer>
         <CardControls>Preview</CardControls>
-        <CardFront cardView={cardView} onClick={(): void => setCardView("front")}>
+        <TabFront cardView={cardView} onClick={(e: MouseEvent) => setCardView("front")}>
           front
-        </CardFront>
-        <CardBack cardView={cardView} onClick={(): void => setCardView("back")}>
+        </TabFront>
+        <TabBack
+          disabled={!hiragana && !definition}
+          cardView={cardView}
+          onClick={(e: MouseEvent) => setCardView("back")}>
           back
-        </CardBack>
+        </TabBack>
         <CardMain>
-          <div>{kanji || cardPlaceholder}</div>
-          <div>{hiragana}</div>
-          <div>{definition}</div>
+          <CardTop>
+            <div>{kanji || cardPlaceholder}</div>
+          </CardTop>
+          {cardView === "back" && (
+            <CardBottom>
+              <Divider></Divider>
+              <HiraganaSection>{hiragana}</HiraganaSection>
+              <div>{definition}</div>
+            </CardBottom>
+          )}
         </CardMain>
       </CardContainer>
     </CardCreateContainer>

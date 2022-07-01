@@ -23,42 +23,6 @@ code {
   column-gap: 8px;
 }
 
-.card-controls {
-  grid-area: card-controls;
-  margin-top: auto;
-  margin-left: 20px;
-  color: #fff;
-  font-size: 18px;
-}
-
-.card-front {
-  grid-area: card-front;
-  margin-top: auto;
-  color: #fff;
-  background-color: #6a6a6a;
-  font-size: 18px;
-  border-radius: 4px 4px 0 0;
-  text-align: center;
-  padding: 0 1rem;
-}
-
-.card-back {
-  grid-area: card-back;
-  margin-top: auto;
-  font-size: 18px;
-  border-radius: 4px 4px 0 0;
-  background-color: #b3c2ce;
-  text-align: center;
-  padding: 0 1rem;
-}
-
-.card-main {
-  background-color: #6a6a6a;
-  grid-area: card-main;
-  color: #fff;
-  border-radius: 20px 0 20px 20px;
-  font-size: 32px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+button {
+  border: none;
 }
