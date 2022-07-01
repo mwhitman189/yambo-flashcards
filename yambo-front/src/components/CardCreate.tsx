@@ -5,8 +5,26 @@ interface Props {
   cardView: string;
 }
 
+const colorPrimary = "#ba68c9";
+const colorSecondary = "#e0bde6";
+
 const CardCreateContainer = styled.div`
   margin: 0 1.25rem;
+  position: relative;
+`;
+
+const NotFoundMessage = styled.div`
+  position: absolute;
+  width: 30rem;
+  padding: 1.5rem;
+  background-color: #fff;
+  top: 0;
+  z-index: 10;
+  text-align: center;
+`;
+
+const NotFoundHeader = styled.h2`
+  margin: 0;
 `;
 
 const Text = styled.p`
@@ -27,7 +45,7 @@ const FormInput = styled.input`
   height: 2rem;
   margin-right: 0.75rem;
   border-radius: 4px;
-  background-color: #ba68c9;
+  background-color: ${colorPrimary};
   text-align: center;
   font-size: 20px;
   border: none;
@@ -38,7 +56,7 @@ const FormInput = styled.input`
     color: #fff;
   }
   &:focus {
-    border: 1px solid #e0bde6;
+    border: 1px solid ${colorSecondary};
   }
   &:focus::placeholder {
     color: transparent;
@@ -60,7 +78,6 @@ const SVG = styled.img`
 `;
 
 const CardContainer = styled.div`
-  width: 100%;
   margin: 0 auto;
   display: grid;
   height: 30rem;
@@ -117,6 +134,7 @@ const CardMain = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding: 1rem;
 `;
 
 const CardTop = styled.div`
@@ -126,6 +144,8 @@ const CardTop = styled.div`
 `;
 
 const CardBottom = styled.div`
+  width: 100%;
+  text-align: center;
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -142,6 +162,10 @@ const Divider = styled.div`
 
 const HiraganaSection = styled.div`
   margin-bottom: 0.5rem;
+`;
+
+const DefinitionSection = styled.div`
+  font-size: 18px;
 `;
 
 interface ICard {
@@ -161,6 +185,8 @@ const CardCreate: FC = () => {
 
   const [cardView, setCardView] = useState<string>("front");
 
+  const [wordNotFound, setWordNotFound] = useState<boolean>(false);
+
   const { kanji, hiragana, definition } = card;
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
@@ -175,41 +201,94 @@ const CardCreate: FC = () => {
     });
   };
 
-  const handleSubmit = (e: MouseEvent) => {
+  const handleKeyDown = (e: any) => {
+    if (e.key === "Enter") {
+      handleSubmit(e);
+    }
+  };
+
+  function handleSubmit(e: any) {
     e.preventDefault();
 
-    setCard((prevValue) => {
-      return {
-        ...prevValue,
-        hiragana: "ladi dadi",
-        definition: "ladi dadi"
-      };
-    });
+    try {
+      const fetchData = async () => {
+        const response = await fetch("./MOCK_DATA.json");
+        const data = await response.json();
 
-    setCardView("back");
-  };
+        const { words } = data;
+        let foundWord = false;
+
+        for (const word of words) {
+          if (kanji === word.kanji) {
+            setCard((prevValue) => {
+              return {
+                ...prevValue,
+                hiragana: word.hiragana,
+                definition: word.definition
+              };
+            });
+
+            foundWord = true;
+            setCardView("back");
+            break;
+          }
+        }
+
+        if (!foundWord) {
+          setWordNotFound(true);
+
+          setCard({
+            kanji: "",
+            hiragana: "",
+            definition: ""
+          });
+
+          setTimeout(() => {
+            setWordNotFound(false);
+            setCardPlaceholder("素晴らしい");
+          }, 3000);
+        }
+      };
+
+      fetchData();
+    } catch (error: any) {
+      console.log(error);
+    }
+  }
 
   return (
     <CardCreateContainer>
+      {wordNotFound && (
+        <NotFoundMessage>
+          <NotFoundHeader>ゴメン、ね</NotFoundHeader>
+          <div>We couldn&apos;t find that word. Please try again.</div>
+        </NotFoundMessage>
+      )}
       <Text>Start entering kanji below to generate a new flashcard</Text>
       <Form>
         <FormInput
+          tabIndex={1}
           name="kanji"
           type="text"
           placeholder="素晴らしい"
           value={kanji}
           onChange={handleChange}
-          onClick={(e: MouseEvent) => setCardPlaceholder("")}></FormInput>
+          onClick={(e: MouseEvent) => setCardPlaceholder("")}
+          onKeyDown={handleKeyDown}></FormInput>
         <ButtonSubmit onClick={handleSubmit} type="submit">
           <SVG src="./plus-icon.svg"></SVG>
         </ButtonSubmit>
       </Form>
       <CardContainer>
         <CardControls>Preview</CardControls>
-        <TabFront cardView={cardView} onClick={(e: MouseEvent) => setCardView("front")}>
+        <TabFront
+          tabIndex={2}
+          cardView={cardView}
+          onClick={(e: MouseEvent) => setCardView("front")}>
           front
         </TabFront>
         <TabBack
+          tabIndex={3}
           disabled={!hiragana && !definition}
           cardView={cardView}
           onClick={(e: MouseEvent) => setCardView("back")}>
@@ -223,7 +302,7 @@ const CardCreate: FC = () => {
             <CardBottom>
               <Divider></Divider>
               <HiraganaSection>{hiragana}</HiraganaSection>
-              <div>{definition}</div>
+              <DefinitionSection>{definition}</DefinitionSection>
             </CardBottom>
           )}
         </CardMain>
