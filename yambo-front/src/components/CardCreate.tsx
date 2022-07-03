@@ -187,9 +187,9 @@ const DefinitionSection = styled.div`
 `;
 
 interface ICard {
-  kanji: string;
-  hiragana: string;
-  definition: string;
+  kanji: string | undefined;
+  hiragana: string | undefined;
+  definition: string | undefined;
 }
 
 const CardCreate: FC = () => {
@@ -199,7 +199,7 @@ const CardCreate: FC = () => {
     definition: ""
   });
 
-  const [cardPlaceholder, setCardPlaceholder] = useState<string>("例");
+  const [cardPlaceholder, setCardPlaceholder] = useState<string | undefined>("例");
 
   const [cardView, setCardView] = useState<string>("front");
 
