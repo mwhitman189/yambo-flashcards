@@ -7,6 +7,8 @@ interface Props {
 
 const colorPrimary = "#ba68c9";
 const colorSecondary = "#e0bde6";
+const colorDark = "#6a6a6a";
+const colorWhite = "#f7f7f7";
 
 const CardCreateContainer = styled.div`
   margin: 0 1.25rem;
@@ -15,10 +17,12 @@ const CardCreateContainer = styled.div`
 
 const NotFoundMessage = styled.div`
   position: absolute;
-  width: 30rem;
+  width: 80%;
   padding: 1.5rem;
-  background-color: #fff;
+  background-color: ${colorWhite};
   top: 0;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 10;
   text-align: center;
 `;
@@ -28,14 +32,14 @@ const NotFoundHeader = styled.h2`
 `;
 
 const Text = styled.p`
-  color: #fff;
+  color: ${colorWhite};
   text-align: center;
   font-size: 20px;
 `;
 
 const Form = styled.form`
   margin: 1.5rem 0;
-  color: #fff;
+  color: ${colorWhite};
   display: flex;
   justify-content: center;
 `;
@@ -51,9 +55,9 @@ const FormInput = styled.input`
   border: none;
   outline: none;
   padding: 0.25rem;
-  color: #fff;
+  color: ${colorWhite};
   ::placeholder {
-    color: #fff;
+    color: ${colorWhite};
   }
   &:focus {
     border: 1px solid ${colorSecondary};
@@ -97,14 +101,27 @@ const CardControls = styled.div`
   grid-area: card-controls;
   margin-top: auto;
   margin-left: 20px;
-  color: #fff;
+  color: ${colorWhite};
   font-size: 18px;
+`;
+
+const Link = styled.a`
+  text-decoration: none;
+  font-weight: 600;
+  color: ${colorWhite};
+  &:hover {
+    color: ${colorSecondary};
+  }
+`;
+
+const Pipe = styled.span`
+  color: ${colorDark};
 `;
 
 const TabFront = styled.button<Props>`
   grid-area: card-front;
   margin-top: auto;
-  color: ${({ cardView }) => (cardView === "front" ? "#fff" : "#000")};
+  color: ${({ cardView }) => (cardView === "front" ? "${colorWhite}" : "#000")};
   background-color: ${({ cardView }) => (cardView === "front" ? "#6a6a6a" : "#b3c2c3")};
   font-size: 18px;
   border-radius: 4px 4px 0 0;
@@ -117,7 +134,7 @@ const TabBack = styled.button<Props>`
   margin-top: auto;
   font-size: 18px;
   border-radius: 4px 4px 0 0;
-  color: ${({ cardView }) => (cardView === "back" ? "#fff" : "#000")};
+  color: ${({ cardView }) => (cardView === "back" ? "${colorWhite}" : "#000")};
   background-color: ${({ cardView }) => (cardView === "back" ? "#6a6a6a" : "#b3c2c3")};
   text-align: center;
   padding: 0 1rem;
@@ -125,9 +142,9 @@ const TabBack = styled.button<Props>`
 `;
 
 const CardMain = styled.div`
-  background-color: #6a6a6a;
+  background-color: ${colorDark};
   grid-area: card-main;
-  color: #fff;
+  color: ${colorWhite};
   border-radius: 20px 0 20px 20px;
   font-size: 32px;
   display: flex;
@@ -190,8 +207,9 @@ const CardCreate: FC = () => {
   const { kanji, hiragana, definition } = card;
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    const { value }: any = e.target;
     e.preventDefault();
+
+    const { value }: any = e.target;
 
     setCard((prevValue) => {
       return {
@@ -260,7 +278,7 @@ const CardCreate: FC = () => {
     <CardCreateContainer>
       {wordNotFound && (
         <NotFoundMessage>
-          <NotFoundHeader>ゴメン、ね</NotFoundHeader>
+          <NotFoundHeader>ゴメンね</NotFoundHeader>
           <div>We couldn&apos;t find that word. Please try again.</div>
         </NotFoundMessage>
       )}
@@ -272,6 +290,7 @@ const CardCreate: FC = () => {
           type="text"
           placeholder="素晴らしい"
           value={kanji}
+          disabled={hiragana ? true : false}
           onChange={handleChange}
           onClick={(e: MouseEvent) => setCardPlaceholder("")}
           onKeyDown={handleKeyDown}></FormInput>
@@ -280,9 +299,20 @@ const CardCreate: FC = () => {
         </ButtonSubmit>
       </Form>
       <CardContainer>
-        <CardControls>Preview</CardControls>
+        <CardControls>
+          {hiragana ? (
+            <div>
+              <Link href="#">Save</Link>
+              <Pipe> | </Pipe>
+              <Link href="#">Cancel</Link>
+            </div>
+          ) : (
+            "Preview"
+          )}
+        </CardControls>
         <TabFront
           tabIndex={2}
+          disabled={!hiragana && !definition}
           cardView={cardView}
           onClick={(e: MouseEvent) => setCardView("front")}>
           front
