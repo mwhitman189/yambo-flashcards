@@ -58,6 +58,7 @@ const FormInput = styled.input`
   color: ${colorWhite};
   ::placeholder {
     color: ${colorWhite};
+    opacity: 0.5;
   }
   &:focus {
     border: 1px solid ${colorSecondary};
@@ -121,7 +122,7 @@ const Pipe = styled.span`
 const TabFront = styled.button<Props>`
   grid-area: card-front;
   margin-top: auto;
-  color: ${({ cardView }) => (cardView === "front" ? "${colorWhite}" : "#000")};
+  color: ${({ cardView }) => (cardView === "front" ? `${colorWhite}` : "#000")};
   background-color: ${({ cardView }) => (cardView === "front" ? "#6a6a6a" : "#b3c2c3")};
   font-size: 18px;
   border-radius: 4px 4px 0 0;
@@ -134,7 +135,7 @@ const TabBack = styled.button<Props>`
   margin-top: auto;
   font-size: 18px;
   border-radius: 4px 4px 0 0;
-  color: ${({ cardView }) => (cardView === "back" ? "${colorWhite}" : "#000")};
+  color: ${({ cardView }) => (cardView === "back" ? `${colorWhite}` : "#000")};
   background-color: ${({ cardView }) => (cardView === "back" ? "#6a6a6a" : "#b3c2c3")};
   text-align: center;
   padding: 0 1rem;
@@ -198,7 +199,7 @@ const CardCreate: FC = () => {
     definition: ""
   });
 
-  const [cardPlaceholder, setCardPlaceholder] = useState<string>("素晴らしい");
+  const [cardPlaceholder, setCardPlaceholder] = useState<string>("例");
 
   const [cardView, setCardView] = useState<string>("front");
 
@@ -219,13 +220,7 @@ const CardCreate: FC = () => {
     });
   };
 
-  const handleKeyDown = (e: any) => {
-    if (e.key === "Enter") {
-      handleSubmit(e);
-    }
-  };
-
-  function handleSubmit(e: any) {
+  function handleSubmit(e: MouseEvent) {
     e.preventDefault();
 
     try {
@@ -263,7 +258,7 @@ const CardCreate: FC = () => {
 
           setTimeout(() => {
             setWordNotFound(false);
-            setCardPlaceholder("素晴らしい");
+            setCardPlaceholder("Add another card...");
           }, 3000);
         }
       };
@@ -288,12 +283,11 @@ const CardCreate: FC = () => {
           tabIndex={1}
           name="kanji"
           type="text"
-          placeholder="素晴らしい"
+          placeholder={cardPlaceholder}
           value={kanji}
           disabled={hiragana ? true : false}
           onChange={handleChange}
-          onClick={(e: MouseEvent) => setCardPlaceholder("")}
-          onKeyDown={handleKeyDown}></FormInput>
+          onClick={() => setCardPlaceholder("")}></FormInput>
         <ButtonSubmit onClick={handleSubmit} type="submit">
           <SVG src="./plus-icon.svg"></SVG>
         </ButtonSubmit>
@@ -304,7 +298,7 @@ const CardCreate: FC = () => {
             <div>
               <Link href="#">Save</Link>
               <Pipe> | </Pipe>
-              <Link href="#">Cancel</Link>
+              <Link href="#">Clear</Link>
             </div>
           ) : (
             "Preview"
@@ -314,14 +308,14 @@ const CardCreate: FC = () => {
           tabIndex={2}
           disabled={!hiragana && !definition}
           cardView={cardView}
-          onClick={(e: MouseEvent) => setCardView("front")}>
+          onClick={() => setCardView("front")}>
           front
         </TabFront>
         <TabBack
           tabIndex={3}
           disabled={!hiragana && !definition}
           cardView={cardView}
-          onClick={(e: MouseEvent) => setCardView("back")}>
+          onClick={() => setCardView("back")}>
           back
         </TabBack>
         <CardMain>
