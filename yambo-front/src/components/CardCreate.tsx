@@ -264,7 +264,7 @@ const CardCreate: FC = () => {
       };
 
       fetchData();
-    } catch (error: any) {
+    } catch (error) {
       console.log(error);
     }
   }
@@ -285,10 +285,10 @@ const CardCreate: FC = () => {
           type="text"
           placeholder={cardPlaceholder}
           value={kanji}
-          disabled={hiragana ? true : false}
+          disabled={wordNotFound}
           onChange={handleChange}
           onClick={() => setCardPlaceholder("")}></FormInput>
-        <ButtonSubmit onClick={handleSubmit} type="submit">
+        <ButtonSubmit onClick={handleSubmit} aria-label="submit" type="submit">
           <SVG src="./plus-icon.svg"></SVG>
         </ButtonSubmit>
       </Form>
@@ -306,12 +306,13 @@ const CardCreate: FC = () => {
         </CardControls>
         <TabFront
           tabIndex={2}
-          disabled={!hiragana && !definition}
+          disabled={hiragana !== "" && definition !== "" ? false : true}
           cardView={cardView}
           onClick={() => setCardView("front")}>
           front
         </TabFront>
         <TabBack
+          data-testid={cardView}
           tabIndex={3}
           disabled={!hiragana && !definition}
           cardView={cardView}
