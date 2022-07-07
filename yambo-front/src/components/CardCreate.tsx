@@ -305,8 +305,6 @@ const CardCreate: FC = () => {
     }
   }
 
-  console.log(cards);
-
   return (
     <CardCreateContainer>
       {wordNotFound && (
@@ -369,7 +367,10 @@ const CardCreate: FC = () => {
           )}
         </CardMain>
       </CardContainer>
-      <div className="deck"></div>
+      <div className="deck">
+        <div>My deck</div>
+        <div className="number-of-cards"></div>
+      </div>
     </CardCreateContainer>
   );
 };
