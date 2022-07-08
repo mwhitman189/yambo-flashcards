@@ -1,6 +1,8 @@
 import React, { FC, ChangeEvent, MouseEvent, useState } from "react";
 import styled from "styled-components";
 
+import Deck from "./Deck";
+
 interface Props {
   cardView: string;
 }
@@ -92,7 +94,7 @@ const CardContainer = styled.div`
     "card-controls card-controls card-controls card-controls card-controls card-controls card-front card-back"
     "card-main card-main card-main card-main card-main card-main card-main card-main";
   column-gap: 8px;
-  margin-bottom: 8rem;
+  margin-bottom: 4rem;
   @media (min-width: 576px) {
     max-width: 20rem;
   }
@@ -367,10 +369,7 @@ const CardCreate: FC = () => {
           )}
         </CardMain>
       </CardContainer>
-      <div className="deck">
-        <div>My deck</div>
-        <div className="number-of-cards"></div>
-      </div>
+      <Deck cards={cards}></Deck>
     </CardCreateContainer>
   );
 };
