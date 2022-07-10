@@ -8,8 +8,6 @@ const theme = {
   colorPrimary: "blue"
 };
 
-// Hello
-
 function App() {
   return (
     <ThemeProvider theme={theme}>
