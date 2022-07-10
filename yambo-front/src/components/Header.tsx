@@ -10,7 +10,7 @@ const HeaderStyle = styled.h1`
 function Header() {
   return (
     <header className="App-header">
-      <HeaderStyle>Welcome to Yambo!</HeaderStyle>
+      <HeaderStyle>Welcome to Yambo Flashcards!</HeaderStyle>
     </header>
   );
 }
