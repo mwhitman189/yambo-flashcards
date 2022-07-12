@@ -303,8 +303,6 @@ const CardCreate: FC = () => {
             setCardView("front");
           }, 3000);
         }
-
-        console.log(word);
       };
 
       //Use for manually testing the front end without calling the api
@@ -363,7 +361,7 @@ const CardCreate: FC = () => {
           <div>We couldn&apos;t find that word. Please try again.</div>
         </NotFoundMessage>
       )}
-      <Text>Start entering kanji below to generate a new flashcard</Text>
+      <Text>Enter kanji to look up a word, or add your own definition:</Text>
       <Form>
         <FormInput
           tabIndex={1}
