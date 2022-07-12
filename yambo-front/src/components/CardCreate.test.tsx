@@ -56,15 +56,4 @@ describe("CardCreate", () => {
     fireEvent.change(inputElement, { target: { value: "偉い" } });
     expect(inputElement.value).toBe("偉い");
   });
-
-  
-
-  // it("should enable the back tab when a word is retrieved", async () => {
-  //   render(<CardCreate />);
-  //   const btnSubmit = await screen.findByLabelText(/submit/);
-  //   const btnBackClicked = screen.findByText(/back/i);
-  //   const user = userEvent.setup();
-  //   await user.click(btnSubmit);
-  //   expect(btnBackClicked).toHaveProperty("disabled", false);
-  // });
 });

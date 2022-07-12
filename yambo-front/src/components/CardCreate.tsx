@@ -211,6 +211,8 @@ const CardCreate: FC = () => {
 
   const [cards, setCards] = useState<ICard[]>([]);
 
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const { kanji, hiragana, definition } = card;
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
@@ -260,31 +262,33 @@ const CardCreate: FC = () => {
     e.preventDefault();
 
     try {
+      //Use for actual api call
       const fetchData = async () => {
-        const response = await fetch("./MOCK_DATA.json");
+        const response = await fetch("https://jotoba.de/api/search/words", {
+          method: "POST",
+          headers: {
+            "content-type": "application/json;charset=UTF-8"
+          },
+          body: JSON.stringify({
+            query: kanji,
+            language: "English",
+            no_english: false
+          })
+        });
         const data = await response.json();
 
         const { words } = data;
-        let foundWord = false;
+        const [word] = words;
 
-        for (const word of words) {
-          if (kanji === word.kanji) {
-            setCard((prevValue) => {
-              return {
-                ...prevValue,
-                hiragana: word.hiragana,
-                definition: word.definition
-              };
-            });
-
-            foundWord = true;
-            setDisableTab(false);
-            setCardView("back");
-            break;
-          }
-        }
-
-        if (!foundWord) {
+        if (word) {
+          setCard((prevValue) => {
+            return {
+              ...prevValue,
+              hiragana: word.reading.kana,
+              definition: word.senses[0].glosses
+            };
+          });
+        } else {
           setWordNotFound(true);
 
           setCard({
@@ -299,7 +303,51 @@ const CardCreate: FC = () => {
             setCardView("front");
           }, 3000);
         }
+
+        console.log(word);
       };
+
+      //Use for manually testing the front end without calling the api
+      // const fetchData = async () => {
+      //   const response = await fetch("./MOCK_DATA.json");
+      //   const data = await response.json();
+
+      //   const { words } = data;
+      //   let foundWord = false;
+
+      //   for (const word of words) {
+      //     if (kanji === word.kanji) {
+      //       setCard((prevValue) => {
+      //         return {
+      //           ...prevValue,
+      //           hiragana: word.hiragana,
+      //           definition: word.definition
+      //         };
+      //       });
+
+      //       foundWord = true;
+      //       setDisableTab(false);
+      //       setCardView("back");
+      //       break;
+      //     }
+      //   }
+
+      //   if (!foundWord) {
+      //     setWordNotFound(true);
+
+      //     setCard({
+      //       kanji: "",
+      //       hiragana: "",
+      //       definition: ""
+      //     });
+
+      //     setTimeout(() => {
+      //       setWordNotFound(false);
+      //       setCardPlaceholder("Add another card...");
+      //       setCardView("front");
+      //     }, 3000);
+      //   }
+      // };
 
       fetchData();
     } catch (error) {
