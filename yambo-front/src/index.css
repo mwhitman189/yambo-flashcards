@@ -26,3 +26,12 @@ code {
 button {
   border: none;
 }
+
+/* Utilities */
+.d-block {
+  display: block;
+}
+
+.d-flex {
+  display: flex;
+}

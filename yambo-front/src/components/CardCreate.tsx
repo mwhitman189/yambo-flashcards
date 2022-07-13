@@ -1,3 +1,4 @@
+import { findByLabelText } from "@testing-library/react";
 import React, { FC, ChangeEvent, MouseEvent, useState } from "react";
 import styled from "styled-components";
 
@@ -11,6 +12,7 @@ const colorPrimary = "#ba68c9";
 const colorSecondary = "#e0bde6";
 const colorDark = "#6a6a6a";
 const colorWhite = "#f7f7f7";
+const colorSuccess = "#14ae5c";
 
 const CardCreateContainer = styled.div`
   margin: 0 1.25rem;
@@ -42,18 +44,28 @@ const Text = styled.p`
 const Form = styled.form`
   margin: 1.5rem 0;
   color: ${colorWhite};
+  @media (min-width: 576px) {
+    max-width: 20rem;
+    margin: 1.5rem auto 3rem auto;
+  }
+`;
+
+const InputWrapper = styled.div`
   display: flex;
-  justify-content: center;
+  align-items: end;
+  margin-bottom: 1rem;
 `;
 
 const FormInput = styled.input`
-  width: 10rem;
-  height: 2rem;
-  margin-right: 0.75rem;
+  box-sizing: border-box;
+  height: 2.5rem;
+  width: 100%;
+  flex-grow: 1;
+  font-size: 18px;
+  margin-right: 0.25rem;
   border-radius: 4px;
   background-color: ${colorPrimary};
-  text-align: center;
-  font-size: 20px;
+  text-align: left;
   border: none;
   outline: none;
   padding: 0.25rem;
@@ -70,14 +82,25 @@ const FormInput = styled.input`
   }
 `;
 
-const ButtonSubmit = styled.button`
-  background-color: transparent;
-  padding: 0;
-  margin: 0;
+const Button = styled.button`
+  height: 2.5rem;
+  border-radius: 4px;
+  background-color: ${colorSuccess};
+  text-align: center;
+  font-size: 20px;
   border: none;
+  outline: none;
+  padding: 0.25rem 0.75rem;
+  color: ${colorWhite};
+`;
+
+const Span = styled.span`
+  vertical-align: middle;
 `;
 
 const SVG = styled.img`
+  margin-right: 0.25rem;
+  height: 28px;
   filter: invert(72%) sepia(77%) saturate(4574%) hue-rotate(241deg) brightness(88%) contrast(76%);
   &:hover {
     filter: invert(87%) sepia(14%) saturate(1075%) hue-rotate(214deg) brightness(96%) contrast(88%);
@@ -211,8 +234,6 @@ const CardCreate: FC = () => {
 
   const [cards, setCards] = useState<ICard[]>([]);
 
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-
   const { kanji, hiragana, definition } = card;
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
@@ -242,7 +263,7 @@ const CardCreate: FC = () => {
       });
 
       setDisableTab(!disableTab);
-      setCardPlaceholder("Add another card...");
+      setCardPlaceholder("Add a card...");
       setCardView("front");
     }
   };
@@ -254,13 +275,11 @@ const CardCreate: FC = () => {
       definition: ""
     });
     setDisableTab(!disableTab);
-    setCardPlaceholder("Add another card...");
+    setCardPlaceholder("Add a card...");
     setCardView("front");
   };
 
-  function handleSubmit(e: MouseEvent) {
-    e.preventDefault();
-
+  function handleLookup(e: MouseEvent) {
     try {
       //Use for actual api call
       const fetchData = async () => {
@@ -291,16 +310,8 @@ const CardCreate: FC = () => {
         } else {
           setWordNotFound(true);
 
-          setCard({
-            kanji: "",
-            hiragana: "",
-            definition: ""
-          });
-
           setTimeout(() => {
             setWordNotFound(false);
-            setCardPlaceholder("Add another card...");
-            setCardView("front");
           }, 3000);
         }
       };
@@ -341,7 +352,7 @@ const CardCreate: FC = () => {
 
       //     setTimeout(() => {
       //       setWordNotFound(false);
-      //       setCardPlaceholder("Add another card...");
+      //       setCardPlaceholder("Add a card...");
       //       setCardView("front");
       //     }, 3000);
       //   }
@@ -351,6 +362,19 @@ const CardCreate: FC = () => {
     } catch (error) {
       console.log(error);
     }
+  }
+
+  function handleSubmit(e: MouseEvent) {
+    e.preventDefault();
+
+    setCard({
+      kanji: "",
+      hiragana: "",
+      definition: ""
+    });
+
+    setCardPlaceholder("Add a card...");
+    setCardView("front");
   }
 
   return (
@@ -363,18 +387,41 @@ const CardCreate: FC = () => {
       )}
       <Text>Enter kanji to look up a word, or add your own definition:</Text>
       <Form>
-        <FormInput
-          tabIndex={1}
-          name="kanji"
-          type="text"
-          disabled={!disableTab}
-          placeholder={cardPlaceholder}
-          value={kanji}
-          onChange={handleChange}
-          onClick={() => setCardPlaceholder("")}></FormInput>
-        <ButtonSubmit onClick={handleSubmit} aria-label="submit" type="submit">
-          <SVG src="./plus-icon.svg"></SVG>
-        </ButtonSubmit>
+        <label>Kanji</label>
+        <InputWrapper>
+          <FormInput
+            tabIndex={1}
+            required
+            name="kanji"
+            type="text"
+            disabled={!disableTab}
+            placeholder={cardPlaceholder}
+            value={kanji}
+            onChange={handleChange}
+            onClick={() => setCardPlaceholder("")}></FormInput>
+          <Button onClick={handleLookup} type="button">
+            Lookup
+          </Button>
+        </InputWrapper>
+        <div>
+          <label className="d-block">Definition</label>
+          <InputWrapper>
+            <FormInput
+              tabIndex={2}
+              name="definition"
+              type="text"
+              disabled={!disableTab}
+              placeholder="Enter definition, or use Lookup"
+              value={definition}
+              onChange={handleChange}></FormInput>
+          </InputWrapper>
+        </div>
+        <Button onClick={handleSubmit} aria-label="submit" type="submit">
+          <Span>
+            <SVG src="./plus-icon.svg"></SVG>
+          </Span>
+          <Span>Submit</Span>
+        </Button>
       </Form>
       <CardContainer>
         <CardControls>
@@ -392,11 +439,11 @@ const CardCreate: FC = () => {
             "Preview"
           )}
         </CardControls>
-        <TabFront tabIndex={2} cardView={cardView} onClick={() => setCardView("front")}>
+        <TabFront tabIndex={3} cardView={cardView} onClick={() => setCardView("front")}>
           front
         </TabFront>
         <TabBack
-          tabIndex={3}
+          tabIndex={4}
           disabled={disableTab}
           cardView={cardView}
           onClick={() => setCardView("back")}>
