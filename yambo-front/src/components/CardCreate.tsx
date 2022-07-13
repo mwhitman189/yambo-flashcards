@@ -1,5 +1,6 @@
 import React, { FC, ChangeEvent, MouseEvent, useState } from "react";
 import styled from "styled-components";
+import { TailSpin } from "react-loader-spinner";
 
 import Deck from "./Deck";
 
@@ -23,7 +24,7 @@ const NotFoundMessage = styled.div`
   width: 80%;
   padding: 1.5rem;
   background-color: ${colorWhite};
-  top: 0;
+  top: 10%;
   left: 50%;
   transform: translateX(-50%);
   z-index: 10;
@@ -228,6 +229,8 @@ const CardCreate: FC = () => {
 
   const [disableTab, setDisableTab] = useState<boolean>(true);
 
+  const [loader, setLoader] = useState<boolean>(false);
+
   const [cards, setCards] = useState<ICard[]>([]);
 
   const { kanji, hiragana, definition } = card;
@@ -281,6 +284,8 @@ const CardCreate: FC = () => {
   function handleLookup(e: MouseEvent) {
     e.preventDefault();
 
+    setLoader(true);
+
     try {
       //Use for actual api call
       const fetchData = async () => {
@@ -301,23 +306,26 @@ const CardCreate: FC = () => {
         const [word] = words;
 
         if (word) {
-          setCard((prevValue) => {
-            return {
-              ...prevValue,
-              hiragana: word.reading.kana,
-              definition: word.senses[0].glosses.join("; ")
-            };
-          });
+          setTimeout(() => {
+            setLoader(false);
+            setCard((prevValue) => {
+              return {
+                ...prevValue,
+                hiragana: word.reading.kana,
+                definition: word.senses[0].glosses.join("; ")
+              };
+            });
 
-          setDisableTab(false);
+            setDisableTab(false);
 
-          setCardView("back");
+            setCardView("back");
+          }, 3000);
         } else {
+          setLoader(false);
           setWordNotFound(true);
-
           setTimeout(() => {
             setWordNotFound(false);
-          }, 300000);
+          }, 3000);
         }
       };
 
@@ -371,6 +379,13 @@ const CardCreate: FC = () => {
 
   return (
     <CardCreateContainer>
+      {loader && (
+        <div>
+          <div className="loader">
+            <TailSpin color={colorSecondary} ariaLabel="loading-indicator" />
+          </div>
+        </div>
+      )}
       {wordNotFound && (
         <NotFoundMessage>
           <NotFoundHeader>ゴメンね</NotFoundHeader>

@@ -1,3 +1,11 @@
+:root {
+  --colorPrimary: #ba68c9;
+  --colorSecondary: #e0bde6;
+  --colorDark: #6a6a6a;
+  --colorWhite: #f7f7f7;
+  --colorSuccess: #14ae5c;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu",
@@ -25,6 +33,16 @@ code {
 
 button {
   border: none;
+}
+
+.loader {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  height: 100;
+  width: 100;
 }
 
 /* Utilities */
