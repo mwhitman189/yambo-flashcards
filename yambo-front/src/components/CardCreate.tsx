@@ -1,4 +1,3 @@
-import { findByLabelText } from "@testing-library/react";
 import React, { FC, ChangeEvent, MouseEvent, useState } from "react";
 import styled from "styled-components";
 
@@ -50,6 +49,10 @@ const Form = styled.form`
   }
 `;
 
+const Label = styled.label`
+  font-size: 14px;
+`;
+
 const InputWrapper = styled.div`
   display: flex;
   align-items: end;
@@ -63,12 +66,13 @@ const FormInput = styled.input`
   flex-grow: 1;
   font-size: 18px;
   margin-right: 0.25rem;
+  margin-top: 0.25rem;
   border-radius: 4px;
   background-color: ${colorPrimary};
   text-align: left;
   border: none;
   outline: none;
-  padding: 0.25rem;
+  padding-left: 1rem;
   color: ${colorWhite};
   ::placeholder {
     color: ${colorWhite};
@@ -92,18 +96,10 @@ const Button = styled.button`
   outline: none;
   padding: 0.25rem 0.75rem;
   color: ${colorWhite};
-`;
-
-const Span = styled.span`
-  vertical-align: middle;
-`;
-
-const SVG = styled.img`
-  margin-right: 0.25rem;
-  height: 28px;
-  filter: invert(72%) sepia(77%) saturate(4574%) hue-rotate(241deg) brightness(88%) contrast(76%);
+  &:focus,
   &:hover {
-    filter: invert(87%) sepia(14%) saturate(1075%) hue-rotate(214deg) brightness(96%) contrast(88%);
+    background-color: #1fdb77;
+    color: ${colorDark};
   }
 `;
 
@@ -239,12 +235,12 @@ const CardCreate: FC = () => {
   const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
     e.preventDefault();
 
-    const { value }: any = e.target;
+    const { name, value }: any = e.target;
 
     setCard((prevValue) => {
       return {
         ...prevValue,
-        kanji: value
+        [name]: value
       };
     });
   };
@@ -304,15 +300,19 @@ const CardCreate: FC = () => {
             return {
               ...prevValue,
               hiragana: word.reading.kana,
-              definition: word.senses[0].glosses
+              definition: word.senses[0].glosses.join("; ")
             };
           });
+
+          setDisableTab(false);
+
+          setCardView("back");
         } else {
           setWordNotFound(true);
 
           setTimeout(() => {
             setWordNotFound(false);
-          }, 3000);
+          }, 300000);
         }
       };
 
@@ -387,14 +387,13 @@ const CardCreate: FC = () => {
       )}
       <Text>Enter kanji to look up a word, or add your own definition:</Text>
       <Form>
-        <label>Kanji</label>
+        <Label>Kanji</Label>
         <InputWrapper>
           <FormInput
             tabIndex={1}
             required
             name="kanji"
             type="text"
-            disabled={!disableTab}
             placeholder={cardPlaceholder}
             value={kanji}
             onChange={handleChange}
@@ -404,24 +403,17 @@ const CardCreate: FC = () => {
           </Button>
         </InputWrapper>
         <div>
-          <label className="d-block">Definition</label>
+          <Label className="d-block">Definition</Label>
           <InputWrapper>
             <FormInput
               tabIndex={2}
               name="definition"
               type="text"
-              disabled={!disableTab}
               placeholder="Enter definition, or use Lookup"
               value={definition}
               onChange={handleChange}></FormInput>
           </InputWrapper>
         </div>
-        <Button onClick={handleSubmit} aria-label="submit" type="submit">
-          <Span>
-            <SVG src="./plus-icon.svg"></SVG>
-          </Span>
-          <Span>Submit</Span>
-        </Button>
       </Form>
       <CardContainer>
         <CardControls>
