@@ -237,6 +237,9 @@ const CardCreate: FC = () => {
 
     const { name, value }: any = e.target;
 
+    setDisableTab(!disableTab);
+    setCardView("back");
+
     setCard((prevValue) => {
       return {
         ...prevValue,
@@ -276,6 +279,8 @@ const CardCreate: FC = () => {
   };
 
   function handleLookup(e: MouseEvent) {
+    e.preventDefault();
+
     try {
       //Use for actual api call
       const fetchData = async () => {
@@ -364,19 +369,6 @@ const CardCreate: FC = () => {
     }
   }
 
-  function handleSubmit(e: MouseEvent) {
-    e.preventDefault();
-
-    setCard({
-      kanji: "",
-      hiragana: "",
-      definition: ""
-    });
-
-    setCardPlaceholder("Add a card...");
-    setCardView("front");
-  }
-
   return (
     <CardCreateContainer>
       {wordNotFound && (
@@ -398,7 +390,7 @@ const CardCreate: FC = () => {
             value={kanji}
             onChange={handleChange}
             onClick={() => setCardPlaceholder("")}></FormInput>
-          <Button onClick={handleLookup} type="button">
+          <Button onClick={handleLookup} type="submit">
             Lookup
           </Button>
         </InputWrapper>
@@ -417,7 +409,7 @@ const CardCreate: FC = () => {
       </Form>
       <CardContainer>
         <CardControls>
-          {hiragana ? (
+          {kanji ? (
             <div>
               <Link onClick={handleSave} href="#">
                 Save
