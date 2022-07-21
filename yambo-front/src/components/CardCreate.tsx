@@ -108,7 +108,7 @@ const CardControls = styled.div`
   font-size: 18px;
 `;
 
-const Link = styled.a`
+const CardControlLinks = styled.a`
   text-decoration: none;
   font-weight: 600;
   color: ${colorWhite};
@@ -380,13 +380,9 @@ const CardCreate: FC = () => {
         <CardControls>
           {hiragana ? (
             <div>
-              <Link onClick={handleSave} href="#">
-                Save
-              </Link>
+              <CardControlLinks onClick={handleSave}>Save</CardControlLinks>
               <Pipe> | </Pipe>
-              <Link onClick={handleClear} href="#">
-                Clear
-              </Link>
+              <CardControlLinks onClick={handleClear}>Clear</CardControlLinks>
             </div>
           ) : (
             "Preview"
