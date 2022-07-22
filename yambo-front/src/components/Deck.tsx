@@ -1,4 +1,4 @@
-import React, { FC, ChangeEvent, MouseEvent, useState } from "react";
+import React from "react";
 import styled from "styled-components";
 
 const DeckContainer = styled.div`
