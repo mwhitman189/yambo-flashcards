@@ -12,7 +12,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <div className="App">
-        <Header />
+        <Header title="Welcome to Yambo!" />
         <CardCreate />
       </div>
     </ThemeProvider>

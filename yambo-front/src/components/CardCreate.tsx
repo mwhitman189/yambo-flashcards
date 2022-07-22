@@ -1,6 +1,8 @@
 import React, { FC, ChangeEvent, MouseEvent, useState } from "react";
 import styled from "styled-components";
 
+import Deck from "./Deck";
+
 interface Props {
   cardView: string;
 }
@@ -85,14 +87,14 @@ const SVG = styled.img`
 const CardContainer = styled.div`
   margin: 0 auto;
   display: grid;
-  height: 30rem;
+  min-height: 30rem;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-  grid-template-rows: 0.1fr 1fr;
+  grid-template-rows: auto 1fr;
   grid-template-areas:
     "card-controls card-controls card-controls card-controls card-controls card-controls card-front card-back"
     "card-main card-main card-main card-main card-main card-main card-main card-main";
   column-gap: 8px;
-  margin-bottom: 8rem;
+  margin-bottom: 4rem;
   @media (min-width: 576px) {
     max-width: 20rem;
   }
@@ -106,7 +108,7 @@ const CardControls = styled.div`
   font-size: 18px;
 `;
 
-const Link = styled.a`
+const CardControlLinks = styled.a`
   text-decoration: none;
   font-weight: 600;
   color: ${colorWhite};
@@ -187,9 +189,9 @@ const DefinitionSection = styled.div`
 `;
 
 interface ICard {
-  kanji: string;
-  hiragana: string;
-  definition: string;
+  kanji: string | undefined;
+  hiragana: string | undefined;
+  definition: string | undefined;
 }
 
 const CardCreate: FC = () => {
@@ -199,11 +201,17 @@ const CardCreate: FC = () => {
     definition: ""
   });
 
-  const [cardPlaceholder, setCardPlaceholder] = useState<string>("例");
+  const [cardPlaceholder, setCardPlaceholder] = useState<string | undefined>("例");
 
   const [cardView, setCardView] = useState<string>("front");
 
   const [wordNotFound, setWordNotFound] = useState<boolean>(false);
+
+  const [disableTab, setDisableTab] = useState<boolean>(true);
+
+  const [cards, setCards] = useState<ICard[]>([]);
+
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const { kanji, hiragana, definition } = card;
 
@@ -220,34 +228,67 @@ const CardCreate: FC = () => {
     });
   };
 
+  const handleSave = (e: MouseEvent) => {
+    if (kanji) {
+      const newCard = card;
+      setCards((prevValue) => {
+        return [...prevValue, newCard];
+      });
+
+      setCard({
+        kanji: "",
+        hiragana: "",
+        definition: ""
+      });
+
+      setDisableTab(!disableTab);
+      setCardPlaceholder("Add another card...");
+      setCardView("front");
+    }
+  };
+
+  const handleClear = (e: MouseEvent) => {
+    setCard({
+      kanji: "",
+      hiragana: "",
+      definition: ""
+    });
+    setDisableTab(!disableTab);
+    setCardPlaceholder("Add another card...");
+    setCardView("front");
+  };
+
   function handleSubmit(e: MouseEvent) {
     e.preventDefault();
 
     try {
+      //Use for actual api call
       const fetchData = async () => {
-        const response = await fetch("./MOCK_DATA.json");
+        const response = await fetch("https://jotoba.de/api/search/words", {
+          method: "POST",
+          headers: {
+            "content-type": "application/json;charset=UTF-8"
+          },
+          body: JSON.stringify({
+            query: kanji,
+            language: "English",
+            no_english: false
+          })
+        });
         const data = await response.json();
 
         const { words } = data;
-        let foundWord = false;
+        const [word] = words;
 
-        for (const word of words) {
-          if (kanji === word.kanji) {
-            setCard((prevValue) => {
-              return {
-                ...prevValue,
-                hiragana: word.hiragana,
-                definition: word.definition
-              };
-            });
-
-            foundWord = true;
-            setCardView("back");
-            break;
-          }
-        }
-
-        if (!foundWord) {
+        if (word) {
+          setCard((prevValue) => {
+            return {
+              ...prevValue,
+              hiragana: word.reading.kana,
+              definition: word.senses[0].glosses
+            };
+          });
+        } else {
           setWordNotFound(true);
 
           setCard({
@@ -259,12 +300,55 @@ const CardCreate: FC = () => {
           setTimeout(() => {
             setWordNotFound(false);
             setCardPlaceholder("Add another card...");
+            setCardView("front");
           }, 3000);
         }
       };
 
+      //Use for manually testing the front end without calling the api
+      // const fetchData = async () => {
+      //   const response = await fetch("./MOCK_DATA.json");
+      //   const data = await response.json();
+
+      //   const { words } = data;
+      //   let foundWord = false;
+
+      //   for (const word of words) {
+      //     if (kanji === word.kanji) {
+      //       setCard((prevValue) => {
+      //         return {
+      //           ...prevValue,
+      //           hiragana: word.hiragana,
+      //           definition: word.definition
+      //         };
+      //       });
+
+      //       foundWord = true;
+      //       setDisableTab(false);
+      //       setCardView("back");
+      //       break;
+      //     }
+      //   }
+
+      //   if (!foundWord) {
+      //     setWordNotFound(true);
+
+      //     setCard({
+      //       kanji: "",
+      //       hiragana: "",
+      //       definition: ""
+      //     });
+
+      //     setTimeout(() => {
+      //       setWordNotFound(false);
+      //       setCardPlaceholder("Add another card...");
+      //       setCardView("front");
+      //     }, 3000);
+      //   }
+      // };
+
       fetchData();
-    } catch (error: any) {
+    } catch (error) {
       console.log(error);
     }
   }
@@ -277,18 +361,18 @@ const CardCreate: FC = () => {
           <div>We couldn&apos;t find that word. Please try again.</div>
         </NotFoundMessage>
       )}
-      <Text>Start entering kanji below to generate a new flashcard</Text>
+      <Text>Enter kanji to look up a word, or add your own definition:</Text>
       <Form>
         <FormInput
           tabIndex={1}
           name="kanji"
           type="text"
+          disabled={!disableTab}
           placeholder={cardPlaceholder}
           value={kanji}
-          disabled={hiragana ? true : false}
           onChange={handleChange}
           onClick={() => setCardPlaceholder("")}></FormInput>
-        <ButtonSubmit onClick={handleSubmit} type="submit">
+        <ButtonSubmit onClick={handleSubmit} aria-label="submit" type="submit">
           <SVG src="./plus-icon.svg"></SVG>
         </ButtonSubmit>
       </Form>
@@ -296,24 +380,20 @@ const CardCreate: FC = () => {
         <CardControls>
           {hiragana ? (
             <div>
-              <Link href="#">Save</Link>
+              <CardControlLinks onClick={handleSave}>Save</CardControlLinks>
               <Pipe> | </Pipe>
-              <Link href="#">Clear</Link>
+              <CardControlLinks onClick={handleClear}>Clear</CardControlLinks>
             </div>
           ) : (
             "Preview"
           )}
         </CardControls>
-        <TabFront
-          tabIndex={2}
-          disabled={!hiragana && !definition}
-          cardView={cardView}
-          onClick={() => setCardView("front")}>
+        <TabFront tabIndex={2} cardView={cardView} onClick={() => setCardView("front")}>
           front
         </TabFront>
         <TabBack
           tabIndex={3}
-          disabled={!hiragana && !definition}
+          disabled={disableTab}
           cardView={cardView}
           onClick={() => setCardView("back")}>
           back
@@ -331,6 +411,7 @@ const CardCreate: FC = () => {
           )}
         </CardMain>
       </CardContainer>
+      <Deck cards={cards}></Deck>
     </CardCreateContainer>
   );
 };
