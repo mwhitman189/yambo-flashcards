@@ -211,7 +211,7 @@ const CardCreate: FC = () => {
 
   const [cards, setCards] = useState<ICard[]>([]);
 
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  // const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const { kanji, hiragana, definition } = card;
 
@@ -228,7 +228,7 @@ const CardCreate: FC = () => {
     });
   };
 
-  const handleSave = (e: MouseEvent) => {
+  const handleSave = () => {
     if (kanji) {
       const newCard = card;
       setCards((prevValue) => {
@@ -247,7 +247,7 @@ const CardCreate: FC = () => {
     }
   };
 
-  const handleClear = (e: MouseEvent) => {
+  const handleClear = () => {
     setCard({
       kanji: "",
       hiragana: "",
