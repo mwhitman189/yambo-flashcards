@@ -6,7 +6,7 @@ const DeckContainer = styled.div<{ theme: { [key: string]: any } }>`
   justify-content: space-between;
   max-width: 20rem;
   margin: 0 auto;
-  background-color: ${({ theme }) => theme.colors.inputBackground};
+  background-color: ${({ theme }) => theme?.colors?.inputBackground};
   padding: 1rem;
   font-size: 18px;
   margin-bottom: 8rem;
