@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-const DeckContainer = styled.div`
+const DeckContainer = styled.div<{ theme: { [key: string]: any } }>`
   display: flex;
   justify-content: space-between;
   max-width: 20rem;
@@ -13,9 +13,9 @@ const DeckContainer = styled.div`
   box-sizing: border-box;
 `;
 
-const Name = styled.div``;
+const Name = styled.div<{ theme: { [key: string]: any } }>``;
 
-const NumberOfCards = styled.div``;
+const NumberOfCards = styled.div<{ theme: { [key: string]: any } }>``;
 
 interface ICard {
   kanji: string | undefined;

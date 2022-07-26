@@ -5,9 +5,9 @@ interface Props {
   title: string;
 }
 
-const HeaderStyle = styled.div`
+const HeaderStyle = styled.div<{ theme: { [key: string]: any } }>`
   text-align: center;
-  color: ${({ theme }) => theme.colors.inputBackground};
+  color: ${({ theme }) => theme?.colors?.inputBackground};
   font-size: 50px;
 `;
 
