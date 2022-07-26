@@ -7,12 +7,12 @@ interface Props {
   cardView: string;
 }
 
-const CardCreateContainer = styled.div`
+const CardCreateContainer = styled.div<{ theme: { [key: string]: any }, cardView?: string }>`
   margin: 0 1.25rem;
   position: relative;
 `;
 
-const NotFoundMessage = styled.div`
+const NotFoundMessage = styled.div<{ theme: { [key: string]: any }, cardView?: string }>`
   position: absolute;
   width: 80%;
   padding: 1.5rem;
@@ -79,7 +79,7 @@ const SVG = styled.img`
   }
 `;
 
-const CardContainer = styled.div`
+const CardContainer = styled.div<{ theme: { [key: string]: any }, cardView?: string }>`
   margin: 0 auto;
   display: grid;
   min-height: 30rem;
@@ -95,7 +95,7 @@ const CardContainer = styled.div`
   }
 `;
 
-const CardControls = styled.div`
+const CardControls = styled.div<{ theme: { [key: string]: any }, cardView?: string }>`
   grid-area: card-controls;
   margin-top: auto;
   margin-left: 20px;
@@ -139,7 +139,7 @@ const TabBack = styled.button<Props>`
   opacity: ${({ disabled }) => (disabled ? ".2" : "1")};
 `;
 
-const CardMain = styled.div`
+const CardMain = styled.div<{ theme: { [key: string]: any }, cardView?: string }>`
   background-color: ${({ theme }) => theme?.colors?.grayPrimary};
   grid-area: card-main;
   color: ${({ theme }) => theme?.colors?.textPrimary};
@@ -152,13 +152,13 @@ const CardMain = styled.div`
   padding: 1rem;
 `;
 
-const CardTop = styled.div`
+const CardTop = styled.div<{ theme: { [key: string]: any }, cardView?: string }>`
   display: flex;
   align-items: center;
   flex: 35%;
 `;
 
-const CardBottom = styled.div`
+const CardBottom = styled.div<{ theme: { [key: string]: any }, cardView?: string }>`
   width: 100%;
   text-align: center;
   display: flex;
@@ -167,7 +167,7 @@ const CardBottom = styled.div`
   flex: 65%;
 `;
 
-const Divider = styled.div`
+const Divider = styled.div<{ theme: { [key: string]: any }, cardView?: string }>`
   width: 60%;
   height: 0.1rem;
   background-color: ${({ theme }) => theme?.colors?.highlightPrimaryLight};
@@ -175,11 +175,11 @@ const Divider = styled.div`
   border-radius: 4px;
 `;
 
-const HiraganaSection = styled.div`
+const HiraganaSection = styled.div<{ theme: { [key: string]: any }, cardView?: string }>`
   margin-bottom: 0.5rem;
 `;
 
-const DefinitionSection = styled.div`
+const DefinitionSection = styled.div<{ theme: { [key: string]: any }, cardView?: string }>`
   font-size: 18px;
 `;
 
