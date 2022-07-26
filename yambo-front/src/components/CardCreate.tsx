@@ -7,11 +7,6 @@ interface Props {
   cardView: string;
 }
 
-const colorPrimary = "#ba68c9";
-const colorSecondary = "#e0bde6";
-const colorDark = "#6a6a6a";
-const colorWhite = "#f7f7f7";
-
 const CardCreateContainer = styled.div`
   margin: 0 1.25rem;
   position: relative;
@@ -21,7 +16,7 @@ const NotFoundMessage = styled.div`
   position: absolute;
   width: 80%;
   padding: 1.5rem;
-  background-color: ${colorWhite};
+  background-color: ${({ theme }) => theme.colors.inputBackground};
   top: 0;
   left: 50%;
   transform: translateX(-50%);
@@ -34,14 +29,14 @@ const NotFoundHeader = styled.h2`
 `;
 
 const Text = styled.p`
-  color: ${colorWhite};
+  color: ${({ theme }) => theme.colors.textPrimary};
   text-align: center;
   font-size: 20px;
 `;
 
 const Form = styled.form`
   margin: 1.5rem 0;
-  color: ${colorWhite};
+  color: ${({ theme }) => theme.colors.textPrimary};
   display: flex;
   justify-content: center;
 `;
@@ -51,19 +46,19 @@ const FormInput = styled.input`
   height: 2rem;
   margin-right: 0.75rem;
   border-radius: 4px;
-  background-color: ${colorPrimary};
+  background-color: ${({ theme }) => theme.colors.highlightPrimary};
   text-align: center;
   font-size: 20px;
   border: none;
   outline: none;
   padding: 0.25rem;
-  color: ${colorWhite};
+  color: ${({ theme }) => theme.colors.textPrimary};
   ::placeholder {
-    color: ${colorWhite};
+    color: ${({ theme }) => theme.colors.textPrimary};
     opacity: 0.5;
   }
   &:focus {
-    border: 1px solid ${colorSecondary};
+    border: 1px solid ${({ theme }) => theme.colors.highlightPrimaryLight};
   }
   &:focus::placeholder {
     color: transparent;
@@ -104,27 +99,27 @@ const CardControls = styled.div`
   grid-area: card-controls;
   margin-top: auto;
   margin-left: 20px;
-  color: ${colorWhite};
+  color: ${({ theme }) => theme.colors.textPrimary};
   font-size: 18px;
 `;
 
 const CardControlLinks = styled.a`
   text-decoration: none;
   font-weight: 600;
-  color: ${colorWhite};
+  color: ${({ theme }) => theme.colors.textSecondary};
   &:hover {
-    color: ${colorSecondary};
+    color: ${({ theme }) => theme.colors.highlightPrimaryLight};
   }
 `;
 
 const Pipe = styled.span`
-  color: ${colorDark};
+  color: ${({ theme }) => theme.colors.grayPrimary};
 `;
 
 const TabFront = styled.button<Props>`
   grid-area: card-front;
   margin-top: auto;
-  color: ${({ cardView }) => (cardView === "front" ? `${colorWhite}` : "#000")};
+  color: ${({ theme, cardView }) => (cardView === "front" ? `${theme.colors.textPrimary}` : `${theme.colors.textSecondary}`)};
   background-color: ${({ cardView }) => (cardView === "front" ? "#6a6a6a" : "#b3c2c3")};
   font-size: 18px;
   border-radius: 4px 4px 0 0;
@@ -137,7 +132,7 @@ const TabBack = styled.button<Props>`
   margin-top: auto;
   font-size: 18px;
   border-radius: 4px 4px 0 0;
-  color: ${({ cardView }) => (cardView === "back" ? `${colorWhite}` : "#000")};
+  color: ${({ theme, cardView }) => (cardView === "back" ? `${theme.colors.textPrimary}` : `${theme.colors.textSecondary}`)};
   background-color: ${({ cardView }) => (cardView === "back" ? "#6a6a6a" : "#b3c2c3")};
   text-align: center;
   padding: 0 1rem;
@@ -145,9 +140,9 @@ const TabBack = styled.button<Props>`
 `;
 
 const CardMain = styled.div`
-  background-color: ${colorDark};
+  background-color: ${({ theme }) => theme.colors.grayPrimary};
   grid-area: card-main;
-  color: ${colorWhite};
+  color: ${({ theme }) => theme.colors.textPrimary};
   border-radius: 20px 0 20px 20px;
   font-size: 32px;
   display: flex;
@@ -175,7 +170,7 @@ const CardBottom = styled.div`
 const Divider = styled.div`
   width: 60%;
   height: 0.1rem;
-  background-color: #e0bde6;
+  background-color: ${({ theme }) => theme.colors.highlightPrimaryLight};
   margin: 1rem;
   border-radius: 4px;
 `;
