@@ -8,9 +8,14 @@ interface Props {
   cardView: string;
 }
 
+interface FontSize {
+  fontSize: string;
+}
+
 const CardCreateContainer = styled.div<{ theme: { [key: string]: any }; cardView?: string }>`
   margin: 0 1.25rem;
   position: relative;
+  padding-bottom: 8rem;
 `;
 
 const NotFoundMessage = styled.div<{ theme: { [key: string]: any }; cardView?: string }>`
@@ -34,6 +39,7 @@ const Text = styled.p`
   color: ${({ theme }) => theme?.colors?.textPrimary};
   text-align: center;
   font-size: 20px;
+  margin-bottom: 3rem;
 `;
 
 const Form = styled.form`
@@ -46,39 +52,45 @@ const Form = styled.form`
 `;
 
 const Label = styled.label`
-  font-size: 14px;
+  font-size: "18px";
+`;
+
+const Input = styled.input`
+  margin-left: 0.25rem;
+  width: 6rem;
+  border-radius: 4px;
+  border: none;
+  background-color: ${({ theme }) => theme?.colors?.colorWhite};
+  opacity: 0.5;
 `;
 
 const InputWrapper = styled.div`
   color: ${({ theme }) => theme?.colors?.textPrimary};
   display: flex;
+  justify-content: end;
   align-items: end;
   margin-bottom: 1rem;
 `;
 
-const FormInput = styled.input`
+const FormTextArea = styled.textarea`
   box-sizing: border-box;
-  height: 2.5rem;
   width: 100%;
   flex-grow: 1;
-  font-size: 18px;
   margin-right: 0.25rem;
   margin-top: 0.25rem;
+  padding-left: 0.75rem;
   border-radius: 4px;
   text-align: left;
-  border: none;
   outline: none;
-  padding-left: 1rem;
-  color: ${({ theme }) => theme?.colors?.inputBackground};
-  background-color: ${({ theme }) => theme?.colors?.highlightPrimary};
-  text-align: center;
+  color: ${({ theme }) => theme?.colors?.textSecondary};
+  background-color: ${({ theme }) => theme?.colors?.inputBackground};
   font-size: 20px;
   border: none;
-  outline: none;
-  padding: 0.25rem;
-  color: ${({ theme }) => theme?.colors?.textPrimary};
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu",
+    "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+
   ::placeholder {
-    color: ${({ theme }) => theme?.colors?.textPrimary};
+    color: ${({ theme }) => theme?.colors?.textSecondary};
     opacity: 0.5;
   }
   &:focus {
@@ -89,12 +101,11 @@ const FormInput = styled.input`
   }
 `;
 
-const Button = styled.button`
-  height: 2.5rem;
+const Button = styled.button<FontSize>`
   border-radius: 4px;
   background-color: ${({ theme }) => theme?.colors?.highlightSecondary};
   text-align: center;
-  font-size: 20px;
+  font-size: ${({ fontSize }) => fontSize};
   border: none;
   outline: none;
   padding: 0.25rem 0.75rem;
@@ -133,7 +144,7 @@ const CardControls = styled.div<{ theme: { [key: string]: any }; cardView?: stri
 const CardControlLinks = styled.a`
   text-decoration: none;
   font-weight: 600;
-  color: ${({ theme }) => theme?.colors?.textSecondary};
+  color: ${({ theme }) => theme?.colors?.textPrimary};
   &:hover {
     color: ${({ theme }) => theme?.colors?.highlightPrimaryLight};
   }
@@ -239,7 +250,7 @@ const CardCreate: FC = () => {
 
   const { kanji, hiragana, definition } = card;
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
+  const handleChange = (e: ChangeEvent<HTMLTextAreaElement>): void => {
     e.preventDefault();
 
     const { name, value }: any = e.target;
@@ -398,33 +409,39 @@ const CardCreate: FC = () => {
       )}
       <Text>Enter kanji to look up a word, or add your own definition:</Text>
       <Form>
-        <Label>Kanji</Label>
         <InputWrapper>
-          <FormInput
-            tabIndex={1}
-            required
-            name="kanji"
-            type="text"
-            placeholder={cardPlaceholder}
-            value={kanji}
-            onChange={handleChange}
-            onClick={() => setCardPlaceholder("")}></FormInput>
-          <Button onClick={handleLookup} type="submit">
-            Lookup
-          </Button>
+          <label className="font-14">Deck:</label>
+          <Input></Input>
         </InputWrapper>
-        <div>
-          <Label className="d-block">Definition</Label>
-          <InputWrapper>
-            <FormInput
-              tabIndex={2}
-              name="definition"
-              type="text"
-              placeholder="Enter definition, or use Lookup"
-              value={definition}
-              onChange={handleChange}></FormInput>
-          </InputWrapper>
-        </div>
+        <Label>Front</Label>
+        <FormTextArea
+          rows={3}
+          tabIndex={1}
+          required
+          name="kanji"
+          placeholder={cardPlaceholder}
+          value={kanji}
+          onChange={handleChange}
+          onClick={() => setCardPlaceholder("")}></FormTextArea>
+        <InputWrapper>
+          <Button fontSize="14px" onClick={handleLookup} type="submit">
+            Auto-Generate
+          </Button>
+          <div className="set-checkbox">
+            <input type="checkbox" id="set-auto-generate" name="set-auto-generate"></input>
+            <label className="font-14" htmlFor="set-auto-generate">
+              Set
+            </label>
+          </div>
+        </InputWrapper>
+        <Label className="d-block">Back</Label>
+        <FormTextArea
+          rows={3}
+          tabIndex={2}
+          name="definition"
+          placeholder=""
+          value={definition}
+          onChange={handleChange}></FormTextArea>
       </Form>
       <CardContainer>
         <CardControls>
