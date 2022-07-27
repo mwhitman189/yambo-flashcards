@@ -4,6 +4,16 @@
   --colorDark: #6a6a6a;
   --colorWhite: #f7f7f7;
   --colorSuccess: #14ae5c;
+
+  --backgroundPrimary: #28546b,
+  --backgroundSecondary: #0B3345,
+  --textPrimary: #F7F7F7;
+  --textSecondary: #002231;
+  --inputBackground: #fff;
+  --highlightPrimary: #ba68c9;
+  --highlightPrimaryLight: #e0bde6;
+  --highlightSecondary: #14AE5C;
+  --grayPrimary: #6a6a6a;
 }
 
 body {
@@ -12,7 +22,7 @@ body {
     "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #28546b;
+  padding: 0;
 }
 
 code {
@@ -33,6 +43,7 @@ code {
 
 button {
   border: none;
+  cursor: pointer;
 }
 
 .loader {
@@ -52,4 +63,8 @@ button {
 
 .d-flex {
   display: flex;
+}
+
+a {
+  cursor: pointer
 }

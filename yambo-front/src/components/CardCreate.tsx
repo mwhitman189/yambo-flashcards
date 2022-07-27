@@ -8,23 +8,18 @@ interface Props {
   cardView: string;
 }
 
-const colorPrimary = "#ba68c9";
-const colorSecondary = "#e0bde6";
-const colorDark = "#6a6a6a";
-const colorWhite = "#f7f7f7";
-const colorSuccess = "#14ae5c";
-
-const CardCreateContainer = styled.div`
+const CardCreateContainer = styled.div<{ theme: { [key: string]: any }; cardView?: string }>`
   margin: 0 1.25rem;
   position: relative;
 `;
 
-const NotFoundMessage = styled.div`
+const NotFoundMessage = styled.div<{ theme: { [key: string]: any }; cardView?: string }>`
   position: absolute;
   width: 80%;
   padding: 1.5rem;
-  background-color: ${colorWhite};
   top: 10%;
+  background-color: ${({ theme }) => theme?.colors?.inputBackground};
+  top: 0;
   left: 50%;
   transform: translateX(-50%);
   z-index: 10;
@@ -36,14 +31,14 @@ const NotFoundHeader = styled.h2`
 `;
 
 const Text = styled.p`
-  color: ${colorWhite};
+  color: ${({ theme }) => theme?.colors?.textPrimary};
   text-align: center;
   font-size: 20px;
 `;
 
 const Form = styled.form`
   margin: 1.5rem 0;
-  color: ${colorWhite};
+  color: ${({ theme }) => theme?.colors?.inputBackground};
   @media (min-width: 576px) {
     max-width: 20rem;
     margin: 1.5rem auto 3rem auto;
@@ -55,6 +50,7 @@ const Label = styled.label`
 `;
 
 const InputWrapper = styled.div`
+  color: ${({ theme }) => theme?.colors?.textPrimary};
   display: flex;
   align-items: end;
   margin-bottom: 1rem;
@@ -69,18 +65,24 @@ const FormInput = styled.input`
   margin-right: 0.25rem;
   margin-top: 0.25rem;
   border-radius: 4px;
-  background-color: ${colorPrimary};
   text-align: left;
   border: none;
   outline: none;
   padding-left: 1rem;
-  color: ${colorWhite};
+  color: ${({ theme }) => theme?.colors?.inputBackground};
+  background-color: ${({ theme }) => theme?.colors?.highlightPrimary};
+  text-align: center;
+  font-size: 20px;
+  border: none;
+  outline: none;
+  padding: 0.25rem;
+  color: ${({ theme }) => theme?.colors?.textPrimary};
   ::placeholder {
-    color: ${colorWhite};
+    color: ${({ theme }) => theme?.colors?.textPrimary};
     opacity: 0.5;
   }
   &:focus {
-    border: 1px solid ${colorSecondary};
+    border: 1px solid ${({ theme }) => theme?.colors?.highlightPrimaryLight};
   }
   &:focus::placeholder {
     color: transparent;
@@ -90,21 +92,21 @@ const FormInput = styled.input`
 const Button = styled.button`
   height: 2.5rem;
   border-radius: 4px;
-  background-color: ${colorSuccess};
+  background-color: ${({ theme }) => theme?.colors?.highlightSecondary};
   text-align: center;
   font-size: 20px;
   border: none;
   outline: none;
   padding: 0.25rem 0.75rem;
-  color: ${colorWhite};
+  color: ${({ theme }) => theme?.colors?.inputBackground};
   &:focus,
   &:hover {
     background-color: #1fdb77;
-    color: ${colorDark};
+    color: ${({ theme }) => theme?.colors?.grayPrimary};
   }
 `;
 
-const CardContainer = styled.div`
+const CardContainer = styled.div<{ theme: { [key: string]: any }; cardView?: string }>`
   margin: 0 auto;
   display: grid;
   min-height: 30rem;
@@ -120,31 +122,32 @@ const CardContainer = styled.div`
   }
 `;
 
-const CardControls = styled.div`
+const CardControls = styled.div<{ theme: { [key: string]: any }; cardView?: string }>`
   grid-area: card-controls;
   margin-top: auto;
   margin-left: 20px;
-  color: ${colorWhite};
+  color: ${({ theme }) => theme?.colors?.textPrimary};
   font-size: 18px;
 `;
 
-const Link = styled.a`
+const CardControlLinks = styled.a`
   text-decoration: none;
   font-weight: 600;
-  color: ${colorWhite};
+  color: ${({ theme }) => theme?.colors?.textSecondary};
   &:hover {
-    color: ${colorSecondary};
+    color: ${({ theme }) => theme?.colors?.highlightPrimaryLight};
   }
 `;
 
 const Pipe = styled.span`
-  color: ${colorDark};
+  color: ${({ theme }) => theme?.colors?.grayPrimary};
 `;
 
 const TabFront = styled.button<Props>`
   grid-area: card-front;
   margin-top: auto;
-  color: ${({ cardView }) => (cardView === "front" ? `${colorWhite}` : "#000")};
+  color: ${({ theme, cardView }) =>
+    cardView === "front" ? `${theme?.colors?.textPrimary}` : `${theme?.colors?.textSecondary}`};
   background-color: ${({ cardView }) => (cardView === "front" ? "#6a6a6a" : "#b3c2c3")};
   font-size: 18px;
   border-radius: 4px 4px 0 0;
@@ -157,17 +160,18 @@ const TabBack = styled.button<Props>`
   margin-top: auto;
   font-size: 18px;
   border-radius: 4px 4px 0 0;
-  color: ${({ cardView }) => (cardView === "back" ? `${colorWhite}` : "#000")};
+  color: ${({ theme, cardView }) =>
+    cardView === "back" ? `${theme?.colors?.textPrimary}` : `${theme?.colors?.textSecondary}`};
   background-color: ${({ cardView }) => (cardView === "back" ? "#6a6a6a" : "#b3c2c3")};
   text-align: center;
   padding: 0 1rem;
   opacity: ${({ disabled }) => (disabled ? ".2" : "1")};
 `;
 
-const CardMain = styled.div`
-  background-color: ${colorDark};
+const CardMain = styled.div<{ theme: { [key: string]: any }; cardView?: string }>`
+  background-color: ${({ theme }) => theme?.colors?.grayPrimary};
   grid-area: card-main;
-  color: ${colorWhite};
+  color: ${({ theme }) => theme?.colors?.textPrimary};
   border-radius: 20px 0 20px 20px;
   font-size: 32px;
   display: flex;
@@ -177,13 +181,13 @@ const CardMain = styled.div`
   padding: 1rem;
 `;
 
-const CardTop = styled.div`
+const CardTop = styled.div<{ theme: { [key: string]: any }; cardView?: string }>`
   display: flex;
   align-items: center;
   flex: 35%;
 `;
 
-const CardBottom = styled.div`
+const CardBottom = styled.div<{ theme: { [key: string]: any }; cardView?: string }>`
   width: 100%;
   text-align: center;
   display: flex;
@@ -192,19 +196,19 @@ const CardBottom = styled.div`
   flex: 65%;
 `;
 
-const Divider = styled.div`
+const Divider = styled.div<{ theme: { [key: string]: any }; cardView?: string }>`
   width: 60%;
   height: 0.1rem;
-  background-color: #e0bde6;
+  background-color: ${({ theme }) => theme?.colors?.highlightPrimaryLight};
   margin: 1rem;
   border-radius: 4px;
 `;
 
-const HiraganaSection = styled.div`
+const HiraganaSection = styled.div<{ theme: { [key: string]: any }; cardView?: string }>`
   margin-bottom: 0.5rem;
 `;
 
-const DefinitionSection = styled.div`
+const DefinitionSection = styled.div<{ theme: { [key: string]: any }; cardView?: string }>`
   font-size: 18px;
 `;
 
@@ -251,7 +255,7 @@ const CardCreate: FC = () => {
     });
   };
 
-  const handleSave = (e: MouseEvent) => {
+  const handleSave = () => {
     if (kanji) {
       const newCard = card;
       setCards((prevValue) => {
@@ -270,7 +274,7 @@ const CardCreate: FC = () => {
     }
   };
 
-  const handleClear = (e: MouseEvent) => {
+  const handleClear = () => {
     setCard({
       kanji: "",
       hiragana: "",
@@ -382,7 +386,7 @@ const CardCreate: FC = () => {
       {loader && (
         <div>
           <div className="loader">
-            <TailSpin color={colorSecondary} ariaLabel="loading-indicator" />
+            <TailSpin color={"#e0bde6"} ariaLabel="loading-indicator" />
           </div>
         </div>
       )}
@@ -426,13 +430,9 @@ const CardCreate: FC = () => {
         <CardControls>
           {kanji ? (
             <div>
-              <Link onClick={handleSave} href="#">
-                Save
-              </Link>
+              <CardControlLinks onClick={handleSave}>Save</CardControlLinks>
               <Pipe> | </Pipe>
-              <Link onClick={handleClear} href="#">
-                Clear
-              </Link>
+              <CardControlLinks onClick={handleClear}>Clear</CardControlLinks>
             </div>
           ) : (
             "Preview"
