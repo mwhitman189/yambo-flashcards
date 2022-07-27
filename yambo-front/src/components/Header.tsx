@@ -5,17 +5,15 @@ interface Props {
   title: string;
 }
 
-const HeaderStyle = styled.h1`
+const HeaderStyle = styled.div<{ theme: { [key: string]: any } }>`
   text-align: center;
-  color: #fff;
+  color: ${({ theme }) => theme?.colors?.inputBackground};
   font-size: 50px;
 `;
 
 function Header({ title }: Props) {
   return (
-    <header className="App-header">
-      <HeaderStyle>{title}</HeaderStyle>
-    </header>
+    <HeaderStyle>{title}</HeaderStyle>
   );
 }
 

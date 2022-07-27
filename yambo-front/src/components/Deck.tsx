@@ -1,21 +1,21 @@
 import React from "react";
 import styled from "styled-components";
 
-const DeckContainer = styled.div`
+const DeckContainer = styled.div<{ theme: { [key: string]: any } }>`
   display: flex;
   justify-content: space-between;
   max-width: 20rem;
   margin: 0 auto;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme?.colors?.inputBackground};
   padding: 1rem;
   font-size: 18px;
   margin-bottom: 8rem;
   box-sizing: border-box;
 `;
 
-const Name = styled.div``;
+const Name = styled.div<{ theme: { [key: string]: any } }>``;
 
-const NumberOfCards = styled.div``;
+const NumberOfCards = styled.div<{ theme: { [key: string]: any } }>``;
 
 interface ICard {
   kanji: string | undefined;
