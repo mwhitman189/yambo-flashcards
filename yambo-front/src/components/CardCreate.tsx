@@ -20,15 +20,18 @@ const CardCreateContainer = styled.div<{ theme: { [key: string]: any }; cardView
 
 const NotFoundMessage = styled.div<{ theme: { [key: string]: any }; cardView?: string }>`
   position: absolute;
-  width: 80%;
+  width: 100%;
   padding: 1.5rem;
-  top: 10%;
-  background-color: ${({ theme }) => theme?.colors?.inputBackground};
-  top: 0;
+  top: 50%;
   left: 50%;
-  transform: translateX(-50%);
-  z-index: 10;
+  transform: translate(-50%, -50%);
+  background-color: ${({ theme }) => theme?.colors?.grayPrimary};
+  color: ${({ theme }) => theme?.colors?.textPrimary};
+  border: 2px solid;
+  border-color: ${({ theme }) => theme?.colors?.highlightPrimary};
+  border-radius: 8px;
   text-align: center;
+  z-index: 10;
 `;
 
 const NotFoundHeader = styled.h2`
@@ -43,6 +46,7 @@ const Text = styled.p`
 `;
 
 const Form = styled.form`
+  position: relative;
   margin: 1.5rem 0;
   color: ${({ theme }) => theme?.colors?.inputBackground};
   @media (min-width: 576px) {
@@ -406,14 +410,14 @@ const CardCreate: FC = () => {
           </div>
         </div>
       )}
-      {wordNotFound && (
-        <NotFoundMessage>
-          <NotFoundHeader>ゴメンね</NotFoundHeader>
-          <div>We couldn&apos;t find that word. Please try again.</div>
-        </NotFoundMessage>
-      )}
       <Text>Enter kanji to look up a word, or add your own definition:</Text>
       <Form onSubmit={handleLookup}>
+        {wordNotFound && (
+          <NotFoundMessage>
+            <NotFoundHeader>ゴメンね</NotFoundHeader>
+            <div>We couldn&apos;t find that word. Please try again.</div>
+          </NotFoundMessage>
+        )}
         <InputWrapper>
           <label className="font-14">Deck:</label>
           <Input></Input>
