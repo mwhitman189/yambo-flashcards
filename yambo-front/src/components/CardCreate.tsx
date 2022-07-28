@@ -22,9 +22,9 @@ const NotFoundMessage = styled.div<{ theme: { [key: string]: any }; cardView?: s
   position: absolute;
   width: 100%;
   padding: 1.5rem;
-  top: 50%;
+  top: 0;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translateX(-50%);
   background-color: ${({ theme }) => theme?.colors?.grayPrimary};
   color: ${({ theme }) => theme?.colors?.textPrimary};
   border: 2px solid;
@@ -347,6 +347,12 @@ const CardCreate: FC = () => {
         } else {
           setLoader(false);
           setWordNotFound(true);
+          setCard({
+            kanji: "",
+            hiragana: "",
+            definition: ""
+          });
+          setCardPlaceholder("Add a card...");
           setTimeout(() => {
             setWordNotFound(false);
           }, 3000);
@@ -412,26 +418,28 @@ const CardCreate: FC = () => {
       )}
       <Text>Enter kanji to look up a word, or add your own definition:</Text>
       <Form onSubmit={handleLookup}>
-        {wordNotFound && (
-          <NotFoundMessage>
-            <NotFoundHeader>ゴメンね</NotFoundHeader>
-            <div>We couldn&apos;t find that word. Please try again.</div>
-          </NotFoundMessage>
-        )}
         <InputWrapper>
           <label className="font-14">Deck:</label>
           <Input></Input>
         </InputWrapper>
-        <Label>Front</Label>
-        <FormTextArea
-          rows={3}
-          tabIndex={1}
-          required
-          name="kanji"
-          placeholder={cardPlaceholder}
-          value={kanji}
-          onChange={handleChange}
-          onClick={() => setCardPlaceholder("")}></FormTextArea>
+        <div className="position-relative">
+          {wordNotFound && (
+            <NotFoundMessage>
+              <NotFoundHeader>ゴメンね</NotFoundHeader>
+              <div>We couldn&apos;t find that word. Please try again.</div>
+            </NotFoundMessage>
+          )}
+          <Label>Front</Label>
+          <FormTextArea
+            rows={3}
+            tabIndex={1}
+            required
+            name="kanji"
+            placeholder={cardPlaceholder}
+            value={kanji}
+            onChange={handleChange}
+            onClick={() => setCardPlaceholder("")}></FormTextArea>
+        </div>
         <InputWrapper>
           <Button fontSize="14px" type="submit">
             Auto-Generate
