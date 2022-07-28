@@ -22,9 +22,9 @@ const NotFoundMessage = styled.div<{ theme: { [key: string]: any }; cardView?: s
   position: absolute;
   width: 100%;
   padding: 1.5rem;
-  top: 0;
+  top: 50%;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translate(-50%, -50%);
   background-color: ${({ theme }) => theme?.colors?.grayPrimary};
   color: ${({ theme }) => theme?.colors?.textPrimary};
   border: 2px solid;
@@ -266,11 +266,7 @@ const CardCreate: FC = () => {
       };
     });
 
-    if (value) {
-      setDisableTab(false);
-    } else {
-      setDisableTab(true);
-    }
+    setDisableTab(false);
 
     setCardView("back");
   };
