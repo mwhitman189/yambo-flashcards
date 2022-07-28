@@ -255,15 +255,20 @@ const CardCreate: FC = () => {
 
     const { name, value }: any = e.target;
 
-    setDisableTab(!disableTab);
-    setCardView("back");
-
     setCard((prevValue) => {
       return {
         ...prevValue,
         [name]: value
       };
     });
+
+    if (value) {
+      setDisableTab(false);
+    } else {
+      setDisableTab(true);
+    }
+
+    setCardView("back");
   };
 
   const handleSave = () => {
