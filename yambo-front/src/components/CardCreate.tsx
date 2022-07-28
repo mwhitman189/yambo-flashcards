@@ -1,4 +1,4 @@
-import React, { FC, ChangeEvent, MouseEvent, useState } from "react";
+import React, { FC, ChangeEvent, FormEvent, useState } from "react";
 import styled from "styled-components";
 import { TailSpin } from "react-loader-spinner";
 
@@ -296,7 +296,7 @@ const CardCreate: FC = () => {
     setCardView("front");
   };
 
-  function handleLookup(e: MouseEvent) {
+  function handleLookup(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     setLoader(true);
@@ -408,7 +408,7 @@ const CardCreate: FC = () => {
         </NotFoundMessage>
       )}
       <Text>Enter kanji to look up a word, or add your own definition:</Text>
-      <Form>
+      <Form onSubmit={handleLookup}>
         <InputWrapper>
           <label className="font-14">Deck:</label>
           <Input></Input>
@@ -424,7 +424,7 @@ const CardCreate: FC = () => {
           onChange={handleChange}
           onClick={() => setCardPlaceholder("")}></FormTextArea>
         <InputWrapper>
-          <Button fontSize="14px" onClick={handleLookup} type="submit">
+          <Button fontSize="14px" type="submit">
             Auto-Generate
           </Button>
           <div className="set-checkbox">
