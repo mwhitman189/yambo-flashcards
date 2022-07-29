@@ -9,7 +9,6 @@ const DeckContainer = styled.div<{ theme: { [key: string]: any } }>`
   background-color: ${({ theme }) => theme?.colors?.inputBackground};
   padding: 1rem;
   font-size: 18px;
-  margin-bottom: 8rem;
   box-sizing: border-box;
 `;
 
