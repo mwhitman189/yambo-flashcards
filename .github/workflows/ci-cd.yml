@@ -1,9 +1,7 @@
 name: CI/CD Pipeline
 on:
-  push:
-    branches: [main, develop, staging]
   pull_request:
-    branches: [main, develop, staging]
+    branches: [main, staging, develop]
 jobs:
   # test-e2e:
   #   timeout-minutes: 60
@@ -46,7 +44,6 @@ jobs:
           retention-days: 30
 
   build-deploy-dev:
-    needs: [test-unit]
     if: github.ref_name == 'develop'
     runs-on: ubuntu-latest
     steps:
@@ -60,7 +57,6 @@ jobs:
         run: npm --prefix yambo-front run build
 
   build-deploy-stg:
-    needs: [test-unit]
     if: github.ref_name == 'staging'
     runs-on: ubuntu-latest
     steps:
@@ -74,7 +70,6 @@ jobs:
         run: npm --prefix yambo-front run build
 
   build-deploy-prod:
-    needs: [test-unit]
     if: github.ref_name == 'main'
     runs-on: ubuntu-latest
     steps:
