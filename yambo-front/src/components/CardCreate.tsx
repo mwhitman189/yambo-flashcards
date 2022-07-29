@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Deck from "./Deck";
 
 interface Props {
-  cardView: string;
+  cardView?: boolean;
 }
 
 const colorPrimary = "#ba68c9";
@@ -43,6 +43,8 @@ const Form = styled.form`
   margin: 1.5rem 0;
   color: ${colorWhite};
   display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
 `;
 
@@ -68,6 +70,12 @@ const FormInput = styled.input`
   &:focus::placeholder {
     color: transparent;
   }
+`;
+
+const CardInputTextArea = styled.textarea`
+  width: 320px;
+  height: 100px;
+  border-radius: 0.25rem;
 `;
 
 const ButtonSubmit = styled.button`
@@ -124,8 +132,9 @@ const Pipe = styled.span`
 const TabFront = styled.button<Props>`
   grid-area: card-front;
   margin-top: auto;
-  color: ${({ cardView }) => (cardView === "front" ? `${colorWhite}` : "#000")};
-  background-color: ${({ cardView }) => (cardView === "front" ? "#6a6a6a" : "#b3c2c3")};
+  color: ${({ cardView }) => (cardView ? `${colorWhite}` : "#000")};
+  background-color: ${({ cardView }) => (cardView ? "#6a6a6a" : "#b3c2c3")};
+  transition: 0.2s;
   font-size: 18px;
   border-radius: 4px 4px 0 0;
   text-align: center;
@@ -135,10 +144,11 @@ const TabFront = styled.button<Props>`
 const TabBack = styled.button<Props>`
   grid-area: card-back;
   margin-top: auto;
+  transition: 0.2s;
   font-size: 18px;
   border-radius: 4px 4px 0 0;
-  color: ${({ cardView }) => (cardView === "back" ? `${colorWhite}` : "#000")};
-  background-color: ${({ cardView }) => (cardView === "back" ? "#6a6a6a" : "#b3c2c3")};
+  color: ${({ cardView }) => (!cardView ? `${colorWhite}` : "#000")};
+  background-color: ${({ cardView }) => (!cardView ? "#6a6a6a" : "#b3c2c3")};
   text-align: center;
   padding: 0 1rem;
   opacity: ${({ disabled }) => (disabled ? ".2" : "1")};
@@ -148,7 +158,7 @@ const CardMain = styled.div`
   background-color: ${colorDark};
   grid-area: card-main;
   color: ${colorWhite};
-  border-radius: 20px 0 20px 20px;
+  border-radius: 1rem 0 1rem 0;
   font-size: 32px;
   display: flex;
   flex-direction: column;
@@ -189,218 +199,163 @@ const DefinitionSection = styled.div`
 `;
 
 interface ICard {
-  kanji: string | undefined;
-  hiragana: string | undefined;
-  definition: string | undefined;
+  front: string;
+  back: string;
 }
 
 const CardCreate: FC = () => {
   const [card, setCard] = useState<ICard>({
-    kanji: "",
-    hiragana: "",
-    definition: ""
+    front: "",
+    back: ""
   });
-
-  const [cardPlaceholder, setCardPlaceholder] = useState<string | undefined>("例");
-
-  const [cardView, setCardView] = useState<string>("front");
-
-  const [wordNotFound, setWordNotFound] = useState<boolean>(false);
-
-  const [disableTab, setDisableTab] = useState<boolean>(true);
-
+  const [viewFrontCard, setViewFrontCard] = useState<boolean>(true);
+  // const [wordNotFound, setWordNotFound] = useState<boolean>(false);
+  // const [disableTab, setDisableTab] = useState<boolean>(true);
   const [cards, setCards] = useState<ICard[]>([]);
 
-  // const [isLoading, setIsLoading] = useState<boolean>(false);
+  const handleChange = (e: ChangeEvent<HTMLTextAreaElement>): void => {
+    const { name, value } = e.target;
 
-  const { kanji, hiragana, definition } = card;
-
-  const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    e.preventDefault();
-
-    const { value }: any = e.target;
-
-    setCard((prevValue) => {
-      return {
-        ...prevValue,
-        kanji: value
-      };
-    });
-  };
-
-  const handleSave = () => {
-    if (kanji) {
-      const newCard = card;
-      setCards((prevValue) => {
-        return [...prevValue, newCard];
-      });
-
-      setCard({
-        kanji: "",
-        hiragana: "",
-        definition: ""
-      });
-
-      setDisableTab(!disableTab);
-      setCardPlaceholder("Add another card...");
-      setCardView("front");
-    }
-  };
-
-  const handleClear = () => {
-    setCard({
-      kanji: "",
-      hiragana: "",
-      definition: ""
-    });
-    setDisableTab(!disableTab);
-    setCardPlaceholder("Add another card...");
-    setCardView("front");
+    setCard((prevValue) => ({
+      ...prevValue,
+      [name]: value
+    }));
   };
 
   function handleSubmit(e: MouseEvent) {
     e.preventDefault();
 
-    try {
-      //Use for actual api call
-      const fetchData = async () => {
-        const response = await fetch("https://jotoba.de/api/search/words", {
-          method: "POST",
-          headers: {
-            "content-type": "application/json;charset=UTF-8"
-          },
-          body: JSON.stringify({
-            query: kanji,
-            language: "English",
-            no_english: false
-          })
-        });
-        const data = await response.json();
+    // try {
+    //   //Use for actual api call
+    //   const fetchData = async () => {
+    //     const response = await fetch("https://jotoba.de/api/search/words", {
+    //       method: "POST",
+    //       headers: {
+    //         "content-type": "application/json;charset=UTF-8"
+    //       },
+    //       body: JSON.stringify({
+    //         query: kanji,
+    //         language: "English",
+    //         no_english: false
+    //       })
+    //     });
+    //     const data = await response.json();
 
-        const { words } = data;
-        const [word] = words;
+    //     const { words } = data;
+    //     const [word] = words;
 
-        if (word) {
-          setCard((prevValue) => {
-            return {
-              ...prevValue,
-              hiragana: word.reading.kana,
-              definition: word.senses[0].glosses
-            };
-          });
-        } else {
-          setWordNotFound(true);
+    //     if (word) {
+    //       setCard((prevValue) => {
+    //         return {
+    //           ...prevValue,
+    //           hiragana: word.reading.kana,
+    //           definition: word.senses[0].glosses
+    //         };
+    //       });
+    //     } else {
+    //       setWordNotFound(true);
 
-          setCard({
-            kanji: "",
-            hiragana: "",
-            definition: ""
-          });
+    //       setCard({
+    //         kanji: "",
+    //         hiragana: "",
+    //         definition: ""
+    //       });
 
-          setTimeout(() => {
-            setWordNotFound(false);
-            setCardPlaceholder("Add another card...");
-            setCardView("front");
-          }, 3000);
-        }
-      };
+    //       setTimeout(() => {
+    //         setWordNotFound(false);
+    //         setCardPlaceholder("Add another card...");
+    //         setCardView("front");
+    //       }, 3000);
+    //     }
+    //   };
 
-      //Use for manually testing the front end without calling the api
-      // const fetchData = async () => {
-      //   const response = await fetch("./MOCK_DATA.json");
-      //   const data = await response.json();
+    //Use for manually testing the front end without calling the api
+    // const fetchData = async () => {
+    //   const response = await fetch("./MOCK_DATA.json");
+    //   const data = await response.json();
 
-      //   const { words } = data;
-      //   let foundWord = false;
+    //   const { words } = data;
+    //   let foundWord = false;
 
-      //   for (const word of words) {
-      //     if (kanji === word.kanji) {
-      //       setCard((prevValue) => {
-      //         return {
-      //           ...prevValue,
-      //           hiragana: word.hiragana,
-      //           definition: word.definition
-      //         };
-      //       });
+    //   for (const word of words) {
+    //     if (kanji === word.kanji) {
+    //       setCard((prevValue) => {
+    //         return {
+    //           ...prevValue,
+    //           hiragana: word.hiragana,
+    //           definition: word.definition
+    //         };
+    //       });
 
-      //       foundWord = true;
-      //       setDisableTab(false);
-      //       setCardView("back");
-      //       break;
-      //     }
-      //   }
+    //       foundWord = true;
+    //       setDisableTab(false);
+    //       setCardView("back");
+    //       break;
+    //     }
+    //   }
 
-      //   if (!foundWord) {
-      //     setWordNotFound(true);
+    //   if (!foundWord) {
+    //     setWordNotFound(true);
 
-      //     setCard({
-      //       kanji: "",
-      //       hiragana: "",
-      //       definition: ""
-      //     });
+    //     setCard({
+    //       kanji: "",
+    //       hiragana: "",
+    //       definition: ""
+    //     });
 
-      //     setTimeout(() => {
-      //       setWordNotFound(false);
-      //       setCardPlaceholder("Add another card...");
-      //       setCardView("front");
-      //     }, 3000);
-      //   }
-      // };
+    //     setTimeout(() => {
+    //       setWordNotFound(false);
+    //       setCardPlaceholder("Add another card...");
+    //       setCardView("front");
+    //     }, 3000);
+    //   }
+    // };
 
-      fetchData();
-    } catch (error) {
-      console.log(error);
-    }
+    //   fetchData();
+    // } catch (error) {
+    //   console.log(error);
+    // }
   }
 
   return (
     <CardCreateContainer>
-      {wordNotFound && (
+      {/* {wordNotFound && (
         <NotFoundMessage>
           <NotFoundHeader>ゴメンね</NotFoundHeader>
           <div>We couldn&apos;t find that word. Please try again.</div>
         </NotFoundMessage>
-      )}
+      )} */}
       <Text>Enter kanji to look up a word, or add your own definition:</Text>
       <Form>
-        <FormInput
-          tabIndex={1}
-          name="kanji"
-          type="text"
-          disabled={!disableTab}
-          placeholder={cardPlaceholder}
-          value={kanji}
-          onChange={handleChange}
-          onClick={() => setCardPlaceholder("")}></FormInput>
+        <CardInputTextArea
+          name="front"
+          value={card.front}
+          placeholder="Enter text for front of card..."
+          onChange={handleChange}></CardInputTextArea>
+        <div>
+          <button>Auto-gen</button>
+          <input type="checkbox" name="set" />
+          <label htmlFor="set">Set?</label>
+        </div>
+        <CardInputTextArea
+          name="back"
+          value={card.back}
+          placeholder="Enter text for back of card..."
+          onChange={handleChange}></CardInputTextArea>
         <ButtonSubmit onClick={handleSubmit} aria-label="submit" type="submit">
           <SVG src="./plus-icon.svg"></SVG>
         </ButtonSubmit>
       </Form>
       <CardContainer>
-        <CardControls>
-          {hiragana ? (
-            <div>
-              <CardControlLinks onClick={handleSave}>Save</CardControlLinks>
-              <Pipe> | </Pipe>
-              <CardControlLinks onClick={handleClear}>Clear</CardControlLinks>
-            </div>
-          ) : (
-            "Preview"
-          )}
-        </CardControls>
-        <TabFront tabIndex={2} cardView={cardView} onClick={() => setCardView("front")}>
-          front
+        <TabFront tabIndex={2} cardView={viewFrontCard} onClick={() => setViewFrontCard(true)}>
+          Front
         </TabFront>
-        <TabBack
-          tabIndex={3}
-          disabled={disableTab}
-          cardView={cardView}
-          onClick={() => setCardView("back")}>
-          back
+        <TabBack tabIndex={3} cardView={viewFrontCard} onClick={() => setViewFrontCard(false)}>
+          Back
         </TabBack>
         <CardMain>
-          <CardTop>
-            <div>{kanji || cardPlaceholder}</div>
+          {/* <CardTop>
+            <div>{card.front}</div>
           </CardTop>
           {cardView === "back" && (
             <CardBottom>
@@ -408,10 +363,9 @@ const CardCreate: FC = () => {
               <HiraganaSection>{hiragana}</HiraganaSection>
               <DefinitionSection>{definition}</DefinitionSection>
             </CardBottom>
-          )}
+          )} */}
         </CardMain>
       </CardContainer>
-      <Deck cards={cards}></Deck>
     </CardCreateContainer>
   );
 };
