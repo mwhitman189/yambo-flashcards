@@ -14,6 +14,11 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
+  decks: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+    },
+  ],
 });
 
 userSchema.statics.signup = async function (email, password) {
