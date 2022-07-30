@@ -13,8 +13,9 @@ const deckCreate = async (req, res) => {
     if (!deck) {
       return res.status(409).send({ error: "Error making deck" });
     }
-    await req.user.decks.push(deck._id);
-    await req.user.save();
+    const user = await User.findById(req.user._id);
+    await user.decks.push(deck._id);
+    await user.save();
 
     res.status(201).send(deck);
   } catch (e) {

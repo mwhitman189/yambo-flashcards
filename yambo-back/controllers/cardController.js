@@ -1,6 +1,5 @@
 const Deck = require("../models/deckModel");
 const Card = require("../models/cardModel");
-const User = require("../models/userModel");
 
 const batchCardCreate = async (cardArray, deckId, userId) => {
   let cardIdArray = [];
@@ -11,13 +10,13 @@ const batchCardCreate = async (cardArray, deckId, userId) => {
       user: userId,
       deck: deckId,
     });
-    await newCard.save(req, res);
+    await newCard.save();
     cardIdArray.push(newCard._id);
   }
   return cardIdArray;
 };
 
-const cardCreate = async () => {
+const cardCreate = async (req, res) => {
   const { deckId, card } = req.body;
   const userId = req.user._id;
   try {
@@ -42,7 +41,7 @@ const cardCreate = async () => {
   }
 };
 
-const cardCreateBatch = async () => {
+const cardCreateBatch = async (req, res) => {
   const { deckId, cards } = req.body;
   const userId = req.user._id;
   try {
@@ -50,23 +49,19 @@ const cardCreateBatch = async () => {
     if (!newCards) {
       return res.status(409).send({ error: "Error making cards" });
     }
-    const deck = await Deck.findOne({ deckId });
-    await deck.cards.push(newCards);
-    await deck.save();
+    await Deck.findOneAndUpdate(
+      { _id: deckId },
+      { $push: { cards: newCards } }
+    );
+    const foundDeck = await Deck.findById(deckId);
 
-    for (i of newCards) {
-      const foundCard = await Card.findById(i);
-      foundCard.deck = deck._id;
-      await foundCard.save();
-    }
-
-    res.status(201).send(deck);
+    res.status(201).send(foundDeck);
   } catch (e) {
     res.status(400).send({ error: "Error creating cards" });
   }
 };
 
-const cardUpdate = async () => {
+const cardUpdate = async (req, res) => {
   const _id = req.params.id;
   const updates = Object.keys(req.body);
   const allowedUpdates = ["front", "back"];
@@ -91,9 +86,16 @@ const cardUpdate = async () => {
   }
 };
 
-const cardDelete = async () => {
+const cardDelete = async (req, res) => {
+  const _id = req.params.id;
   try {
-    res.status(201).send();
+    const card = await Card.findOneAndDelete({ _id, user: req.user._id });
+    if (!card) {
+      return res.status(404).send({ error: "Could not find card" });
+    }
+    await Deck.findOneAndUpdate({ _id: card.deck }, { $pull: { cards: _id } });
+    await Card.deleteOne({ _id });
+    res.status(200).send();
   } catch (e) {
     res.status(400).send({ error: "Error deleting card" });
   }

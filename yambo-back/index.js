@@ -4,6 +4,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 
 const userRoutes = require("./routers/userRouter");
+const deckRoutes = require("./routers/deckRouter");
+const cardRoutes = require("./routers/cardRouter");
 
 const app = express();
 
@@ -15,6 +17,8 @@ app.use((req, res, next) => {
 });
 
 app.use("/user", userRoutes);
+app.use("/deck", deckRoutes);
+app.use("/card", cardRoutes);
 
 mongoose
   .connect(process.env.MONGO_URI)

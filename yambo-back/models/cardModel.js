@@ -9,7 +9,7 @@ const cardSchema = new Schema({
     index: true,
   },
   back: {
-    type: string,
+    type: String,
     index: true,
   },
   deck: {
