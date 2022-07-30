@@ -73,6 +73,7 @@ const deckDelete = async (req, res) => {
       { _id: req.user._id },
       { $pull: { decks: deck._id } }
     );
+    await Card.deleteMany({ deck: _id });
     await Deck.deleteOne({ _id });
     res.status(200).send();
   } catch (e) {

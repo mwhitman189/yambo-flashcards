@@ -14,6 +14,7 @@ const cardSchema = new Schema({
   },
   deck: {
     type: mongoose.Schema.Types.ObjectId,
+    required: true,
   },
   user: {
     type: mongoose.Schema.Types.ObjectId,

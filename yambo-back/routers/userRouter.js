@@ -3,8 +3,10 @@ const router = express.Router();
 
 const { loginUser, signupUser } = require("../controllers/userController");
 
-router.post("/login", loginUser);
-
+// user body = {email: '', password: ''}
 router.post("/signup", signupUser);
+
+// email and password required
+router.post("/login", loginUser);
 
 module.exports = router;
