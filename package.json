@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/mwhitman189/yambo-flashcards/issues"
   },
-  "homepage": "https://github.com/mwhitman189/yambo-flashcards#readme"
+  "homepage": "https://github.com/mwhitman189/yambo-flashcards#readme",
+  "dependencies": {
+    "react-loader-spinner": "^5.1.5"
+  }
 }

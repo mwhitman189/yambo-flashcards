@@ -26,7 +26,7 @@ describe("CardCreate", () => {
     margin-top: auto;
     font-size: 18px;
     border-radius: 4px 4px 0 0;
-    color: #000;
+    color: GrayText;
     background-color: #b3c2c3;
     text-align: center;
     padding: 0 1rem;
@@ -42,7 +42,7 @@ describe("CardCreate", () => {
     margin-top: auto;
     font-size: 18px;
     border-radius: 4px 4px 0 0;
-    color: #f7f7f7;
+    color: ButtonText;
     background-color: #6a6a6a;
     text-align: center;
     padding: 0 1rem;
