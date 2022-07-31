@@ -13,9 +13,9 @@ const loginUser = async (req, res) => {
 
     const token = createToken(user._id);
 
-    res.status(200).json({ email, token });
-  } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(200).send({ email, token });
+  } catch (e) {
+    res.status(400).send({ error: "Error logging in user" });
   }
 };
 
@@ -27,10 +27,23 @@ const signupUser = async (req, res) => {
 
     const token = createToken(user._id);
 
-    res.status(200).json({ email, token });
-  } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(200).send({ email, token });
+  } catch (e) {
+    res.status(400).send({ error: "Error creating user" });
   }
 };
 
-module.exports = { signupUser, loginUser };
+const getUser = async (req, res) => {
+  const _id = req.params.id;
+  try {
+    const user = await User.findById(_id).populate("decks");
+    if (!user) {
+      return res.status(404).send({ error: "No user found" });
+    }
+    res.send(user);
+  } catch (e) {
+    res.status(404).send({ error: "Error finding user" });
+  }
+};
+
+module.exports = { signupUser, loginUser, getUser };
