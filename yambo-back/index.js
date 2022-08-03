@@ -12,7 +12,7 @@ const app = express();
 app.use(express.json());
 
 app.use((req, res, next) => {
-  console.log(req.path, req.method);
+  // console.log(req.path, req.method);
   next();
 });
 
@@ -23,10 +23,15 @@ app.use("/card", cardRoutes);
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => {
-    app.listen(process.env.PORT, () => {
-      console.log("Connected to DB and listening on port", process.env.PORT);
-    });
+    console.log("Mongoose fully connnected.");
   })
   .catch((error) => {
     console.log(error);
   });
+
+app.listen(
+  process.env.PORT,
+  console.log("Backend is listening on port", process.env.PORT)
+);
+
+module.exports = app;

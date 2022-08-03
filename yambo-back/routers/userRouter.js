@@ -26,8 +26,8 @@ router.post("/signup", signupUser);
 // email and password required
 router.post("/login", loginUser);
 
-router.get("/:id", requireAuth, getUser);
+router.get("/", requireAuth, getUser);
 
-router.delete("/", deleteUser);
+router.delete("/", requireAuth, deleteUser);
 
 module.exports = router;

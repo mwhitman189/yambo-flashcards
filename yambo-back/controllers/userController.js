@@ -7,6 +7,19 @@ const createToken = (_id) => {
   return jwt.sign({ _id }, process.env.SECRET, { expiresIn: "3d" });
 };
 
+const signupUser = async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const user = await User.signup(email, password);
+    const token = createToken(user._id);
+
+    res.status(201).send({ user: user.scrub(), token });
+  } catch (e) {
+    res.status(400).send({ error: "Error creating user" });
+  }
+};
+
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
@@ -15,34 +28,17 @@ const loginUser = async (req, res) => {
 
     const token = createToken(user._id);
 
-    res.status(200).send({ email, token });
+    res.status(200).send({ user: user.scrub(), token });
   } catch (e) {
     res.status(400).send({ error: "Error logging in user" });
   }
 };
 
-const signupUser = async (req, res) => {
-  const { email, password } = req.body;
-
-  try {
-    const user = await User.signup(email, password);
-
-    const token = createToken(user._id);
-
-    res.status(200).send({ email, token });
-  } catch (e) {
-    res.status(400).send({ error: "Error creating user" });
-  }
-};
-
 const getUser = async (req, res) => {
-  const _id = req.params.id;
+  const userId = req.user;
   try {
-    const user = await User.findById(_id).populate("decks");
-    if (!user) {
-      return res.status(404).send({ error: "No user found" });
-    }
-    res.send(user);
+    const user = await User.findById(userId);
+    res.send(user.scrub());
   } catch (e) {
     res.status(404).send({ error: "Error finding user" });
   }
@@ -58,6 +54,7 @@ const deleteUser = async (req, res) => {
     await Card.deleteMany({ user: userId });
     await Deck.deleteMany({ user: userId });
     await User.deleteOne({ _id: userId });
+    res.send(user.scrub());
   } catch (e) {
     res.status(500).send({ error: "Error deleting user" });
   }
