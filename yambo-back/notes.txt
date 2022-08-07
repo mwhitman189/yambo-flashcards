@@ -1,3 +1,10 @@
 To do:
 
+Aug 4:
+
+- Second user API start testing
+- Second user deck and card create
+-- Card is duplicate of user one card, check for difference
+
+
 - Card batch patch method
