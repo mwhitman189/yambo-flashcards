@@ -1,6 +1,8 @@
-import { render, screen, fireEvent } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import CardCreate from "./CardCreate";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { rest } from "msw";
+import { setupServer } from "msw/node";
+import CardCreate from "../components/CardCreate";
+import { MOCK_DATA } from "../mocks/MOCK_DATA";
 
 describe("CardCreate", () => {
   //Initial State tests
