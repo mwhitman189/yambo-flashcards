@@ -4,6 +4,8 @@ import CardCreate from "./components/CardCreate";
 import styled, { ThemeProvider } from "styled-components";
 import "./App.css";
 
+const url = "https://jotoba.de/api/search/words";
+
 const theme1 = {
   colors: {
     backgroundPrimary: "#28546B",
@@ -27,7 +29,7 @@ function App() {
     <ThemeProvider theme={theme1}>
       <AppContainer className="App">
         <Header title="Welcome to Yambo!" />
-        <CardCreate />
+        <CardCreate url={url} />
       </AppContainer>
     </ThemeProvider>
   );

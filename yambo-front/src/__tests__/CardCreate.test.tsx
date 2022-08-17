@@ -4,6 +4,20 @@ import { setupServer } from "msw/node";
 import CardCreate from "../components/CardCreate";
 import { MOCK_DATA } from "../mocks/MOCK_DATA";
 
+//Set up msw server
+const server = setupServer(
+  rest.post("/getDefinition", (req, res, ctx) => {
+    console.log(res(ctx.json(MOCK_DATA)));
+    return res(ctx.json(MOCK_DATA));
+  })
+);
+
+beforeAll(() => server.listen());
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
+
+const url = "/getDefinition";
+
 describe("CardCreate", () => {
   //Initial State tests
 
@@ -58,4 +72,33 @@ describe("CardCreate", () => {
     fireEvent.change(inputElement, { target: { value: "偉い" } });
     expect(inputElement.value).toBe("偉い");
   });
+
+  //API tests
+  it("add and display the definition to the back of the card", async () => {
+    render(<CardCreate url={url} />);
+
+    fireEvent.click(screen.getByText("Load Greeting"));
+
+    await waitFor(() => screen.getByRole("heading"));
+
+    expect(screen.getByRole("heading")).toHaveTextContent("admirable");
+    expect(screen.getByRole("button")).toBeDisabled();
+  });
+
+  // test("handles server error", async () => {
+  //   server.use(
+  //     rest.post("/getDefinition", (req, res, ctx) => {
+  //       return res(ctx.status(500));
+  //     })
+  //   );
+
+  //   render(<Fetch url="/getDefinition" />);
+
+  //   fireEvent.click(screen.getByText("Load Greeting"));
+
+  //   await waitFor(() => screen.getByRole("alert"));
+
+  //   expect(screen.getByRole("alert")).toHaveTextContent("Oops, failed to fetch!");
+  //   expect(screen.getByRole("button")).not.toBeDisabled();
+  // });
 });

@@ -233,7 +233,7 @@ interface ICard {
   definition: string | undefined;
 }
 
-const CardCreate: FC = () => {
+const CardCreate = ({ url }: any) => {
   const [card, setCard] = useState<ICard>({
     kanji: "",
     hiragana: "",
@@ -309,7 +309,7 @@ const CardCreate: FC = () => {
     try {
       //Use for actual api call
       const fetchData = async () => {
-        const response = await fetch("https://jotoba.de/api/search/words", {
+        const response = await fetch(url, {
           method: "POST",
           headers: {
             "content-type": "application/json;charset=UTF-8"
@@ -354,48 +354,6 @@ const CardCreate: FC = () => {
           }, 3000);
         }
       };
-
-      //Use for manually testing the front end without calling the api
-      // const fetchData = async () => {
-      //   const response = await fetch("./MOCK_DATA.json");
-      //   const data = await response.json();
-
-      //   const { words } = data;
-      //   let foundWord = false;
-
-      //   for (const word of words) {
-      //     if (kanji === word.kanji) {
-      //       setCard((prevValue) => {
-      //         return {
-      //           ...prevValue,
-      //           hiragana: word.hiragana,
-      //           definition: word.definition
-      //         };
-      //       });
-
-      //       foundWord = true;
-      //       setDisableTab(false);
-      //       setCardView("back");
-      //       break;
-      //     }
-      //   }
-
-      //   if (!foundWord) {
-      //     setWordNotFound(true);
-
-      //     setCard({
-      //       kanji: "",
-      //       hiragana: "",
-      //       definition: ""
-      //     });
-
-      //     setTimeout(() => {
-      //       setWordNotFound(false);
-      //       setCardPlaceholder("Add a card...");
-      //       setCardView("front");
-      //     }, 3000);
-      //   }
-      // };
 
       fetchData();
     } catch (error) {
