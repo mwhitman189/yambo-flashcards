@@ -31,7 +31,7 @@ const cardCreate = async (req, res) => {
     }
     await newCard.save();
 
-    const deck = await Deck.findOne({ deckId });
+    const deck = await Deck.findOne({ _id: deckId }).populate("cards");
     await deck.cards.push(newCard);
     await deck.save();
 
@@ -53,10 +53,11 @@ const cardCreateBatch = async (req, res) => {
       { _id: deckId },
       { $push: { cards: newCards } }
     );
-    const foundDeck = await Deck.findById(deckId);
+    const foundDeck = await Deck.findById(deckId).populate("cards");
 
     res.status(201).send(foundDeck);
   } catch (e) {
+    console.log(e);
     res.status(400).send({ error: "Error creating cards" });
   }
 };
