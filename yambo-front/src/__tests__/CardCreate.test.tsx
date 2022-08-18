@@ -106,20 +106,23 @@ describe("CardCreate", () => {
     );
   });
 
-  // test("handles server error", async () => {
-  //   server.use(
-  //     rest.post("/getDefinition", (req, res, ctx) => {
-  //       return res(ctx.status(500));
-  //     })
-  //   );
+  test("handles server error", async () => {
+    server.use(
+      rest.post("/getDefinition", (req, res, ctx) => {
+        return res(ctx.status(500));
+      })
+    );
 
-  //   render(<CardCreate url={url} />);
+    render(<CardCreate url={url} />);
 
-  //   fireEvent.click(screen.getByText("Auto-Generate"));
+    fireEvent.click(screen.getByText("Auto-Generate"));
 
-  //   await waitFor(() => screen.getByRole("alert"));
+    await waitForElementToBeRemoved(() => screen.queryByLabelText("loading-indicator"));
 
-  //   expect(screen.getByRole("alert")).toHaveTextContent("Oops, failed to fetch!");
-  //   expect(screen.getByRole("button")).not.toBeDisabled();
-  // });
+    expect(
+      screen.getByText(
+        "We couldn't seem to connect to our database. Please check you internet connection."
+      )
+    ).toBeInTheDocument;
+  });
 });

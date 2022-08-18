@@ -233,6 +233,11 @@ interface ICard {
   definition: string | undefined;
 }
 
+// interface IError {
+//   isVisible: boolean;
+//   message: string | undefined;
+// }
+
 const CardCreate = ({ url }: any) => {
   const [card, setCard] = useState<ICard>({
     kanji: "",
@@ -244,7 +249,7 @@ const CardCreate = ({ url }: any) => {
 
   const [cardView, setCardView] = useState<string>("front");
 
-  const [wordNotFound, setWordNotFound] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
 
   const [disableTab, setDisableTab] = useState<boolean>(true);
 
@@ -306,9 +311,9 @@ const CardCreate = ({ url }: any) => {
 
     setLoader(true);
 
-    try {
-      //Use for actual api call
-      const fetchData = async () => {
+    //Use for actual api call
+    const fetchData = async () => {
+      try {
         const response = await fetch(url, {
           method: "POST",
           headers: {
@@ -320,8 +325,9 @@ const CardCreate = ({ url }: any) => {
             no_english: false
           })
         });
+
+        if (!response.ok) throw new Error();
         const data = await response.json();
-        console.log(response);
 
         const { words } = data;
         const [word] = words;
@@ -341,7 +347,7 @@ const CardCreate = ({ url }: any) => {
           setCardView("back");
         } else {
           setLoader(false);
-          setWordNotFound(true);
+          setError("We couldn't find that word. Please try again.");
           setCard({
             kanji: "",
             hiragana: "",
@@ -349,15 +355,21 @@ const CardCreate = ({ url }: any) => {
           });
           setCardPlaceholder("Add a card...");
           setTimeout(() => {
-            setWordNotFound(false);
+            setError("");
           }, 3000);
         }
-      };
-
-      fetchData();
-    } catch (error) {
-      console.log(error);
-    }
+      } catch (err: any) {
+        setLoader(false);
+        setError(
+          "We couldn't seem to connect to our database. Please check you internet connection."
+        );
+        setTimeout(() => {
+          setError("");
+        }, 3000);
+        console.log(err.message);
+      }
+    };
+    fetchData();
   }
 
   return (
@@ -376,10 +388,10 @@ const CardCreate = ({ url }: any) => {
           <Input></Input>
         </InputWrapper>
         <div className="position-relative">
-          {wordNotFound && (
+          {error && (
             <NotFoundMessage>
               <NotFoundHeader>ゴメンね</NotFoundHeader>
-              <div>We couldn&apos;t find that word. Please try again.</div>
+              <div>{error}</div>
             </NotFoundMessage>
           )}
           <Label>Front</Label>
