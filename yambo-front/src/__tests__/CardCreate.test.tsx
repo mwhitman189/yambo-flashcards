@@ -79,6 +79,20 @@ describe("CardCreate", () => {
     expect(inputElement.value).toBe("偉い");
   });
 
+  it("should change 'Preview' to 'Save | Clear' when anything is typed into the input", async () => {
+    render(<CardCreate />);
+    const inputElement = screen.getByPlaceholderText(/例/i) as HTMLInputElement;
+    fireEvent.change(inputElement, { target: { value: "偉い" } });
+    expect(screen.getByText(/Save/i)).toBeInTheDocument();
+  });
+
+  it("should change 'Save | Clear' to 'Preview' when the input is empty", async () => {
+    render(<CardCreate />);
+    const inputElement = screen.getByPlaceholderText(/例/i) as HTMLInputElement;
+    fireEvent.change(inputElement, { target: { value: "" } });
+    expect(screen.getByText(/Preview/i)).toBeInTheDocument();
+  });
+
   //API tests
   it("add and display the definition to the back of the card", async () => {
     render(<CardCreate url={url} />);
@@ -90,7 +104,6 @@ describe("CardCreate", () => {
     expect(screen.getByTestId("custom-element")).toHaveTextContent(
       "great; excellent; admirable; remarkable; distinguished; important; celebrated; famous; eminent"
     );
-    // expect(screen.getByRole("button")).toBeDisabled();
   });
 
   // test("handles server error", async () => {
@@ -100,9 +113,9 @@ describe("CardCreate", () => {
   //     })
   //   );
 
-  //   render(<Fetch url="/getDefinition" />);
+  //   render(<CardCreate url={url} />);
 
-  //   fireEvent.click(screen.getByText("Load Greeting"));
+  //   fireEvent.click(screen.getByText("Auto-Generate"));
 
   //   await waitFor(() => screen.getByRole("alert"));
 
