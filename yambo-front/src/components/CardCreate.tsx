@@ -1,4 +1,4 @@
-import React, { FC, ChangeEvent, FormEvent, useState } from "react";
+import React, { ChangeEvent, FormEvent, useState } from "react";
 import styled from "styled-components";
 import { TailSpin } from "react-loader-spinner";
 
@@ -228,21 +228,14 @@ const DefinitionSection = styled.div<{ theme: { [key: string]: any }; cardView?:
 `;
 
 interface ICard {
-  kanji: string | undefined;
-  hiragana: string | undefined;
-  definition: string | undefined;
+  front: string | undefined;
+  back: string | undefined;
 }
-
-// interface IError {
-//   isVisible: boolean;
-//   message: string | undefined;
-// }
 
 const CardCreate = ({ url }: any) => {
   const [card, setCard] = useState<ICard>({
-    kanji: "",
-    hiragana: "",
-    definition: ""
+    front: "",
+    back: ""
   });
 
   const [cardPlaceholder, setCardPlaceholder] = useState<string | undefined>("例");
@@ -257,7 +250,7 @@ const CardCreate = ({ url }: any) => {
 
   const [cards, setCards] = useState<ICard[]>([]);
 
-  const { kanji, hiragana, definition } = card;
+  const { front, back } = card;
 
   const handleChange = (e: ChangeEvent<HTMLTextAreaElement>): void => {
     e.preventDefault();
@@ -277,16 +270,15 @@ const CardCreate = ({ url }: any) => {
   };
 
   const handleSave = () => {
-    if (kanji) {
+    if (front) {
       const newCard = card;
       setCards((prevValue) => {
         return [...prevValue, newCard];
       });
 
       setCard({
-        kanji: "",
-        hiragana: "",
-        definition: ""
+        front: "",
+        back: ""
       });
 
       setDisableTab(!disableTab);
@@ -297,9 +289,8 @@ const CardCreate = ({ url }: any) => {
 
   const handleClear = () => {
     setCard({
-      kanji: "",
-      hiragana: "",
-      definition: ""
+      front: "",
+      back: ""
     });
     setDisableTab(!disableTab);
     setCardPlaceholder("Add a card...");
@@ -320,7 +311,7 @@ const CardCreate = ({ url }: any) => {
             "content-type": "application/json;charset=UTF-8"
           },
           body: JSON.stringify({
-            query: kanji,
+            query: front,
             language: "English",
             no_english: false
           })
@@ -337,8 +328,7 @@ const CardCreate = ({ url }: any) => {
           setCard((prevValue) => {
             return {
               ...prevValue,
-              hiragana: word.reading.kana,
-              definition: word.senses[0].glosses.join("; ")
+              back: `${word.reading.kana}\n${word.senses[0].glosses.join("; ")}`
             };
           });
 
@@ -349,9 +339,8 @@ const CardCreate = ({ url }: any) => {
           setLoader(false);
           setError("We couldn't find that word. Please try again.");
           setCard({
-            kanji: "",
-            hiragana: "",
-            definition: ""
+            front: "",
+            back: ""
           });
           setCardPlaceholder("Add a card...");
           setTimeout(() => {
@@ -399,9 +388,9 @@ const CardCreate = ({ url }: any) => {
             rows={3}
             tabIndex={1}
             required
-            name="kanji"
+            name="front"
             placeholder={cardPlaceholder}
-            value={kanji}
+            value={front}
             onChange={handleChange}
             onClick={() => setCardPlaceholder("")}></FormTextArea>
         </div>
@@ -420,14 +409,14 @@ const CardCreate = ({ url }: any) => {
         <FormTextArea
           rows={3}
           tabIndex={2}
-          name="definition"
+          name="back"
           placeholder=""
-          value={definition}
+          value={back}
           onChange={handleChange}></FormTextArea>
       </Form>
       <CardContainer>
         <CardControls>
-          {kanji ? (
+          {front ? (
             <div>
               <CardControlLinks onClick={handleSave}>Save</CardControlLinks>
               <Pipe> | </Pipe>
@@ -449,14 +438,14 @@ const CardCreate = ({ url }: any) => {
         </TabBack>
         <CardMain>
           <CardTop>
-            <div>{kanji || cardPlaceholder}</div>
+            <div>{front || cardPlaceholder}</div>
           </CardTop>
           {cardView === "back" && (
             <CardBottom>
               <Divider></Divider>
-              <HiraganaSection>{hiragana}</HiraganaSection>
+              <HiraganaSection>{back?.split("\n")[0]}</HiraganaSection>
               <DefinitionSection>
-                {definition && <div data-testid="custom-element">{definition}</div>}
+                {back && <div data-testid="custom-element">{back?.split("\n")[1]}</div>}
               </DefinitionSection>
             </CardBottom>
           )}
