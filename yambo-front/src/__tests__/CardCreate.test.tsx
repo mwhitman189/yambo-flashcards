@@ -1,4 +1,10 @@
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import {
+  render,
+  screen,
+  fireEvent,
+  waitFor,
+  waitForElementToBeRemoved
+} from "@testing-library/react";
 import { rest } from "msw";
 import { setupServer } from "msw/node";
 import CardCreate from "../components/CardCreate";
@@ -7,7 +13,7 @@ import { MOCK_DATA } from "../mocks/MOCK_DATA";
 //Set up msw server
 const server = setupServer(
   rest.post("/getDefinition", (req, res, ctx) => {
-    console.log(res(ctx.json(MOCK_DATA)));
+    // console.log(res(ctx.json(MOCK_DATA)));
     return res(ctx.json(MOCK_DATA));
   })
 );
@@ -77,12 +83,14 @@ describe("CardCreate", () => {
   it("add and display the definition to the back of the card", async () => {
     render(<CardCreate url={url} />);
 
-    fireEvent.click(screen.getByText("Load Greeting"));
+    fireEvent.click(screen.getByText("Auto-Generate"));
 
-    await waitFor(() => screen.getByRole("heading"));
+    await waitForElementToBeRemoved(() => screen.queryByLabelText("loading-indicator"));
 
-    expect(screen.getByRole("heading")).toHaveTextContent("admirable");
-    expect(screen.getByRole("button")).toBeDisabled();
+    expect(screen.getByTestId("custom-element")).toHaveTextContent(
+      "great; excellent; admirable; remarkable; distinguished; important; celebrated; famous; eminent"
+    );
+    // expect(screen.getByRole("button")).toBeDisabled();
   });
 
   // test("handles server error", async () => {

@@ -321,25 +321,24 @@ const CardCreate = ({ url }: any) => {
           })
         });
         const data = await response.json();
+        console.log(response);
 
         const { words } = data;
         const [word] = words;
 
         if (word) {
-          setTimeout(() => {
-            setLoader(false);
-            setCard((prevValue) => {
-              return {
-                ...prevValue,
-                hiragana: word.reading.kana,
-                definition: word.senses[0].glosses.join("; ")
-              };
-            });
+          setLoader(false);
+          setCard((prevValue) => {
+            return {
+              ...prevValue,
+              hiragana: word.reading.kana,
+              definition: word.senses[0].glosses.join("; ")
+            };
+          });
 
-            setDisableTab(false);
+          setDisableTab(false);
 
-            setCardView("back");
-          }, 3000);
+          setCardView("back");
         } else {
           setLoader(false);
           setWordNotFound(true);
@@ -444,7 +443,9 @@ const CardCreate = ({ url }: any) => {
             <CardBottom>
               <Divider></Divider>
               <HiraganaSection>{hiragana}</HiraganaSection>
-              <DefinitionSection>{definition}</DefinitionSection>
+              <DefinitionSection>
+                {definition && <div data-testid="custom-element">{definition}</div>}
+              </DefinitionSection>
             </CardBottom>
           )}
         </CardMain>
