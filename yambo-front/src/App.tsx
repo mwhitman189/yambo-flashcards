@@ -1,8 +1,11 @@
 import React from "react";
-import Header from "./components/Header";
-import CardCreate from "./components/CardCreate";
 import styled, { ThemeProvider } from "styled-components";
-import "./App.css";
+import { Routes, Route } from "react-router-dom";
+
+import Navbar from "./components/Navbar";
+import Registration from "./components/Registration";
+import Login from "./components/Login";
+import CardCreate from "./components/CardCreate";
 
 const url = "https://jotoba.de/api/search/words";
 
@@ -28,8 +31,14 @@ function App() {
   return (
     <ThemeProvider theme={theme1}>
       <AppContainer className="App">
-        <Header title="Welcome to Yambo!" />
-        <CardCreate url={url} />
+        <Navbar></Navbar>
+        <Routes>
+          <Route path="/" element={<CardCreate url={url} />} />
+          <Route path="*" element={<CardCreate url={url} to="/" />} />
+          <Route path="/create" element={<CardCreate url={url} />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Registration />} />
+        </Routes>
       </AppContainer>
     </ThemeProvider>
   );

@@ -2,6 +2,7 @@ import React, { ChangeEvent, FormEvent, useState } from "react";
 import styled from "styled-components";
 import { TailSpin } from "react-loader-spinner";
 
+import Header from "./Header";
 import Deck from "./Deck";
 
 interface Props {
@@ -362,97 +363,100 @@ const CardCreate = ({ url }: any) => {
   }
 
   return (
-    <CardCreateContainer>
-      {loader && (
-        <div>
-          <div className="loader">
-            <TailSpin color={"#e0bde6"} ariaLabel="loading-indicator" />
+    <>
+      <Header title="Welcome to Yambo!" />
+      <CardCreateContainer>
+        {loader && (
+          <div>
+            <div className="loader">
+              <TailSpin color={"#e0bde6"} ariaLabel="loading-indicator" />
+            </div>
           </div>
-        </div>
-      )}
-      <Text>Enter kanji to look up a word, or add your own definition:</Text>
-      <Form onSubmit={handleLookup}>
-        <InputWrapper>
-          <label className="font-14">Deck:</label>
-          <Input></Input>
-        </InputWrapper>
-        <div className="position-relative">
-          {error && (
-            <NotFoundMessage>
-              <NotFoundHeader>ゴメンね</NotFoundHeader>
-              <div>{error}</div>
-            </NotFoundMessage>
-          )}
-          <Label>Front</Label>
+        )}
+        <Text>Enter kanji to look up a word, or add your own definition:</Text>
+        <Form onSubmit={handleLookup}>
+          <InputWrapper>
+            <label className="font-14">Deck:</label>
+            <Input></Input>
+          </InputWrapper>
+          <div className="position-relative">
+            {error && (
+              <NotFoundMessage>
+                <NotFoundHeader>ゴメンね</NotFoundHeader>
+                <div>{error}</div>
+              </NotFoundMessage>
+            )}
+            <Label>Front</Label>
+            <FormTextArea
+              rows={3}
+              tabIndex={1}
+              required
+              name="front"
+              placeholder={cardPlaceholder}
+              value={front}
+              onChange={handleChange}
+              onClick={() => setCardPlaceholder("")}></FormTextArea>
+          </div>
+          <InputWrapper>
+            <Button fontSize="14px" type="submit">
+              Auto-Generate
+            </Button>
+            <div className="set-checkbox">
+              <input type="checkbox" id="set-auto-generate" name="set-auto-generate"></input>
+              <label className="font-14" htmlFor="set-auto-generate">
+                Set
+              </label>
+            </div>
+          </InputWrapper>
+          <Label className="d-block">Back</Label>
           <FormTextArea
             rows={3}
-            tabIndex={1}
-            required
-            name="front"
-            placeholder={cardPlaceholder}
-            value={front}
-            onChange={handleChange}
-            onClick={() => setCardPlaceholder("")}></FormTextArea>
-        </div>
-        <InputWrapper>
-          <Button fontSize="14px" type="submit">
-            Auto-Generate
-          </Button>
-          <div className="set-checkbox">
-            <input type="checkbox" id="set-auto-generate" name="set-auto-generate"></input>
-            <label className="font-14" htmlFor="set-auto-generate">
-              Set
-            </label>
-          </div>
-        </InputWrapper>
-        <Label className="d-block">Back</Label>
-        <FormTextArea
-          rows={3}
-          tabIndex={2}
-          name="back"
-          placeholder=""
-          value={back}
-          onChange={handleChange}></FormTextArea>
-      </Form>
-      <CardContainer>
-        <CardControls>
-          {front ? (
-            <div>
-              <CardControlLinks onClick={handleSave}>Save</CardControlLinks>
-              <Pipe> | </Pipe>
-              <CardControlLinks onClick={handleClear}>Clear</CardControlLinks>
-            </div>
-          ) : (
-            "Preview"
-          )}
-        </CardControls>
-        <TabFront tabIndex={3} cardView={cardView} onClick={() => setCardView("front")}>
-          front
-        </TabFront>
-        <TabBack
-          tabIndex={4}
-          disabled={disableTab}
-          cardView={cardView}
-          onClick={() => setCardView("back")}>
-          back
-        </TabBack>
-        <CardMain>
-          <CardTop>
-            <div>{front || cardPlaceholder}</div>
-          </CardTop>
-          {cardView === "back" && (
-            <CardBottom>
-              <Divider></Divider>
-              <HiraganaSection>{back?.split("\n")[0]}</HiraganaSection>
-              <DefinitionSection>
-                {back && <div data-testid="custom-element">{back?.split("\n")[1]}</div>}
-              </DefinitionSection>
-            </CardBottom>
-          )}
-        </CardMain>
-      </CardContainer>
-      <Deck cards={cards}></Deck>
-    </CardCreateContainer>
+            tabIndex={2}
+            name="back"
+            placeholder=""
+            value={back}
+            onChange={handleChange}></FormTextArea>
+        </Form>
+        <CardContainer>
+          <CardControls>
+            {front ? (
+              <div>
+                <CardControlLinks onClick={handleSave}>Save</CardControlLinks>
+                <Pipe> | </Pipe>
+                <CardControlLinks onClick={handleClear}>Clear</CardControlLinks>
+              </div>
+            ) : (
+              "Preview"
+            )}
+          </CardControls>
+          <TabFront tabIndex={3} cardView={cardView} onClick={() => setCardView("front")}>
+            front
+          </TabFront>
+          <TabBack
+            tabIndex={4}
+            disabled={disableTab}
+            cardView={cardView}
+            onClick={() => setCardView("back")}>
+            back
+          </TabBack>
+          <CardMain>
+            <CardTop>
+              <div>{front || cardPlaceholder}</div>
+            </CardTop>
+            {cardView === "back" && (
+              <CardBottom>
+                <Divider></Divider>
+                <HiraganaSection>{back?.split("\n")[0]}</HiraganaSection>
+                <DefinitionSection>
+                  {back && <div data-testid="custom-element">{back?.split("\n")[1]}</div>}
+                </DefinitionSection>
+              </CardBottom>
+            )}
+          </CardMain>
+        </CardContainer>
+        <Deck cards={cards}></Deck>
+      </CardCreateContainer>
+    </>
   );
 };
 
