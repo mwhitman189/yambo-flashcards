@@ -1,7 +1,14 @@
 const express = require("express");
 const router = express.Router();
 
-const { loginUser, signupUser } = require("../controllers/userController");
+const {
+  loginUser,
+  signupUser,
+  getUser,
+  deleteUser,
+} = require("../controllers/userController");
+
+const requireAuth = require("../middleware/requireAuth");
 
 // user body = {email: '', password: ''}
 
@@ -18,5 +25,9 @@ router.post("/signup", signupUser);
 
 // email and password required
 router.post("/login", loginUser);
+
+router.get("/", requireAuth, getUser);
+
+router.delete("/", requireAuth, deleteUser);
 
 module.exports = router;
