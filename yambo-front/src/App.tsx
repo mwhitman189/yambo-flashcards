@@ -3,8 +3,8 @@ import styled, { ThemeProvider } from "styled-components";
 import { Routes, Route } from "react-router-dom";
 
 import Navbar from "./components/Navbar";
-import Registration from "./components/Registration";
-import Login from "./components/Login";
+import Registration from "./pages/Registration";
+import Login from "./pages/Login";
 import CardCreate from "./components/CardCreate";
 
 const url = "https://jotoba.de/api/search/words";
@@ -25,6 +25,8 @@ const theme1 = {
 
 const AppContainer = styled.div`
   background: ${({ theme }) => theme.colors.backgroundPrimary};
+  min-height: 100vh;
+  height: 100%;
 `;
 
 function App() {
@@ -37,7 +39,7 @@ function App() {
           <Route path="*" element={<CardCreate url={url} to="/" />} />
           <Route path="/create" element={<CardCreate url={url} />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Registration />} />
+          <Route path="/registration" element={<Registration />} />
         </Routes>
       </AppContainer>
     </ThemeProvider>
