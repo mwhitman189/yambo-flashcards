@@ -303,7 +303,6 @@ const CardCreate = ({ url }: any) => {
 
     setLoader(true);
 
-    //Use for actual api call
     const fetchData = async () => {
       try {
         const response = await fetch(url, {
@@ -356,7 +355,7 @@ const CardCreate = ({ url }: any) => {
         setTimeout(() => {
           setError("");
         }, 3000);
-        console.log(err.message);
+        console.error(err.message);
       }
     };
     fetchData();
