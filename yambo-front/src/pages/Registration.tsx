@@ -31,7 +31,6 @@ const Registration = () => {
 
     try {
       const response = await fetch("http://localhost:8888/user/signup", {
-        mode: "cors",
         method: "POST",
         headers: {
           "content-type": "application/json;charset=UTF-8"
@@ -47,6 +46,7 @@ const Registration = () => {
       navigate("/");
       setLoader(false);
     } catch (err: any) {
+      console.error(err);
       setError(err.message);
       setTimeout(() => {
         setLoader(false);
