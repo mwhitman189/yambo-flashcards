@@ -1,6 +1,6 @@
 import React from "react";
 import styled, { ThemeProvider } from "styled-components";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 
 import Navbar from "./components/Navbar";
 import Registration from "./pages/Registration";
@@ -28,6 +28,12 @@ const AppContainer = styled.div`
   min-height: 100vh;
   height: 100%;
 `;
+
+export const LocationDisplay = () => {
+  const location = useLocation();
+
+  return <div data-testid="location-display">{location.pathname}</div>;
+};
 
 function App() {
   return (

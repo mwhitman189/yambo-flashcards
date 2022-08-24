@@ -64,7 +64,7 @@ const Input = styled.input`
 
 const FormField = ({
   fieldType = "input",
-  required = "true",
+  required = true,
   type,
   name,
   id,

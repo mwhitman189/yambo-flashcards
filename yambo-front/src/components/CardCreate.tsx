@@ -356,6 +356,7 @@ const CardCreate = ({ url }: any) => {
             )}
             <FormField
               fieldType="textarea"
+              required={true}
               tabIndex={1}
               name="front"
               labelText="Front"
@@ -377,6 +378,7 @@ const CardCreate = ({ url }: any) => {
           </InputWrapper>
           <FormField
             fieldType="textarea"
+            required={false}
             tabIndex={3}
             name="back"
             labelText="Back"

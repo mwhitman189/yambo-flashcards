@@ -5,7 +5,7 @@ import FormInput from "./FormInput";
 
 const FormField = ({
   fieldType = "input",
-  required = "true",
+  required = true,
   type,
   name,
   id,
