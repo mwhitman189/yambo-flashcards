@@ -2,6 +2,8 @@ import React, { ChangeEvent, FormEvent, useState } from "react";
 import styled from "styled-components";
 import { TailSpin } from "react-loader-spinner";
 
+import FormField from "./FormField";
+
 import Header from "./Header";
 import Deck from "./Deck";
 
@@ -56,10 +58,6 @@ const Form = styled.form`
   }
 `;
 
-const Label = styled.label`
-  font-size: "18px";
-`;
-
 const Input = styled.input`
   margin-left: 0.25rem;
   width: 6rem;
@@ -75,35 +73,6 @@ const InputWrapper = styled.div`
   justify-content: end;
   align-items: end;
   margin-bottom: 1rem;
-`;
-
-const FormTextArea = styled.textarea`
-  box-sizing: border-box;
-  width: 100%;
-  flex-grow: 1;
-  margin-right: 0.25rem;
-  margin-top: 0.25rem;
-  padding-left: 0.75rem;
-  border-radius: 4px;
-  text-align: left;
-  outline: none;
-  color: ${({ theme }) => theme?.colors?.textSecondary};
-  background-color: ${({ theme }) => theme?.colors?.inputBackground};
-  font-size: 20px;
-  border: none;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu",
-    "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
-
-  ::placeholder {
-    color: ${({ theme }) => theme?.colors?.textSecondary};
-    opacity: 0.5;
-  }
-  &:focus {
-    border: 1px solid ${({ theme }) => theme?.colors?.highlightPrimaryLight};
-  }
-  &:focus::placeholder {
-    color: transparent;
-  }
 `;
 
 const Button = styled.button<FontSize>`
@@ -385,16 +354,15 @@ const CardCreate = ({ url }: any) => {
                 <div>{error}</div>
               </NotFoundMessage>
             )}
-            <Label>Front</Label>
-            <FormTextArea
-              rows={3}
+            <FormField
+              fieldType="textarea"
               tabIndex={1}
-              required
               name="front"
+              labelText="Front"
               placeholder={cardPlaceholder}
               value={front}
               onChange={handleChange}
-              onClick={() => setCardPlaceholder("")}></FormTextArea>
+              onClick={() => setCardPlaceholder("")}></FormField>
           </div>
           <InputWrapper>
             <Button fontSize="14px" type="submit">
@@ -407,14 +375,14 @@ const CardCreate = ({ url }: any) => {
               </label>
             </div>
           </InputWrapper>
-          <Label className="d-block">Back</Label>
-          <FormTextArea
-            rows={3}
-            tabIndex={2}
+          <FormField
+            fieldType="textarea"
+            tabIndex={3}
             name="back"
+            labelText="Back"
             placeholder=""
             value={back}
-            onChange={handleChange}></FormTextArea>
+            onChange={handleChange}></FormField>
         </Form>
         <CardContainer>
           <CardControls>
