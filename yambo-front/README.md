@@ -1,7 +1,6 @@
 # Yambo Flashcards
 
-TODO: Edit me
-
+Yambo Flashcards: Flashcards for people
 
 ## Branching Policy
 
@@ -22,6 +21,24 @@ Test-Driven Development(TDD)
 3. Write tests
 4. Ensure tests fail
 5. Write code to make tests pass
+
+## Setup
+
+1. Clone the project into your preferred folder
+`git clone https://github.com/mwhitman189/yambo-flashcards.git`
+
+2. cd into the front-end folder and install depenencies
+```
+cd yambo-front &&
+npm i
+```
+
+3. (TODO: Create backend)
+```
+cd ../yambo-api &&
+npm i &&
+cd ../
+```
 
 ## Available Scripts
 

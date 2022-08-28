@@ -1,14 +1,19 @@
-import React from 'react';
+import React from "react";
+import styled from "styled-components";
 
-function Header() {
+interface Props {
+  title: string;
+}
+
+const HeaderStyle = styled.div<{ theme: { [key: string]: any } }>`
+  text-align: center;
+  color: ${({ theme }) => theme?.colors?.inputBackground};
+  font-size: 50px;
+`;
+
+function Header({ title }: Props) {
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Welcome!
-        </p>
-      </header>
-    </div>
+    <HeaderStyle>{title}</HeaderStyle>
   );
 }
 

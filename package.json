@@ -1,0 +1,23 @@
+{
+  "name": "yambo-flashcards",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mwhitman189/yambo-flashcards.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mwhitman189/yambo-flashcards/issues"
+  },
+  "homepage": "https://github.com/mwhitman189/yambo-flashcards#readme",
+  "dependencies": {
+    "react-loader-spinner": "^5.1.5"
+  }
+}

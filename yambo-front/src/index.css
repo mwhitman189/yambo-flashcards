@@ -1,13 +1,73 @@
+:root {
+  --colorPrimary: #ba68c9;
+  --colorSecondary: #e0bde6;
+  --colorDark: #6a6a6a;
+  --colorWhite: #f7f7f7;
+  --colorSuccess: #14ae5c;
+
+  --backgroundPrimary: #28546b,
+  --backgroundSecondary: #0B3345,
+  --textPrimary: #F7F7F7;
+  --textSecondary: #002231;
+  --inputBackground: #fff;
+  --highlightPrimary: #ba68c9;
+  --highlightPrimaryLight: #e0bde6;
+  --highlightSecondary: #14AE5C;
+  --grayPrimary: #6a6a6a;
+}
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu",
+    "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  padding: 0;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
+
+a {
+  cursor: pointer
+}
+
+button {
+  border: none;
+  cursor: pointer;
+}
+
+.loader {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  height: 100;
+  width: 100;
+}
+
+/* Card Create */
+.set-checkbox {
+  margin-left: .25rem;
+}
+
+/* Utilities */
+.d-block {
+  display: block;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.position-relative {
+  position: relative;
+}
+
+.font-14 {
+  font-size: 14px;
+}
+
+
