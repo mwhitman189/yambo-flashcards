@@ -1,9 +1,33 @@
 name: CI/CD Pipeline
 on:
+  push:
+    branches: [main, staging, develop]
   pull_request:
     branches: [main, staging, develop]
 jobs:
+  test-unit:
+    if: github.event_name == 'pull_request'
+    timeout-minutes: 20
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "16.x"
+      - name: Install dependencies
+        run: npm --prefix yambo-front ci
+      - name: Run unit tests
+        run: npm --prefix yambo-front run test
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: unit-report
+          path: unit-report/
+          retention-days: 30
+
   # test-e2e:
+  #   needs: [test-unit]
+  #   if: github.event_name = 'pull_request'
   #   timeout-minutes: 60
   #   runs-on: ubuntu-latest
   #   steps:
@@ -23,25 +47,6 @@ jobs:
   #         name: playwright-report
   #         path: playwright-report/
   #         retention-days: 30
-
-  test-unit:
-    timeout-minutes: 20
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: "16.x"
-      - name: Install dependencies
-        run: npm --prefix yambo-front ci
-      - name: Run unit tests
-        run: npm --prefix yambo-front run test
-      - uses: actions/upload-artifact@v3
-        if: always()
-        with:
-          name: unit-report
-          path: unit-report/
-          retention-days: 30
 
   build-deploy-dev:
     if: github.ref_name == 'develop'
