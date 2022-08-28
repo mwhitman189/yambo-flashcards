@@ -56,6 +56,13 @@ jobs:
       - name: Build
         run: npm --prefix yambo-front run build
 
+      - name: Deploy
+        env:
+          AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_DEV}}
+          AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY_DEV}}
+        run: |
+          aws s3 cp --recursive build s3://dev-japanese-for-developers/app
+
   build-deploy-stg:
     if: github.ref_name == 'staging'
     runs-on: ubuntu-latest
