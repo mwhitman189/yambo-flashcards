@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-import styled from "styled-components";
+// import styled from "styled-components";
 
 import FormUser from "../components/FormUser";
 import FormField from "../components/FormField";
@@ -9,11 +9,11 @@ import FormLabel from "../components/FormLabel";
 import FormInput from "../components/FormInput";
 import Subtext from "../components/Subtext";
 
-const LoginScreenForgotPassword = styled.div`
-   {
-    font-size: 0.7rem;
-  }
-`;
+// const LoginScreenForgotPassword = styled.div`
+//    {
+//     font-size: 0.7rem;
+//   }
+// `;
 
 const Login = () => {
   // const [query, setQuery] = useState("");
