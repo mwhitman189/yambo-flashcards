@@ -53,6 +53,19 @@ const FormUser = ({
   // const [password, setPassword] = useState("");
   let [error, loader]: any = useCallServer(query, email, password, "/");
 
+  function validateEmail(email: any) {
+
+    const validEmail = /\S+@\S+\.\S+/.test(email);
+    if (validEmail) {
+      console.log('email ok');
+      return true;
+    } else {
+      console.error('email is invalid');
+      return false;
+    }
+  }
+
+
   return (
     <FormWrapper>
       {loader && (
@@ -66,7 +79,8 @@ const FormUser = ({
       <Form
         onSubmit={(e) => {
           e.preventDefault();
-          if (checkPassword && password !== confirmPassword) {
+          const validEmail = validateEmail(email);
+          if (checkPassword && password !== confirmPassword && validEmail) {
             setPassword("");
             setConfirmPassword("");
             loader = false;

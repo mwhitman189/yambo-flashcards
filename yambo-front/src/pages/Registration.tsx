@@ -11,51 +11,6 @@ const Registration = () => {
 
   const checkPassword = true;
   const url = `http://localhost:8888/user/signup`;
-  // const [error, setError] = useState<string>("");
-  // const [loader, setLoader] = useState<boolean>(false);
-
-  // const navigate = useNavigate();
-
-  // const registerHandler = async (e: any) => {
-  //   e.preventDefault();
-  //   setLoader(true);
-
-  //   if (password !== confirmPassword) {
-  //     setPassword("");
-  //     setConfirmPassword("");
-  //     setLoader(false);
-  //     setTimeout(() => {
-  //       setError("");
-  //     }, 5000);
-
-  //     return setError("Passwords do not match.");
-  //   }
-
-  //   try {
-  //     const response = await fetch("http://localhost:8888/user/signup", {
-  //       method: "POST",
-  //       headers: {
-  //         "content-type": "application/json;charset=UTF-8"
-  //       },
-  //       body: JSON.stringify({
-  //         email,
-  //         password
-  //       })
-  //     });
-
-  //     if (!response.ok) throw new Error();
-
-  //     navigate("/");
-  //     setLoader(false);
-  //   } catch (err: any) {
-  //     console.error(err);
-  //     setError(err.message);
-  //     setTimeout(() => {
-  //       setLoader(false);
-  //       setError("");
-  //     }, 5000);
-  //   }
-  // };
 
   const FormContents = () => {
     return (
@@ -64,6 +19,7 @@ const Registration = () => {
           labelText="Email"
           type="email"
           id="email"
+          name="email"
           placeholder="Enter email"
           value={email}
           onChange={(e: any) => setEmail(e.target.value)}
@@ -73,6 +29,7 @@ const Registration = () => {
           autoComplete="on"
           type="password"
           id="password"
+          name="name"
           placeholder="Enter password"
           value={password}
           onChange={(e: any) => setPassword(e.target.value)}
