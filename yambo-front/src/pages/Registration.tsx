@@ -23,7 +23,9 @@ const Registration = () => {
           placeholder="Enter email"
           value={email}
           onChange={(e: any) => setEmail(e.target.value)}
-          tabIndex={1}></FormField>
+          tabIndex={2}
+          autoFocus={true}>
+        </FormField>
         <FormField
           labelText="Password"
           autoComplete="on"
@@ -33,99 +35,38 @@ const Registration = () => {
           placeholder="Enter password"
           value={password}
           onChange={(e: any) => setPassword(e.target.value)}
-          tabIndex={1}></FormField>
+          tabIndex={3}></FormField>
         <FormField
           type="password"
           id="confirmPassword"
           placeholder="Confirm password"
           value={confirmPassword}
-          onChange={(e: any) => setConfirmPassword(e.target.value)}></FormField>
+          onChange={(e: any) => setConfirmPassword(e.target.value)}
+          tabIndex={4}></FormField>
       </>
     );
   };
 
   return (
-    <FormUser
-      formTitle="Registration"
-      buttonText="Submit"
-      url={url}
-      email={email}
-      password={password}
-      setPassword={setPassword}
-      setConfirmPassword={setConfirmPassword}
-      confirmPassword={confirmPassword}
-      checkPassword={checkPassword}
-      subtextMessage={
-        <div>
-          Already have an account?<Link to="/login">Login</Link>
-        </div>
-      }
-      formContents={FormContents()}></FormUser>
+    <>
+      <FormUser
+        formTitle="Registration"
+        buttonText="Submit"
+        url={url}
+        email={email}
+        password={password}
+        setPassword={setPassword}
+        setConfirmPassword={setConfirmPassword}
+        confirmPassword={confirmPassword}
+        checkPassword={checkPassword}
+        subtextMessage={
+          <div>
+            Already have an account?<Link to="/login" tabIndex={6}>Login</Link>
+          </div>
+        }
+        formContents={FormContents()}></FormUser>
 
-    // <div className="register-screen">
-    //   {loader && (
-    //     <div>
-    //       <div className="loader">
-    //         <TailSpin color={"#e0bde6"} ariaLabel="loading-indicator" />
-    //       </div>
-    //     </div>
-    //   )}
-    //   <form onSubmit={registerHandler} className="register-screen__form">
-    //     <h3 className="register-screen__title">Register</h3>
-    //     {error && <span className="error-message">{error}</span>}
-    //     <div className="form-group">
-    //       <label className="form-label-sm" htmlFor="email">
-    //         Email:
-    //       </label>
-    //       <input
-    //         autoComplete="on"
-    //         className="auth-input"
-    //         type="email"
-    //         required
-    //         id="email"
-    //         placeholder="Enter email"
-    //         value={email}
-    //         onChange={(e) => setEmail(e.target.value)}
-    //       />
-    //     </div>
-    //     <div className="form-group">
-    //       <label className="form-label-sm" htmlFor="password">
-    //         Password:
-    //       </label>
-    //       <input
-    //         autoComplete="on"
-    //         className="auth-input"
-    //         type="password"
-    //         required
-    //         id="password"
-    //         placeholder="Enter password"
-    //         value={password}
-    //         onChange={(e) => setPassword(e.target.value)}
-    //       />
-    //     </div>
-    //     <div className="form-group">
-    //       <label className="form-label-sm" htmlFor="confirmPassword">
-    //         Confirm Password:
-    //       </label>
-    //       <input
-    //         className="auth-input"
-    //         type="password"
-    //         required
-    //         id="confirmPassword"
-    //         placeholder="Confirm password"
-    //         value={confirmPassword}
-    //         onChange={(e) => setConfirmPassword(e.target.value)}
-    //       />
-    //     </div>
-
-    //     <button type="submit" className="btn btn-primary">
-    //       Register
-    //     </button>
-    //     <span className="register-screen__subtext">
-    //       Already have an account?<Link to="/login">Login</Link>
-    //     </span>
-    //   </form>
-    // </div>
+    </>
   );
 };
 

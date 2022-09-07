@@ -49,22 +49,68 @@ const FormUser = ({
   checkPassword
 }: any) => {
   const [query, setQuery] = useState("");
-  // const [email, setEmail] = useState("");
-  // const [password, setPassword] = useState("");
-  let [error, loader]: any = useCallServer(query, email, password, "/");
+  const [serverError, loader]: any = useCallServer(query, email, password, "/");
+  const [validationError, setValidationError] = useState("");
 
-  function validateEmail(email: any) {
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
 
-    const validEmail = /\S+@\S+\.\S+/.test(email);
-    if (validEmail) {
-      console.log('email ok');
-      return true;
-    } else {
-      console.error('email is invalid');
-      return false;
+    const resetForm = (err: any) => {
+      setPassword("");
+      setConfirmPassword("");
+      setTimeout(() => {
+        setValidationError("");
+      }, 5000);
+      const passwordInput = document.querySelector("#password") as HTMLInputElement;
+      passwordInput.focus();
+      return (setValidationError(err));
+    }
+
+    const validated = true;
+
+    switch (!validated) {
+      case checkPassword:
+        resetForm("Please confirm your password");
+        break;
+
+      case (password === confirmPassword):
+        resetForm("Passwords don't match");
+        break;
+
+      case (/\S+@\S+\.\S+/.test(email)):
+        resetForm("Not a valid email");
+        break;
+
+      case (/[0-9]/.test(password)):
+        console.log(/[0-9]/.test(password));
+        resetForm("Password needs at least one number");
+        break;
+
+      case (/[A-Z]/.test(password)):
+        resetForm("Password needs at least one uppercase letter");
+        break;
+
+      case (/[a-z]/.test(password)):
+        resetForm("Password needs at least one lowercase letter");
+        break;
+
+      case (/[!@#$%^&* ()_ +\-={ }; ':"\\|,.<>?]/.test(password)):
+        resetForm("Password needs at least one special character");
+        break;
+
+      case (password.length > 7):
+        resetForm("Password must be at least 8 characters long");
+        break;
+
+      default:
+        setQuery(url);
     }
   }
 
+  const handleFocus = (location: string) => {
+    const span = document.querySelector(`#${location}`) as HTMLSpanElement || null;
+    span.focus();
+  }
 
   return (
     <FormWrapper>
@@ -77,25 +123,15 @@ const FormUser = ({
       )}
 
       <Form
-        onSubmit={(e) => {
-          e.preventDefault();
-          const validEmail = validateEmail(email);
-          if (checkPassword && password !== confirmPassword && validEmail) {
-            setPassword("");
-            setConfirmPassword("");
-            loader = false;
-            setTimeout(() => {
-              error = "";
-            }, 5000);
-            return (error = "Passwords do not match.");
-          }
-          setQuery(url);
-        }}>
+        onSubmit={handleSubmit}>
+        <span id="formWrapperStart" tabIndex={1} onFocus={() => handleFocus("confirmPassword")}></span>
         <FormTitle>{formTitle}</FormTitle>
-        {error && <span className="error-message">{error}</span>}
+        {serverError || validationError && <span className="error-message">{serverError || validationError}</span>}
         {formContents && formContents}
-        <Button text={buttonText} type="submit"></Button>
+        <Button text={buttonText} type="submit"
+          tabIndex={5}></Button>
         <Subtext subtextMessage={subtextMessage}></Subtext>
+        <span id="formWrapperEnd" onFocus={() => handleFocus("email")} tabIndex={7}></span>
       </Form>
     </FormWrapper>
   );

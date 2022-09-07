@@ -6,6 +6,7 @@ import FormInput from "./FormInput";
 const FormField = ({
   fieldType = "input",
   required = true,
+  autoFocus = false,
   type,
   name,
   id,
@@ -15,7 +16,6 @@ const FormField = ({
   labelText,
   htmlFor,
   onChange,
-  onClick,
   labelFont
 }: any) => {
 
@@ -30,9 +30,10 @@ const FormField = ({
         placeholder={placeholder}
         value={value}
         onChange={onChange}
-        onClick={onClick}
         type={type}
-        id={id}></FormInput>
+        id={id}
+        autoFocus={autoFocus}>
+      </FormInput>
     </div>
   );
 };

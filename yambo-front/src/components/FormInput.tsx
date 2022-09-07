@@ -65,6 +65,7 @@ const Input = styled.input`
 const FormField = ({
   fieldType = "input",
   required = true,
+  autoFocus,
   type,
   name,
   id,
@@ -72,8 +73,8 @@ const FormField = ({
   value,
   tabIndex,
   onChange,
-  onClick
 }: any) => {
+
   return (
     <div>
       {fieldType === "textarea" ? (
@@ -84,8 +85,7 @@ const FormField = ({
           name={name}
           placeholder={placeholder}
           value={value}
-          onChange={onChange}
-          onClick={onClick}></FormTextArea>
+          onChange={onChange}></FormTextArea>
       ) : (
         <Input
           tabIndex={tabIndex}
@@ -94,9 +94,11 @@ const FormField = ({
           placeholder={placeholder}
           value={value}
           onChange={onChange}
-          onClick={onClick}
           type={type}
-          id={id}></Input>
+          id={id}
+          autoFocus={autoFocus}>
+        </Input>
+
       )}
     </div>
   );
