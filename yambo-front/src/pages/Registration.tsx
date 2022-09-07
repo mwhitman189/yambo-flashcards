@@ -61,7 +61,7 @@ const Registration = () => {
         checkPassword={checkPassword}
         subtextMessage={
           <div>
-            Already have an account?<Link to="/login" tabIndex={6}>Login</Link>
+            Already have an account? <Link to="/login" tabIndex={6}>Login</Link>
           </div>
         }
         formContents={FormContents()}></FormUser>

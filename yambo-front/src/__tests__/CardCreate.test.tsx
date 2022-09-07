@@ -7,7 +7,6 @@ import { MOCK_DATA } from "../mocks/MOCK_DATA";
 //Set up msw server
 const server = setupServer(
   rest.post("/getDefinition", (req, res, ctx) => {
-    // console.log(res(ctx.json(MOCK_DATA)));
     return res(ctx.json(MOCK_DATA));
   })
 );

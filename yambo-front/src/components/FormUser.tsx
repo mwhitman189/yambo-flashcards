@@ -35,6 +35,12 @@ const FormTitle = styled.h3`
   }
 `;
 
+const ErrorText = styled.span`
+   {
+    color: red;
+  }
+`;
+
 const FormUser = ({
   formTitle,
   formContents,
@@ -126,7 +132,9 @@ const FormUser = ({
         onSubmit={handleSubmit}>
         <span id="formWrapperStart" tabIndex={1} onFocus={() => handleFocus("confirmPassword")}></span>
         <FormTitle>{formTitle}</FormTitle>
-        {serverError || validationError && <span className="error-message">{serverError || validationError}</span>}
+        {serverError || validationError && <ErrorText data-testid="error-message">
+          {serverError || validationError}
+        </ErrorText>}
         {formContents && formContents}
         <Button text={buttonText} type="submit"
           tabIndex={5}></Button>

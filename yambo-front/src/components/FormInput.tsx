@@ -46,16 +46,18 @@ const Input = styled.input`
   color: ${({ theme }) => theme?.colors?.textSecondary};
   background-color: ${({ theme }) => theme?.colors?.inputBackground};
   font-size: 20px;
-  border: none;
+  border-color: ${({ theme }) => theme?.colors?.grayPrimary};
+  border: 1px solid;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu",
     "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
 
   ::placeholder {
     color: ${({ theme }) => theme?.colors?.textSecondary};
     opacity: 0.5;
+    font-size: 14px;
   }
   &:focus {
-    border: 1px solid ${({ theme }) => theme?.colors?.highlightPrimaryLight};
+    border: 2px solid ${({ theme }) => theme?.colors?.highlightPrimaryLight};
   }
   &:focus::placeholder {
     color: transparent;

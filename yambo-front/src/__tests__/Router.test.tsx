@@ -2,9 +2,9 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom";
-import { BrowserRouter, MemoryRouter } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 
-import App, { LocationDisplay } from "../App";
+import App from "../App";
 
 test("full app rendering/navigating", async () => {
   render(<App />, { wrapper: BrowserRouter });
