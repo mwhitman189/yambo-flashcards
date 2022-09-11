@@ -17,9 +17,8 @@ const Name = styled.div<{ theme: { [key: string]: any } }>``;
 const NumberOfCards = styled.div<{ theme: { [key: string]: any } }>``;
 
 interface ICard {
-  kanji: string | undefined;
-  hiragana: string | undefined;
-  definition: string | undefined;
+  front: string | undefined;
+  back: string | undefined;
 }
 
 interface Props {

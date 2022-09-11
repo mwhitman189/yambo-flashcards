@@ -1,9 +1,9 @@
 :root {
-  --colorPrimary: #ba68c9;
+  /* --colorPrimary: #ba68c9;
   --colorSecondary: #e0bde6;
   --colorDark: #6a6a6a;
   --colorWhite: #f7f7f7;
-  --colorSuccess: #14ae5c;
+  --colorSuccess: #14ae5c; */
 
   --backgroundPrimary: #28546b,
   --backgroundSecondary: #0B3345,
@@ -46,6 +46,12 @@ button {
   z-index: 3;
   height: 100;
   width: 100;
+}
+
+/* Navbar, currently for the Navlink component from react-router-dom*/
+.navlink {
+  color: #fff;
+  text-decoration: none;
 }
 
 /* Card Create */
