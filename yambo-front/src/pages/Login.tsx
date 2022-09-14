@@ -37,7 +37,6 @@ const Login = () => {
           value={password}
           onChange={(e: any) => setPassword(e.target.value)}
           tabIndex={1}></FormInput>
-        {/* <Button type="submit" tabIndex={3} text="Login"></Button> */}
       </>
     );
   };

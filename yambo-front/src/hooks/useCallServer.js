@@ -31,12 +31,12 @@ export default function useCallServer(url, email, password, nav = "/") {
         setTimeout(() => {
           setLoader(false);
           setError("");
+
         }, 5000);
       }
     }
 
     if (url) callServer();
   }, [url]);
-
   return [error, loader];
 }

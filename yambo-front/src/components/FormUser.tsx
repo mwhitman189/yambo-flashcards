@@ -107,6 +107,9 @@ const FormUser = ({
 
       default:
         setQuery(url);
+        setTimeout(() => {
+          setQuery("");
+        }, 1000);
     }
   }
 
@@ -129,7 +132,7 @@ const FormUser = ({
         onSubmit={handleSubmit}>
         <span id="formWrapperStart" tabIndex={1} onFocus={() => handleFocus("confirmPassword")}></span>
         <FormTitle>{formTitle}</FormTitle>
-        {serverError ? <ErrorModal data-testid="error-message" error={serverError}></ErrorModal> : validationError ? <ErrorText data-testid="error-message">{validationError}</ErrorText> : <></> }
+        {serverError ? <ErrorModal data-testid="error-message" error={serverError}></ErrorModal> : validationError ? <ErrorText data-testid="error-message">{validationError}</ErrorText> : <></>}
         {formContents && formContents}
         <Button text={buttonText} type="submit"
           tabIndex={5}></Button>
