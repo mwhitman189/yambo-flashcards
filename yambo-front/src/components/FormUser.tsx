@@ -4,6 +4,7 @@ import styled from "styled-components";
 
 import Button from "./Button";
 import Subtext from "./Subtext";
+import ErrorModal from "../components/ErrorModal";
 
 import useCallServer from "../hooks/useCallServer";
 
@@ -21,6 +22,7 @@ const FormWrapper = styled.div`
 
 const Form = styled.form`
    {
+    position: relative;
     width: 380px;
     padding: 1.5rem;
     box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.2);
@@ -127,9 +129,7 @@ const FormUser = ({
         onSubmit={handleSubmit}>
         <span id="formWrapperStart" tabIndex={1} onFocus={() => handleFocus("confirmPassword")}></span>
         <FormTitle>{formTitle}</FormTitle>
-        {serverError || validationError && <ErrorText data-testid="error-message">
-          {serverError || validationError}
-        </ErrorText>}
+        {serverError ? <ErrorModal data-testid="error-message" error={serverError}></ErrorModal> : validationError ? <ErrorText data-testid="error-message">{validationError}</ErrorText> : <></> }
         {formContents && formContents}
         <Button text={buttonText} type="submit"
           tabIndex={5}></Button>

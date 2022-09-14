@@ -27,7 +27,7 @@ export default function useCallServer(url, email, password, nav = "/") {
         setLoader(false);
       } catch (err) {
         console.error(err.message);
-        setError(err.message);
+        setError("Something went wrong trying to connect to the server. Please check your connection and try again.");
         setTimeout(() => {
           setLoader(false);
           setError("");

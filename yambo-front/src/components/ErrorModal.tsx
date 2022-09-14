@@ -15,6 +15,8 @@ const StyleErrorModal = styled.div<{ theme: { [key: string]: any }; cardView?: s
   border-radius: 8px;
   text-align: center;
   z-index: 10;
+
+  
 `;
 
 const NotFoundHeader = styled.h2`
