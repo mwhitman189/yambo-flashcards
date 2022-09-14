@@ -21,12 +21,12 @@ export default function useCallServer(url, email, password, nav = "/") {
           })
         });
 
-        if (!response.ok) throw new Error();
+        if (!response.ok) throw new Error("Something went wrong trying to connect to the server. Please check your connection and try again.");
 
         navigate(nav);
         setLoader(false);
       } catch (err) {
-        console.error(err);
+        console.error(err.message);
         setError(err.message);
         setTimeout(() => {
           setLoader(false);

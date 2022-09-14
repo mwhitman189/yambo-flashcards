@@ -3,9 +3,9 @@ import styled from "styled-components";
 import { TailSpin } from "react-loader-spinner";
 
 import FormField from "./FormField";
-
 import Header from "./Header";
 import Deck from "./Deck";
+import ErrorModal from "./ErrorModal";
 
 interface Props {
   cardView: string;
@@ -19,26 +19,6 @@ const CardCreateContainer = styled.div<{ theme: { [key: string]: any }; cardView
   margin: 0 1.25rem;
   position: relative;
   padding-bottom: 8rem;
-`;
-
-const NotFoundMessage = styled.div<{ theme: { [key: string]: any }; cardView?: string }>`
-  position: absolute;
-  width: 100%;
-  padding: 1.5rem;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: ${({ theme }) => theme?.colors?.grayPrimary};
-  color: ${({ theme }) => theme?.colors?.textPrimary};
-  border: 2px solid;
-  border-color: ${({ theme }) => theme?.colors?.highlightPrimary};
-  border-radius: 8px;
-  text-align: center;
-  z-index: 10;
-`;
-
-const NotFoundHeader = styled.h2`
-  margin: 0;
 `;
 
 const Text = styled.p`
@@ -349,10 +329,8 @@ const CardCreate = ({ url }: any) => {
           </InputWrapper>
           <div className="position-relative">
             {error && (
-              <NotFoundMessage>
-                <NotFoundHeader>ゴメンね</NotFoundHeader>
-                <div>{error}</div>
-              </NotFoundMessage>
+              <ErrorModal error={error}>
+              </ErrorModal>
             )}
             <FormField
               fieldType="textarea"
