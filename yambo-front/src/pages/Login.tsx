@@ -1,22 +1,13 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-import styled from "styled-components";
-
 import FormUser from "../components/FormUser";
 import FormField from "../components/FormField";
 import FormLabel from "../components/FormLabel";
 import FormInput from "../components/FormInput";
 import Subtext from "../components/Subtext";
 
-const LoginScreenForgotPassword = styled.div`
-   {
-    font-size: 0.7rem;
-  }
-`;
-
 const Login = () => {
-  // const [query, setQuery] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -58,6 +49,7 @@ const Login = () => {
       url={url}
       email={email}
       password={password}
+      setPassword={setPassword}
       subtextMessage={
         <div>
           Don&apos;t have an account?<Link to="/registration"> Register</Link>

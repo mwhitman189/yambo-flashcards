@@ -9,7 +9,6 @@ const Registration = () => {
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const checkPassword = true;
   const url = `http://localhost:8888/user/signup`;
 
   const FormContents = () => {
@@ -58,7 +57,6 @@ const Registration = () => {
         setPassword={setPassword}
         setConfirmPassword={setConfirmPassword}
         confirmPassword={confirmPassword}
-        checkPassword={checkPassword}
         subtextMessage={
           <div>
             Already have an account? <Link to="/login" tabIndex={6}>Login</Link>

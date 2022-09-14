@@ -52,7 +52,6 @@ const FormUser = ({
   password,
   confirmPassword,
   setConfirmPassword,
-  checkPassword
 }: any) => {
   const [query, setQuery] = useState("");
   const [serverError, loader]: any = useCallServer(query, email, password, "/");
@@ -63,7 +62,7 @@ const FormUser = ({
 
     const resetForm = (err: any) => {
       setPassword("");
-      setConfirmPassword("");
+      setConfirmPassword && setConfirmPassword("");
       setTimeout(() => {
         setValidationError("");
       }, 5000);
@@ -72,17 +71,13 @@ const FormUser = ({
       return (setValidationError(err));
     }
 
+    if (confirmPassword && password !== confirmPassword) {
+      resetForm("Passwords don't match");
+    }
+
     const validated = true;
 
     switch (!validated) {
-      case checkPassword:
-        resetForm("Please confirm your password");
-        break;
-
-      case (password === confirmPassword):
-        resetForm("Passwords don't match");
-        break;
-
       case (/\S+@\S+\.\S+/.test(email)):
         resetForm("Not a valid email");
         break;
