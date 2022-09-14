@@ -21,17 +21,30 @@ export default function useCallServer(url, email, password, nav = "/") {
           })
         });
 
-        if (!response.ok) throw new Error("Something went wrong trying to connect to the server. Please check your connection and try again.");
+        if (!response.ok) {
+
+          let errorMessage;
+
+          if (response.status === 400) {
+            errorMessage = "Either your email or password is inccorect. Please try again.";
+
+            const focusElement = document.querySelector("#email");
+            focusElement.focus();
+          } else {
+            errorMessage = "Something went wrong trying to connect to the server. Please check your connection and try again.";
+          }
+
+          throw new Error(errorMessage);
+        }
 
         navigate(nav);
         setLoader(false);
       } catch (err) {
         console.error(err.message);
-        setError("Something went wrong trying to connect to the server. Please check your connection and try again.");
+        setError(err.message);
         setTimeout(() => {
           setLoader(false);
           setError("");
-
         }, 5000);
       }
     }
