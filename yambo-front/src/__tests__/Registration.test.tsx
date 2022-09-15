@@ -5,9 +5,9 @@ import validationTest from "../helpers/validationTest";
 
 describe("Registration", () => {
 
-    const renderReg = (email?: string, password?: string, confirm?: string) => {
+  const renderReg = (email?: string, password?: string, confirm?: string) => {
     render(<BrowserRouter><Registration /></BrowserRouter>);
-    validationTest(email, password, confirm);
+    validationTest("Submit", email, password, confirm);
   }
 
   it("should show an error if email is invalid", async () => {

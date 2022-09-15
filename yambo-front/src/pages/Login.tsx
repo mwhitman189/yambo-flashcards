@@ -7,11 +7,9 @@ import FormLabel from "../components/FormLabel";
 import FormInput from "../components/FormInput";
 import Subtext from "../components/Subtext";
 
-const Login = () => {
+const Login = ({ url }: any) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  const url = `http://localhost:8888/user/login`;
 
   const FormContents = () => {
     return (
