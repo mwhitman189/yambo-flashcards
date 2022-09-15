@@ -54,18 +54,29 @@ interface ICard {
 
 interface Props {
   cards: ICard[];
+  setCards: (cards: any) => void;
 }
 
-const Deck = ({ cards }: Props) => {
+const Deck = ({ cards, setCards }: Props) => {
+
+  const handleDelete = (index: number) => {
+    setCards((prevCards: ICard[]) => {
+      return prevCards.filter((e: any, idx: number) => {
+        return idx !== index;
+      });
+    });
+  }
+
+  console.log(cards);
+
   return (
     <DeckWrapper>
-
       <DeckHeader>
         <Name>My Deck</Name>
         <NumberOfCards>{cards.length}</NumberOfCards>
       </DeckHeader>
       <List>
-        {cards.map((card, index) => {
+        {cards.map((card, index: number) => {
 
           const { front } = card;
           const frontTruncated = front?.slice(0, 20) + "...";
@@ -75,7 +86,9 @@ const Deck = ({ cards }: Props) => {
               <div>{frontTruncated}</div>
               <IconWrapper>
                 <EditIcon></EditIcon>
-                <DeleteIcon></DeleteIcon>
+                <button type="button" onClick={() => handleDelete(index)}>
+                  <DeleteIcon></DeleteIcon>
+                </button>
               </IconWrapper>
             </Item>
           )

@@ -404,7 +404,7 @@ const CardCreate = ({ url }: any) => {
             )}
           </CardMain>
         </CardContainer>
-        <Deck cards={cards}></Deck>
+        <Deck setCards={setCards} cards={cards}></Deck>
       </CardCreateContainer>
     </>
   );
