@@ -4,12 +4,10 @@ import { Link } from "react-router-dom";
 import FormUser from "../components/FormUser";
 import FormField from "../components/FormField";
 
-const Registration = () => {
+const Registration = ({ url }: any) => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState("");
-
-  const url = `http://localhost:8888/user/signup`;
 
   const FormContents = () => {
     return (
