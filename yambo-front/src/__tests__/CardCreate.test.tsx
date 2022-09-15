@@ -72,11 +72,11 @@ describe("CardCreate", () => {
     expect(inputElement.value).toBe("偉い");
   });
 
-  it("should change 'Preview' to 'Save | Clear' when anything is typed into the input", async () => {
+  it("should change 'Preview' to 'Add Card | Clear' when anything is typed into the input", async () => {
     render(<CardCreate />);
     const inputElement = screen.getByPlaceholderText(/例/i) as HTMLInputElement;
     fireEvent.change(inputElement, { target: { value: "偉い" } });
-    expect(screen.getByText(/Save/i)).toBeInTheDocument();
+    expect(screen.getByText(/Add Card/i)).toBeInTheDocument();
   });
 
   it("should change 'Save | Clear' to 'Preview' when the input is empty", async () => {

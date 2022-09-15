@@ -150,6 +150,8 @@ const CardTop = styled.div<{ theme: { [key: string]: any }; cardView?: string }>
   display: flex;
   align-items: center;
   flex: 35%;
+  overflow-x: auto;
+  max-width: 100%;
 `;
 
 const CardBottom = styled.div<{ theme: { [key: string]: any }; cardView?: string }>`
@@ -171,6 +173,7 @@ const Divider = styled.div<{ theme: { [key: string]: any }; cardView?: string }>
 
 const HiraganaSection = styled.div<{ theme: { [key: string]: any }; cardView?: string }>`
   margin-bottom: 0.5rem;
+  overflow-x: scroll;
 `;
 
 const DefinitionSection = styled.div<{ theme: { [key: string]: any }; cardView?: string }>`
@@ -368,7 +371,7 @@ const CardCreate = ({ url }: any) => {
           <CardControls>
             {front ? (
               <div>
-                <CardControlLinks onClick={handleSave}>Save</CardControlLinks>
+                <CardControlLinks onClick={handleSave}>Add Card</CardControlLinks>
                 <Pipe> | </Pipe>
                 <CardControlLinks onClick={handleClear}>Clear</CardControlLinks>
               </div>

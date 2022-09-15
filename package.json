@@ -19,7 +19,8 @@
   },
   "homepage": "https://github.com/mwhitman189/yambo-flashcards#readme",
   "dependencies": {
-    "react-loader-spinner": "^5.1.5"
+    "react-loader-spinner": "^5.1.5",
+    "styled-components": "^5.3.5"
   },
   "devDependencies": {
     "concurrently": "^7.4.0"
