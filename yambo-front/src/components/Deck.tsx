@@ -99,7 +99,7 @@ const Deck = ({ card, cards, setCards, setCard }: Props) => {
 
   return (
     <DeckWrapper>
-      {card.tempIndex !== undefined && <Overlay></Overlay>}
+      {card?.tempIndex !== undefined && <Overlay></Overlay>}
       <div>
         <DeckHeader>
           <Name>My Deck</Name>
