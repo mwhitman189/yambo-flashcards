@@ -93,6 +93,7 @@ const CardControls = styled.div<{ theme: { [key: string]: any }; cardView?: stri
   margin-left: 20px;
   color: ${({ theme }) => theme?.colors?.textPrimary};
   font-size: 18px;
+  display: flex;
 `;
 
 const CardControlLinks = styled.a`
@@ -104,8 +105,16 @@ const CardControlLinks = styled.a`
   }
 `;
 
+const CardControlDisabled = styled.a`
+  font-weight: 600;
+  text-decoration: none;
+  color: ${({ theme }) => theme?.colors?.grayPrimary};
+  cursor: default;
+`;
+
 const Pipe = styled.span`
   color: ${({ theme }) => theme?.colors?.grayPrimary};
+  margin: 0 4px;
 `;
 
 const TabFront = styled.button<Props>`
@@ -254,6 +263,15 @@ const CardCreate = ({ url }: any) => {
   };
 
   const handleClear = () => {
+    //Handle cards pulled from the deck to be edited
+    if (card.tempIndex !== undefined) {
+      setCards((prevCards: ICard[]) => {
+        return prevCards.filter((e: any, idx: number) => {
+          return idx !== card.tempIndex;
+        });
+      });
+    }
+
     setCard({
       front: "",
       back: "",
@@ -388,13 +406,16 @@ const CardCreate = ({ url }: any) => {
           <CardControls>
             {front ? (
               <div>
-                <CardControlLinks onClick={handleSave}>Add Card</CardControlLinks>
+                <CardControlLinks onClick={handleSave}>{card.tempIndex !== undefined ? "Save" : "Add Card"}</CardControlLinks>
                 <Pipe> | </Pipe>
-                <CardControlLinks onClick={handleClear}>Clear</CardControlLinks>
+                <CardControlLinks onClick={handleClear}>{card.tempIndex !== undefined ? "Delete" : "Clear"}</CardControlLinks>
               </div>
-            ) : (
+            ) : card.tempIndex !== undefined ? (<div><CardControlDisabled>Save</CardControlDisabled>
+              <Pipe> | </Pipe>
+              <CardControlLinks onClick={handleClear}>Delete</CardControlLinks>
+            </div>) :
               "Preview"
-            )}
+            }
           </CardControls>
           <TabFront tabIndex={3} cardView={cardView} onClick={() => setCardView("front")}>
             front
@@ -421,7 +442,7 @@ const CardCreate = ({ url }: any) => {
             )}
           </CardMain>
         </CardContainer>
-        <Deck setCard={setCard} setCards={setCards} cards={cards}></Deck>
+        <Deck card={card} setCard={setCard} setCards={setCards} cards={cards}></Deck>
       </CardCreateContainer>
     </>
   );

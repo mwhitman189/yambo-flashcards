@@ -55,11 +55,13 @@ interface ICard {
 
 interface Props {
   cards: ICard[];
+  card: ICard;
   setCards: (cards: any) => void;
   setCard: (card: any) => void;
 }
 
-const Deck = ({ cards, setCards, setCard }: Props) => {
+const Deck = ({ card, cards, setCards, setCard }: Props) => {
+
 
   const handleDelete = (index: number) => {
     setCards((prevCards: ICard[]) => {
