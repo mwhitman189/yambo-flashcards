@@ -183,12 +183,14 @@ const DefinitionSection = styled.div<{ theme: { [key: string]: any }; cardView?:
 interface ICard {
   front: string | undefined;
   back: string | undefined;
+  tempIndex: number | undefined
 }
 
 const CardCreate = ({ url }: any) => {
   const [card, setCard] = useState<ICard>({
     front: "",
-    back: ""
+    back: "",
+    tempIndex: undefined
   });
 
   const [cardPlaceholder, setCardPlaceholder] = useState<string | undefined>("例");
@@ -223,6 +225,16 @@ const CardCreate = ({ url }: any) => {
   };
 
   const handleSave = () => {
+
+    //Handle cards pulled from the deck to be edited
+    if (card.tempIndex !== undefined) {
+      const cardsClone = [...cards];
+      cardsClone.splice(card.tempIndex, 1, card);
+      console.log(cardsClone);
+      setCards(cardsClone);
+      return;
+    }
+
     if (front) {
       const newCard = card;
       setCards((prevValue) => {
@@ -231,7 +243,8 @@ const CardCreate = ({ url }: any) => {
 
       setCard({
         front: "",
-        back: ""
+        back: "",
+        tempIndex: undefined
       });
 
       setDisableTab(!disableTab);
@@ -243,7 +256,8 @@ const CardCreate = ({ url }: any) => {
   const handleClear = () => {
     setCard({
       front: "",
-      back: ""
+      back: "",
+      tempIndex: undefined
     });
     setDisableTab(!disableTab);
     setCardPlaceholder("Add a card...");
@@ -292,7 +306,8 @@ const CardCreate = ({ url }: any) => {
           setError("We couldn't find that word. Please try again.");
           setCard({
             front: "",
-            back: ""
+            back: "",
+            tempIndex: undefined
           });
           setCardPlaceholder("Add a card...");
           setTimeout(() => {
@@ -312,6 +327,8 @@ const CardCreate = ({ url }: any) => {
     };
     fetchData();
   }
+
+  console.log(card);
 
   return (
     <>
@@ -404,7 +421,7 @@ const CardCreate = ({ url }: any) => {
             )}
           </CardMain>
         </CardContainer>
-        <Deck setCards={setCards} cards={cards}></Deck>
+        <Deck setCard={setCard} setCards={setCards} cards={cards}></Deck>
       </CardCreateContainer>
     </>
   );
