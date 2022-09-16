@@ -45,7 +45,7 @@ const Item = styled.li<{ theme: { [key: string]: any } }>`
   }
   `
 
-const IconWrapper = styled.div<{ theme: { [key: string]: any } }>`
+const IconWrapper = styled.button<{ theme: { [key: string]: any } }>`
   width: 20%;
   display: flex;
   justify-content: space-between;
@@ -53,6 +53,10 @@ const IconWrapper = styled.div<{ theme: { [key: string]: any } }>`
   svg {
     font-size: 24px;
   }
+  `
+
+const IconButton = styled.button<{ theme: { [key: string]: any } }>`
+  background: transparent;
   `
 
 const Name = styled.div<{ theme: { [key: string]: any } }>``;
@@ -111,10 +115,10 @@ const Deck = ({ card, cards, setCards, setCard }: Props) => {
               <Item key={index}>
                 <div>{frontTruncated}</div>
                 <IconWrapper>
-                  <button type="button" onClick={() => handleEdit(index, front, back)}><EditIcon></EditIcon></button>
-                  <button type="button" onClick={() => handleDelete(index)}>
+                  <IconButton type="button" onClick={() => handleEdit(index, front, back)}><EditIcon></EditIcon></IconButton>
+                  <IconButton type="button" onClick={() => handleDelete(index)}>
                     <DeleteIcon></DeleteIcon>
-                  </button>
+                  </IconButton>
                 </IconWrapper>
               </Item>
             )
