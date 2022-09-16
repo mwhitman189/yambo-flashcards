@@ -1,19 +1,31 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 const DeckWrapper = styled.div<{ theme: { [key: string]: any } }>`
   background-color: ${({ theme }) => theme?.colors?.inputBackground};
-    max-width: 20rem;
+  max-width: 20rem;
   margin: 0 auto;
   padding: 1rem;
+  position: relative;
 `;
+
+const Overlay = styled.div<{ theme: { [key: string]: any } }>`
+  background-color: ${({ theme }) => theme?.colors?.grayPrimary};
+  position: absolute;
+  z-index: 999;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  opacity: .5;
+`;
+
 
 const DeckHeader = styled.div<{ theme: { [key: string]: any } }>`
   display: flex;
   justify-content: space-between;
-
   font-size: 18px;
   box-sizing: border-box;
 `;
@@ -61,8 +73,6 @@ interface Props {
 }
 
 const Deck = ({ card, cards, setCards, setCard }: Props) => {
-
-
   const handleDelete = (index: number) => {
     setCards((prevCards: ICard[]) => {
       return prevCards.filter((e: any, idx: number) => {
@@ -85,29 +95,32 @@ const Deck = ({ card, cards, setCards, setCard }: Props) => {
 
   return (
     <DeckWrapper>
-      <DeckHeader>
-        <Name>My Deck</Name>
-        <NumberOfCards>{cards.length}</NumberOfCards>
-      </DeckHeader>
-      <List>
-        {cards.map((card, index: number) => {
+      {card.tempIndex !== undefined && <Overlay></Overlay>}
+      <div>
+        <DeckHeader>
+          <Name>My Deck</Name>
+          <NumberOfCards>{cards.length}</NumberOfCards>
+        </DeckHeader>
+        <List>
+          {cards.map((card, index: number) => {
 
-          const { front, back } = card;
-          const frontTruncated = front?.slice(0, 20) + "...";
+            const { front, back } = card;
+            const frontTruncated = front?.slice(0, 20) + "...";
 
-          return (
-            <Item key={index}>
-              <div>{frontTruncated}</div>
-              <IconWrapper>
-                <button type="button" onClick={() => handleEdit(index, front, back)}><EditIcon></EditIcon></button>
-                <button type="button" onClick={() => handleDelete(index)}>
-                  <DeleteIcon></DeleteIcon>
-                </button>
-              </IconWrapper>
-            </Item>
-          )
-        })}
-      </List>
+            return (
+              <Item key={index}>
+                <div>{frontTruncated}</div>
+                <IconWrapper>
+                  <button type="button" onClick={() => handleEdit(index, front, back)}><EditIcon></EditIcon></button>
+                  <button type="button" onClick={() => handleDelete(index)}>
+                    <DeleteIcon></DeleteIcon>
+                  </button>
+                </IconWrapper>
+              </Item>
+            )
+          })}
+        </List>
+      </div>
     </DeckWrapper>
   );
 };

@@ -182,7 +182,7 @@ const Divider = styled.div<{ theme: { [key: string]: any }; cardView?: string }>
 
 const HiraganaSection = styled.div<{ theme: { [key: string]: any }; cardView?: string }>`
   margin-bottom: 0.5rem;
-  overflow-x: scroll;
+  overflow-x: auto;
 `;
 
 const DefinitionSection = styled.div<{ theme: { [key: string]: any }; cardView?: string }>`
@@ -239,8 +239,14 @@ const CardCreate = ({ url }: any) => {
     if (card.tempIndex !== undefined) {
       const cardsClone = [...cards];
       cardsClone.splice(card.tempIndex, 1, card);
-      console.log(cardsClone);
       setCards(cardsClone);
+
+      setCard({
+        front: "",
+        back: "",
+        tempIndex: undefined
+      });
+
       return;
     }
 
