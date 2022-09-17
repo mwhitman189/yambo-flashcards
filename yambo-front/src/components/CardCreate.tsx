@@ -3,9 +3,9 @@ import styled from "styled-components";
 import { TailSpin } from "react-loader-spinner";
 
 import FormField from "./FormField";
-
 import Header from "./Header";
 import Deck from "./Deck";
+import ErrorModal from "./ErrorModal";
 
 interface Props {
   cardView: string;
@@ -19,26 +19,6 @@ const CardCreateContainer = styled.div<{ theme: { [key: string]: any }; cardView
   margin: 0 1.25rem;
   position: relative;
   padding-bottom: 8rem;
-`;
-
-const NotFoundMessage = styled.div<{ theme: { [key: string]: any }; cardView?: string }>`
-  position: absolute;
-  width: 100%;
-  padding: 1.5rem;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: ${({ theme }) => theme?.colors?.grayPrimary};
-  color: ${({ theme }) => theme?.colors?.textPrimary};
-  border: 2px solid;
-  border-color: ${({ theme }) => theme?.colors?.highlightPrimary};
-  border-radius: 8px;
-  text-align: center;
-  z-index: 10;
-`;
-
-const NotFoundHeader = styled.h2`
-  margin: 0;
 `;
 
 const Text = styled.p`
@@ -113,6 +93,7 @@ const CardControls = styled.div<{ theme: { [key: string]: any }; cardView?: stri
   margin-left: 20px;
   color: ${({ theme }) => theme?.colors?.textPrimary};
   font-size: 18px;
+  display: flex;
 `;
 
 const CardControlLinks = styled.a`
@@ -124,8 +105,16 @@ const CardControlLinks = styled.a`
   }
 `;
 
+const CardControlDisabled = styled.a`
+  font-weight: 600;
+  text-decoration: none;
+  color: ${({ theme }) => theme?.colors?.grayPrimary};
+  cursor: default;
+`;
+
 const Pipe = styled.span`
   color: ${({ theme }) => theme?.colors?.grayPrimary};
+  margin: 0 4px;
 `;
 
 const TabFront = styled.button<Props>`
@@ -170,6 +159,8 @@ const CardTop = styled.div<{ theme: { [key: string]: any }; cardView?: string }>
   display: flex;
   align-items: center;
   flex: 35%;
+  overflow-x: auto;
+  max-width: 100%;
 `;
 
 const CardBottom = styled.div<{ theme: { [key: string]: any }; cardView?: string }>`
@@ -191,6 +182,7 @@ const Divider = styled.div<{ theme: { [key: string]: any }; cardView?: string }>
 
 const HiraganaSection = styled.div<{ theme: { [key: string]: any }; cardView?: string }>`
   margin-bottom: 0.5rem;
+  overflow-x: auto;
 `;
 
 const DefinitionSection = styled.div<{ theme: { [key: string]: any }; cardView?: string }>`
@@ -200,12 +192,14 @@ const DefinitionSection = styled.div<{ theme: { [key: string]: any }; cardView?:
 interface ICard {
   front: string | undefined;
   back: string | undefined;
+  tempIndex: number | undefined
 }
 
 const CardCreate = ({ url }: any) => {
   const [card, setCard] = useState<ICard>({
     front: "",
-    back: ""
+    back: "",
+    tempIndex: undefined
   });
 
   const [cardPlaceholder, setCardPlaceholder] = useState<string | undefined>("例");
@@ -240,6 +234,22 @@ const CardCreate = ({ url }: any) => {
   };
 
   const handleSave = () => {
+
+    //Handle cards pulled from the deck to be edited
+    if (card.tempIndex !== undefined) {
+      const cardsClone = [...cards];
+      cardsClone.splice(card.tempIndex, 1, card);
+      setCards(cardsClone);
+
+      setCard({
+        front: "",
+        back: "",
+        tempIndex: undefined
+      });
+
+      return;
+    }
+
     if (front) {
       const newCard = card;
       setCards((prevValue) => {
@@ -248,7 +258,8 @@ const CardCreate = ({ url }: any) => {
 
       setCard({
         front: "",
-        back: ""
+        back: "",
+        tempIndex: undefined
       });
 
       setDisableTab(!disableTab);
@@ -258,9 +269,19 @@ const CardCreate = ({ url }: any) => {
   };
 
   const handleClear = () => {
+    //Handle cards pulled from the deck to be edited
+    if (card.tempIndex !== undefined) {
+      setCards((prevCards: ICard[]) => {
+        return prevCards.filter((e: any, idx: number) => {
+          return idx !== card.tempIndex;
+        });
+      });
+    }
+
     setCard({
       front: "",
-      back: ""
+      back: "",
+      tempIndex: undefined
     });
     setDisableTab(!disableTab);
     setCardPlaceholder("Add a card...");
@@ -309,7 +330,8 @@ const CardCreate = ({ url }: any) => {
           setError("We couldn't find that word. Please try again.");
           setCard({
             front: "",
-            back: ""
+            back: "",
+            tempIndex: undefined
           });
           setCardPlaceholder("Add a card...");
           setTimeout(() => {
@@ -330,6 +352,8 @@ const CardCreate = ({ url }: any) => {
     fetchData();
   }
 
+  console.log(card);
+
   return (
     <>
       <Header title="Welcome to Yambo!" />
@@ -349,10 +373,8 @@ const CardCreate = ({ url }: any) => {
           </InputWrapper>
           <div className="position-relative">
             {error && (
-              <NotFoundMessage>
-                <NotFoundHeader>ゴメンね</NotFoundHeader>
-                <div>{error}</div>
-              </NotFoundMessage>
+              <ErrorModal error={error}>
+              </ErrorModal>
             )}
             <FormField
               fieldType="textarea"
@@ -390,13 +412,16 @@ const CardCreate = ({ url }: any) => {
           <CardControls>
             {front ? (
               <div>
-                <CardControlLinks onClick={handleSave}>Save</CardControlLinks>
+                <CardControlLinks onClick={handleSave}>{card.tempIndex !== undefined ? "Save" : "Add Card"}</CardControlLinks>
                 <Pipe> | </Pipe>
-                <CardControlLinks onClick={handleClear}>Clear</CardControlLinks>
+                <CardControlLinks onClick={handleClear}>{card.tempIndex !== undefined ? "Delete" : "Clear"}</CardControlLinks>
               </div>
-            ) : (
+            ) : card.tempIndex !== undefined ? (<div><CardControlDisabled>Save</CardControlDisabled>
+              <Pipe> | </Pipe>
+              <CardControlLinks onClick={handleClear}>Delete</CardControlLinks>
+            </div>) :
               "Preview"
-            )}
+            }
           </CardControls>
           <TabFront tabIndex={3} cardView={cardView} onClick={() => setCardView("front")}>
             front
@@ -423,7 +448,7 @@ const CardCreate = ({ url }: any) => {
             )}
           </CardMain>
         </CardContainer>
-        <Deck cards={cards}></Deck>
+        <Deck card={card} setCard={setCard} setCards={setCards} cards={cards}></Deck>
       </CardCreateContainer>
     </>
   );

@@ -35,6 +35,9 @@ export const LocationDisplay = () => {
   return <div data-testid="location-display">{location.pathname}</div>;
 };
 
+const loginUrl = `http://localhost:8888/user/login`;
+const registrationUrl = `http://localhost:8888/user/signup`;
+
 function App() {
   return (
     <ThemeProvider theme={theme1}>
@@ -44,8 +47,8 @@ function App() {
           <Route path="/" element={<CardCreate url={url} />} />
           <Route path="*" element={<CardCreate url={url} to="/" />} />
           <Route path="/create" element={<CardCreate url={url} />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/registration" element={<Registration />} />
+          <Route path="/login" element={<Login url={loginUrl} />} />
+          <Route path="/registration" element={<Registration url={registrationUrl} />} />
         </Routes>
       </AppContainer>
     </ThemeProvider>

@@ -29,6 +29,7 @@ const loginUser = async (req, res) => {
     const token = createToken(user._id);
 
     res.status(200).send({ user: user.scrub(), token });
+
   } catch (e) {
     res.status(400).send({ error: "Error logging in user" });
   }

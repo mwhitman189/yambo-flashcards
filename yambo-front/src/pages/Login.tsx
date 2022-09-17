@@ -1,26 +1,16 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-// import styled from "styled-components";
-
 import FormUser from "../components/FormUser";
 import FormField from "../components/FormField";
 import FormLabel from "../components/FormLabel";
 import FormInput from "../components/FormInput";
 import Subtext from "../components/Subtext";
 
-// const LoginScreenForgotPassword = styled.div`
-//    {
-//     font-size: 0.7rem;
-//   }
-// `;
+const Login = ({ url }: any) => {
 
-const Login = () => {
-  // const [query, setQuery] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  const url = `http://localhost:8888/user/login`;
 
   const FormContents = () => {
     return (
@@ -46,7 +36,6 @@ const Login = () => {
           value={password}
           onChange={(e: any) => setPassword(e.target.value)}
           tabIndex={1}></FormInput>
-        {/* <Button type="submit" tabIndex={3} text="Login"></Button> */}
       </>
     );
   };
@@ -58,6 +47,7 @@ const Login = () => {
       url={url}
       email={email}
       password={password}
+      setPassword={setPassword}
       subtextMessage={
         <div>
           Don&apos;t have an account?<Link to="/registration"> Register</Link>

@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "concurrently \"cd yambo-front && npm start\" \"cd yambo-back && npm start\""
   },
   "repository": {
     "type": "git",
@@ -18,6 +19,10 @@
   },
   "homepage": "https://github.com/mwhitman189/yambo-flashcards#readme",
   "dependencies": {
-    "react-loader-spinner": "^5.1.5"
+    "react-loader-spinner": "^5.1.5",
+    "styled-components": "^5.3.5"
+  },
+  "devDependencies": {
+    "concurrently": "^7.4.0"
   }
 }
