@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const DeckWrapper = styled.div<{ theme: { [key: string]: any } }>`
   background-color: ${({ theme }) => theme?.colors?.inputBackground};
@@ -19,9 +19,8 @@ const Overlay = styled.div<{ theme: { [key: string]: any } }>`
   left: 0;
   bottom: 0;
   right: 0;
-  opacity: .5;
+  opacity: 0.5;
 `;
-
 
 const DeckHeader = styled.div<{ theme: { [key: string]: any } }>`
   display: flex;
@@ -34,7 +33,7 @@ const List = styled.ul<{ theme: { [key: string]: any } }>`
   margin: 0;
   padding: 0;
   list-style-type: none;
-  `
+`;
 
 const Item = styled.li<{ theme: { [key: string]: any } }>`
   display: flex;
@@ -43,7 +42,7 @@ const Item = styled.li<{ theme: { [key: string]: any } }>`
   svg {
     font-size: 24px;
   }
-  `
+`;
 
 const IconWrapper = styled.button<{ theme: { [key: string]: any } }>`
   width: 20%;
@@ -53,11 +52,11 @@ const IconWrapper = styled.button<{ theme: { [key: string]: any } }>`
   svg {
     font-size: 24px;
   }
-  `
+`;
 
 const IconButton = styled.button<{ theme: { [key: string]: any } }>`
   background: transparent;
-  `
+`;
 
 const Name = styled.div<{ theme: { [key: string]: any } }>``;
 
@@ -83,7 +82,7 @@ const Deck = ({ card, cards, setCards, setCard }: Props) => {
         return idx !== index;
       });
     });
-  }
+  };
 
   const handleEdit = (index: number, front: any, back?: any) => {
     setCard(() => {
@@ -91,9 +90,9 @@ const Deck = ({ card, cards, setCards, setCard }: Props) => {
         front,
         back,
         tempIndex: index
-      }
-    })
-  }
+      };
+    });
+  };
 
   console.log(cards);
 
@@ -107,7 +106,6 @@ const Deck = ({ card, cards, setCards, setCard }: Props) => {
         </DeckHeader>
         <List>
           {cards.map((card, index: number) => {
-
             const { front, back } = card;
             const frontTruncated = front?.slice(0, 20) + "...";
 
@@ -115,13 +113,15 @@ const Deck = ({ card, cards, setCards, setCard }: Props) => {
               <Item key={index}>
                 <div>{frontTruncated}</div>
                 <IconWrapper>
-                  <IconButton type="button" onClick={() => handleEdit(index, front, back)}><EditIcon></EditIcon></IconButton>
+                  <IconButton type="button" onClick={() => handleEdit(index, front, back)}>
+                    <EditIcon></EditIcon>
+                  </IconButton>
                   <IconButton type="button" onClick={() => handleDelete(index)}>
                     <DeleteIcon></DeleteIcon>
                   </IconButton>
                 </IconWrapper>
               </Item>
-            )
+            );
           })}
         </List>
       </div>
