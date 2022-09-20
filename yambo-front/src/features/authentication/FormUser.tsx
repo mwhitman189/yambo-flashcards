@@ -1,39 +1,16 @@
 import React, { useState } from "react";
 import { TailSpin } from "react-loader-spinner";
-import styled from "styled-components";
 
 import Button from "../../components/buttons/Button";
-import Subtext from "../../components/Subtext";
+import Subtext from "../Subtext";
 import ErrorModal from "../modals/error/ErrorModal";
-
-import useCallServer from "../../hooks/useCallServer";
-
-const FormWrapper = styled.div`
-  width: 100%;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const Form = styled.form`
-  position: relative;
-  width: 380px;
-  padding: 1.5rem;
-  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.2);
-  background: #fff;
-`;
-
-const FormTitle = styled.h3`
-  text-align: center;
-  margin-bottom: 1rem;
-`;
-
-const ErrorText = styled.span`
-  color: red;
-`;
+import useCallServer from "../../hooks/API/useCallServer";
+import {
+  ErrorText,
+  FormTitle,
+  FormWrapper,
+  UserForm
+} from "../../components/forms/generalFormComponents";
 
 const FormUser = ({
   formTitle,
@@ -120,7 +97,7 @@ const FormUser = ({
         </div>
       )}
 
-      <Form onSubmit={handleSubmit}>
+      <UserForm onSubmit={handleSubmit}>
         <span
           id="formWrapperStart"
           tabIndex={1}
@@ -137,7 +114,7 @@ const FormUser = ({
         <Button text={buttonText} type="submit" tabIndex={5}></Button>
         <Subtext subtextMessage={subtextMessage}></Subtext>
         <span id="formWrapperEnd" onFocus={() => handleFocus("email")} tabIndex={7}></span>
-      </Form>
+      </UserForm>
     </FormWrapper>
   );
 };

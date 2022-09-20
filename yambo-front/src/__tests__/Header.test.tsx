@@ -1,6 +1,6 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
-import Header from "../layouts/header/Header";
+import Header from "../features/Header";
 
 it("should render same text passed into title prop", () => {
   render(<Header title="Welcome to Yambo!" />);

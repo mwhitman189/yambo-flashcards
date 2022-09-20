@@ -1,13 +1,7 @@
 import styled from "styled-components";
 
-interface Props {
-  cardView: string;
-}
-
-export const CardCreateContainer = styled.div<{ cardView?: string }>`
+export const CardCreateContainer = styled.div`
   margin: 0 1.25rem;
-  position: relative;
-  padding-bottom: 8rem;
 `;
 
 export const CardH1 = styled.h1`
@@ -17,6 +11,7 @@ export const CardH1 = styled.h1`
   margin-bottom: 1rem;
 `;
 
+// placeholder
 export const Input = styled.input`
   margin-left: 0.25rem;
   width: 6rem;
@@ -33,8 +28,8 @@ export const InputWrapper = styled.div`
   align-items: end;
 `;
 
-export const CardContainer = styled.div<{ cardView?: string }>`
-  margin: 0 auto;
+export const CardContainer = styled.div`
+  margin: 1rem auto;
   display: grid;
   min-height: 30rem;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
@@ -43,13 +38,12 @@ export const CardContainer = styled.div<{ cardView?: string }>`
     "card-controls card-controls card-controls card-controls card-controls card-controls card-front card-back"
     "card-main card-main card-main card-main card-main card-main card-main card-main";
   column-gap: 8px;
-  margin-bottom: 4rem;
   @media (min-width: 576px) {
     max-width: 20rem;
   }
 `;
 
-export const CardControls = styled.div<{ cardView?: string }>`
+export const CardControls = styled.div`
   grid-area: card-controls;
   margin-top: auto;
   margin-left: 20px;
@@ -60,6 +54,7 @@ export const CardControls = styled.div<{ cardView?: string }>`
 
 export const CardControlLinks = styled.a`
   text-decoration: none;
+  font-size: 1rem;
   font-weight: 600;
   color: ${({ theme }) => theme.colors.textPrimary};
   &:hover {
@@ -69,6 +64,7 @@ export const CardControlLinks = styled.a`
 
 export const CardControlDisabled = styled.a`
   font-weight: 600;
+  font-size: 1rem;
   text-decoration: none;
   color: ${({ theme }) => theme.colors.grayPrimary};
   cursor: default;
@@ -79,32 +75,34 @@ export const Pipe = styled.span`
   margin: 0 4px;
 `;
 
-export const TabFront = styled.button<Props>`
+export const TabFront = styled.button<{ cardView?: string }>`
   grid-area: card-front;
+  border: none;
   margin-top: auto;
   color: ${({ theme, cardView }) =>
     cardView === "front" ? `${theme.colors.textPrimary}` : `${theme.colors.textSecondary}`};
   background-color: ${({ cardView }) => (cardView === "front" ? "#6a6a6a" : "#b3c2c3")};
-  font-size: 18px;
+  font-size: 1rem;
   border-radius: 4px 4px 0 0;
   text-align: center;
-  padding: 0 1rem;
+  padding: 0.126rem 1rem;
 `;
 
-export const TabBack = styled.button<Props>`
+export const TabBack = styled.button<{ cardView?: string }>`
   grid-area: card-back;
+  border: none;
   margin-top: auto;
-  font-size: 18px;
+  font-size: 1rem;
   border-radius: 4px 4px 0 0;
   color: ${({ theme, cardView }) =>
     cardView === "back" ? `${theme.colors.textPrimary}` : `${theme.colors.textSecondary}`};
   background-color: ${({ cardView }) => (cardView === "back" ? "#6a6a6a" : "#b3c2c3")};
   text-align: center;
-  padding: 0 1rem;
+  padding: 0.126rem 1rem;
   opacity: ${({ disabled }) => (disabled ? ".2" : "1")};
 `;
 
-export const CardMain = styled.div<{ theme: { [key: string]: any }; cardView?: string }>`
+export const CardMain = styled.div`
   background-color: ${({ theme }) => theme.colors.grayPrimary};
   grid-area: card-main;
   color: ${({ theme }) => theme.colors.textPrimary};

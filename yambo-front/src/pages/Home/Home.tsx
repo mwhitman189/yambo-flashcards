@@ -1,10 +1,10 @@
 import React from "react";
-import Header from "../../layouts/header/Header";
+import { HomePageHeader } from "../../components/text/headings";
 
 const Home = () => {
   return (
     <>
-      <Header title="Welcome to Yambo!"></Header>
+      <HomePageHeader>Welcome to Yambo!</HomePageHeader>
     </>
   );
 };

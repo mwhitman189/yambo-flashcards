@@ -1,13 +1,5 @@
 import React from "react";
-import styled from "styled-components";
-
-const SubtextContent = styled.span`
-   {
-    font-size: 0.7rem;
-    display: block;
-    margin-bottom: 0.25rem;
-  }
-`;
+import { SubtextContent } from "../components/modalComponents/modalComponents";
 
 const Subtext = ({ subtextMessage }: any) => {
   return <SubtextContent>{subtextMessage}</SubtextContent>;

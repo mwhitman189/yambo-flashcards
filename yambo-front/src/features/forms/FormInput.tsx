@@ -1,5 +1,5 @@
 import React from "react";
-import { StyledFormTextArea, StyledTextInput } from "./generalFormComponents";
+import { StyledFormTextArea, StyledTextInput } from "../../components/forms/generalFormComponents";
 
 const FormField = ({
   fieldType = "input",

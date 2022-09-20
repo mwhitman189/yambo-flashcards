@@ -1,8 +1,7 @@
 import React, { ChangeEvent, FormEvent, useState } from "react";
 import { TailSpin } from "react-loader-spinner";
 
-import FormField from "../../components/forms/FormField";
-import Deck from "../../components/Deck";
+import FormField from "../../features/forms/FormField";
 import ErrorModal from "../../features/modals/error/ErrorModal";
 import {
   CardBottom,
@@ -25,14 +24,14 @@ import {
 } from "../../components/cardComponents/cardComponents";
 import { CardInputContainer, StyledCardForm } from "../../components/forms/cardFormComponents";
 import { SmallButton } from "../../components/buttons/buttons";
+import DeckCollection from "../../features/deck/Deck";
+import { ICard } from "../../types/deckCardTypes";
 
-interface ICard {
-  front: string | undefined;
-  back: string | undefined;
-  tempIndex: number | undefined;
+interface Props {
+  url: string;
 }
 
-const CardCreate = ({ url }: any) => {
+const CardCreate = ({ url }: Props) => {
   const [card, setCard] = useState<ICard>({
     front: "",
     back: "",
@@ -238,14 +237,14 @@ const CardCreate = ({ url }: any) => {
             )}
           </CardControls>
           <TabFront tabIndex={3} cardView={cardView} onClick={() => setCardView("front")}>
-            front
+            Front
           </TabFront>
           <TabBack
             tabIndex={4}
             disabled={disableTab}
             cardView={cardView}
             onClick={() => setCardView("back")}>
-            back
+            Back
           </TabBack>
           <CardMain>
             <CardTop>
@@ -262,7 +261,7 @@ const CardCreate = ({ url }: any) => {
             )}
           </CardMain>
         </CardContainer>
-        <Deck card={card} setCard={setCard} setCards={setCards} cards={cards}></Deck>
+        <DeckCollection card={card} setCard={setCard} setCards={setCards} cards={cards} />
       </CardCreateContainer>
     </>
   );

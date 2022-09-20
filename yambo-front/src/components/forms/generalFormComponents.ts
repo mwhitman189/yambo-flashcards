@@ -46,3 +46,26 @@ export const StyledTextInput = styled.input`
     color: transparent;
   }
 `;
+
+export const FormWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const UserForm = styled.form`
+  position: relative;
+  width: 380px;
+  padding: 1.5rem;
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.2);
+  background: #fff;
+`;
+
+export const FormTitle = styled.h3`
+  text-align: center;
+  margin-bottom: 1rem;
+`;
+
+export const ErrorText = styled.span`
+  color: red;
+`;

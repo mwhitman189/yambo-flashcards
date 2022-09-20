@@ -1,11 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-interface FontSize {
-  fontSize: string;
-}
-
-const ButtonStyle = styled.button<FontSize>`
+const ButtonStyle = styled.button<{ fontSize?: string }>`
   border-radius: 4px;
   background-color: ${({ theme }) => theme?.colors?.highlightSecondary};
   text-align: center;

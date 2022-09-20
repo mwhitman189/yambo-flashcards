@@ -2,9 +2,13 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 import FormUser from "../features/authentication/FormUser";
-import FormField from "../components/forms/FormField";
+import FormField from "../features/forms/FormField";
 
-const Registration = ({ url }: any) => {
+interface Props {
+  url: string;
+}
+
+const Registration = ({ url }: Props) => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState("");

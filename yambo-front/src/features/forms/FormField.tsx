@@ -1,6 +1,6 @@
 import React from "react";
 
-import FormLabel from "../../features/forms/FormLabel";
+import FormLabel from "./FormLabel";
 import FormInput from "./FormInput";
 
 const FormField = ({
