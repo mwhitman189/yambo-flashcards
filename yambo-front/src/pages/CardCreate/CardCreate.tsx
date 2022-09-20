@@ -24,7 +24,7 @@ import {
 } from "../../components/cardComponents/cardComponents";
 import { CardInputContainer, StyledCardForm } from "../../components/forms/cardFormComponents";
 import { SmallButton } from "../../components/buttons/buttons";
-import DeckCollection from "../../features/deck/Deck";
+import DeckCollection from "../../features/deck/DeckCollection";
 import { ICard } from "../../types/deckCardTypes";
 
 interface Props {

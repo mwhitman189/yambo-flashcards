@@ -1,6 +1,6 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
-import Deck from "../features/deck/Deck";
+import Deck from "../features/deck/DeckCollection";
 
 const mockData = [
   {
