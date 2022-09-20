@@ -8,7 +8,7 @@ import FormInput from "../features/forms/FormInput";
 import Subtext from "../features/Subtext";
 
 interface Props {
-  url: any;
+  url: string;
 }
 
 const Login = ({ url }: Props) => {
