@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { TailSpin } from "react-loader-spinner";
 import styled from "styled-components";
 
-import Button from "../buttons/Button";
-import Subtext from "../Subtext";
-import ErrorModal from "../../features/modals/error/ErrorModal";
+import Button from "../../components/buttons/Button";
+import Subtext from "../../components/Subtext";
+import ErrorModal from "../modals/error/ErrorModal";
 
 import useCallServer from "../../hooks/useCallServer";
 

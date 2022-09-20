@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-import FormUser from "../components/forms/FormUser";
+import FormUser from "../features/authentication/FormUser";
 import FormField from "../components/forms/FormField";
 
 const Registration = ({ url }: any) => {

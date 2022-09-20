@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-import FormUser from "../components/forms/FormUser";
+import FormUser from "../features/authentication/FormUser";
 import FormField from "../components/forms/FormField";
-import FormLabel from "../components/forms/FormLabel";
+import FormLabel from "../features/forms/FormLabel";
 import FormInput from "../components/forms/FormInput";
 import Subtext from "../components/Subtext";
 

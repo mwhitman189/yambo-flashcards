@@ -5,7 +5,6 @@ import FormField from "../../components/forms/FormField";
 import Deck from "../../components/Deck";
 import ErrorModal from "../../features/modals/error/ErrorModal";
 import {
-  Button,
   CardBottom,
   CardContainer,
   CardControlDisabled,
@@ -16,15 +15,16 @@ import {
   CardTop,
   DefinitionSection,
   Divider,
-  Form,
   HiraganaSection,
   Input,
   InputWrapper,
   Pipe,
   TabBack,
   TabFront,
-  Text
+  CardH1
 } from "../../components/cardComponents/cardComponents";
+import { CardInputContainer, StyledCardForm } from "../../components/forms/cardFormComponents";
+import { SmallButton } from "../../components/buttons/buttons";
 
 interface ICard {
   front: string | undefined;
@@ -108,7 +108,7 @@ const CardCreate = ({ url }: any) => {
     setCardView("front");
   };
 
-  function handleLookup(e: FormEvent<HTMLFormElement>) {
+  const handleLookup = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoader(true);
     const fetchData = async () => {
@@ -163,7 +163,7 @@ const CardCreate = ({ url }: any) => {
       }
     };
     fetchData();
-  }
+  };
 
   console.log(card);
 
@@ -177,13 +177,13 @@ const CardCreate = ({ url }: any) => {
             </div>
           </div>
         )}
-        <Text>Enter kanji to look up a word, or add your own definition:</Text>
-        <Form onSubmit={handleLookup}>
-          <InputWrapper>
-            <label className="font-14">Deck:</label>
-            <Input></Input>
-          </InputWrapper>
-          <div className="position-relative">
+        <CardH1>Enter kanji to look up a word, or add your own definition:</CardH1>
+        <InputWrapper>
+          <label className="font-14">Deck:</label>
+          <Input></Input>
+        </InputWrapper>
+        <StyledCardForm onSubmit={handleLookup}>
+          <CardInputContainer>
             {error && <ErrorModal error={error}></ErrorModal>}
             <FormField
               fieldType="textarea"
@@ -195,28 +195,26 @@ const CardCreate = ({ url }: any) => {
               value={front}
               onChange={handleChange}
               onClick={() => setCardPlaceholder("")}></FormField>
-          </div>
-          <InputWrapper>
-            <Button fontSize="14px" type="submit">
-              Auto-Generate
-            </Button>
-            <div className="set-checkbox">
-              <input type="checkbox" id="set-auto-generate" name="set-auto-generate"></input>
-              <label className="font-14" htmlFor="set-auto-generate">
-                Set
-              </label>
-            </div>
-          </InputWrapper>
-          <FormField
-            fieldType="textarea"
-            required={false}
-            tabIndex={3}
-            name="back"
-            labelText="Back"
-            placeholder=""
-            value={back}
-            onChange={handleChange}></FormField>
-        </Form>
+            <InputWrapper>
+              <SmallButton type="button">Auto-Generate</SmallButton>
+              <div>
+                <input type="checkbox" id="set-auto-generate" name="set-auto-generate"></input>
+                <label htmlFor="set-auto-generate">Set</label>
+              </div>
+            </InputWrapper>
+          </CardInputContainer>
+          <CardInputContainer>
+            <FormField
+              fieldType="textarea"
+              required={false}
+              tabIndex={3}
+              name="back"
+              labelText="Back"
+              placeholder=""
+              value={back}
+              onChange={handleChange}></FormField>
+          </CardInputContainer>
+        </StyledCardForm>
         <CardContainer>
           <CardControls>
             {front ? (

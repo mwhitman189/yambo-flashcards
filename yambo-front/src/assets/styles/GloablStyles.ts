@@ -55,5 +55,7 @@ export const devices = {
 export const GlobalStyles = createGlobalStyle`
   body {
     background-color: ${(props) => props.theme.colors.backgroundPrimary};
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu",
+    "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   }
 `;

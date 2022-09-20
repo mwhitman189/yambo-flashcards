@@ -15,6 +15,7 @@ export const NavContainer = styled.div`
   width: 100vw;
   display: flex;
   justify-content: space-evenly;
+  align-items: center;
   padding: 1rem;
 `;
 

@@ -4,31 +4,17 @@ interface Props {
   cardView: string;
 }
 
-interface FontSize {
-  fontSize: string;
-}
-
 export const CardCreateContainer = styled.div<{ cardView?: string }>`
   margin: 0 1.25rem;
   position: relative;
   padding-bottom: 8rem;
 `;
 
-export const Text = styled.p`
+export const CardH1 = styled.h1`
   color: ${({ theme }) => theme.colors.textPrimary};
   text-align: center;
-  font-size: 20px;
-  margin-bottom: 3rem;
-`;
-
-export const Form = styled.form`
-  position: relative;
-  margin: 1.5rem 0;
-  color: ${({ theme }) => theme.colors.inputBackground};
-  @media (min-width: 576px) {
-    max-width: 20rem;
-    margin: 1.5rem auto 3rem auto;
-  }
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
 `;
 
 export const Input = styled.input`
@@ -45,23 +31,6 @@ export const InputWrapper = styled.div`
   display: flex;
   justify-content: end;
   align-items: end;
-  margin-bottom: 1rem;
-`;
-
-export const Button = styled.button<FontSize>`
-  border-radius: 4px;
-  background-color: ${({ theme }) => theme.colors.highlightSecondary};
-  text-align: center;
-  font-size: ${({ fontSize }) => fontSize};
-  border: none;
-  outline: none;
-  padding: 0.25rem 0.75rem;
-  color: ${({ theme }) => theme.colors.inputBackground};
-  &:focus,
-  &:hover {
-    background-color: #1fdb77;
-    color: ${({ theme }) => theme.colors.grayPrimary};
-  }
 `;
 
 export const CardContainer = styled.div<{ cardView?: string }>`

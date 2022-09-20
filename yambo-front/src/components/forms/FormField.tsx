@@ -1,6 +1,6 @@
 import React from "react";
 
-import FormLabel from "./FormLabel";
+import FormLabel from "../../features/forms/FormLabel";
 import FormInput from "./FormInput";
 
 const FormField = ({
@@ -15,12 +15,11 @@ const FormField = ({
   tabIndex,
   labelText,
   htmlFor,
-  onChange,
-  labelFont
+  onChange
 }: any) => {
   return (
-    <div>
-      <FormLabel labelText={labelText} labelFont={labelFont} htmlFor={htmlFor}></FormLabel>
+    <>
+      <FormLabel labelText={labelText} htmlFor={htmlFor}></FormLabel>
       <FormInput
         fieldType={fieldType}
         tabIndex={tabIndex}
@@ -32,7 +31,7 @@ const FormField = ({
         type={type}
         id={id}
         autoFocus={autoFocus}></FormInput>
-    </div>
+    </>
   );
 };
 
