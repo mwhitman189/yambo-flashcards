@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-import FormUser from "../components/FormUser";
-import FormField from "../components/FormField";
+import FormUser from "../components/forms/FormUser";
+import FormField from "../components/forms/FormField";
 
 const Registration = ({ url }: any) => {
   const [email, setEmail] = useState<string>("");
@@ -21,8 +21,7 @@ const Registration = ({ url }: any) => {
           value={email}
           onChange={(e: any) => setEmail(e.target.value)}
           tabIndex={2}
-          autoFocus={true}>
-        </FormField>
+          autoFocus={true}></FormField>
         <FormField
           labelText="Password"
           autoComplete="on"
@@ -57,11 +56,13 @@ const Registration = ({ url }: any) => {
         confirmPassword={confirmPassword}
         subtextMessage={
           <div>
-            Already have an account? <Link to="/login" tabIndex={6}>Login</Link>
+            Already have an account?{" "}
+            <Link to="/login" tabIndex={6}>
+              Login
+            </Link>
           </div>
         }
         formContents={FormContents()}></FormUser>
-
     </>
   );
 };

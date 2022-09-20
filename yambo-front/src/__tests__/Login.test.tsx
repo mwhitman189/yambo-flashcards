@@ -1,4 +1,11 @@
-import { render, fireEvent, screen, waitFor, waitForElementToBeRemoved } from "@testing-library/react";
+import React from "react";
+import {
+  render,
+  fireEvent,
+  screen,
+  waitFor,
+  waitForElementToBeRemoved
+} from "@testing-library/react";
 import Login from "../pages/Login";
 import { BrowserRouter } from "react-router-dom";
 import { rest } from "msw";
@@ -6,8 +13,7 @@ import { setupServer } from "msw/node";
 
 import validationTest from "../helpers/validationTest";
 
-
-import { MOCK_USER } from "../mocks/MOCK_USER";
+import { MOCK_USER } from "../data/mocks/MOCK_USER";
 
 //Set up msw server
 const server = setupServer(
@@ -25,21 +31,28 @@ const url = "/getUser";
 describe("Login", () => {
   //Smokescreen tests
   it("should render the login header and input elements", async () => {
-    render(<BrowserRouter><Login /></BrowserRouter>);
-    expect(screen.getByRole('heading', { name: /Login/i })).toBeInTheDocument;
+    render(
+      <BrowserRouter>
+        <Login />
+      </BrowserRouter>
+    );
+    expect(screen.getByRole("heading", { name: /Login/i })).toBeInTheDocument;
 
     const inputEmail = screen.getByPlaceholderText(/Enter email/i) as HTMLInputElement;
     const inputPassword = screen.getByPlaceholderText(/Enter password/i) as HTMLInputElement;
     expect(inputEmail).toBeInTheDocument;
     expect(inputPassword).toBeInTheDocument;
-
   });
 
   //Frontend form validation tests
   const renderLogin = (email?: string, password?: string) => {
-    render(<BrowserRouter><Login /></BrowserRouter>);
+    render(
+      <BrowserRouter>
+        <Login />
+      </BrowserRouter>
+    );
     validationTest("Login", email, password);
-  }
+  };
 
   it("should show an error if email is invalid", async () => {
     renderLogin("bill.com");
@@ -73,7 +86,11 @@ describe("Login", () => {
       })
     );
 
-    render(<BrowserRouter><Login url={url} /></BrowserRouter>);
+    render(
+      <BrowserRouter>
+        <Login url={url} />
+      </BrowserRouter>
+    );
 
     const inputEmail = screen.getByPlaceholderText(/Enter email/i) as HTMLInputElement;
     fireEvent.change(inputEmail, { target: { value: "justjohnd@gmail.com" } });
@@ -81,19 +98,16 @@ describe("Login", () => {
     const inputPassword = screen.getByPlaceholderText(/Enter password/i) as HTMLInputElement;
     fireEvent.change(inputPassword, { target: { value: "Jmoney$$1" } });
 
-    fireEvent.click(screen.getByRole('button', { name: /Login/i }));
+    fireEvent.click(screen.getByRole("button", { name: /Login/i }));
 
-    await waitFor(() => expect(
-      screen.getByText(
-        "Either your email or password is inccorect. Please try again."
-      )
-    ).toBeInTheDocument);
+    await waitFor(
+      () =>
+        expect(screen.getByText("Either your email or password is inccorect. Please try again."))
+          .toBeInTheDocument
+    );
 
-    expect(
-      screen.getByText(
-        "Either your email or password is inccorect. Please try again."
-      )
-    ).toBeInTheDocument;
+    expect(screen.getByText("Either your email or password is inccorect. Please try again."))
+      .toBeInTheDocument;
   });
 
   test("handles server success", async () => {
@@ -104,7 +118,11 @@ describe("Login", () => {
     // );
 
     // Note: this test needs improvement. It should be testing navigation to the home page instead of a message that the user never actually sees.
-    render(<BrowserRouter><Login url={url} /></BrowserRouter>);
+    render(
+      <BrowserRouter>
+        <Login url={url} />
+      </BrowserRouter>
+    );
 
     const inputEmail = screen.getByPlaceholderText(/Enter email/i) as HTMLInputElement;
     fireEvent.change(inputEmail, { target: { value: "billy@gmail.com" } });
@@ -112,15 +130,10 @@ describe("Login", () => {
     const inputPassword = screen.getByPlaceholderText(/Enter password/i) as HTMLInputElement;
     fireEvent.change(inputPassword, { target: { value: "Jmoney$$1" } });
 
-    fireEvent.click(screen.getByRole('button', { name: /Login/i }));
+    fireEvent.click(screen.getByRole("button", { name: /Login/i }));
 
     await waitForElementToBeRemoved(() => screen.queryByLabelText("loading-indicator"));
 
-    expect(
-      screen.getByText(
-        "You did it!"
-      )
-    ).toBeInTheDocument;
-
+    expect(screen.getByText("You did it!")).toBeInTheDocument;
   });
 });

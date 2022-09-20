@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-import FormUser from "../components/FormUser";
-import FormField from "../components/FormField";
-import FormLabel from "../components/FormLabel";
-import FormInput from "../components/FormInput";
+import FormUser from "../components/forms/FormUser";
+import FormField from "../components/forms/FormField";
+import FormLabel from "../components/forms/FormLabel";
+import FormInput from "../components/forms/FormInput";
 import Subtext from "../components/Subtext";
 
 const Login = ({ url }: any) => {
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 

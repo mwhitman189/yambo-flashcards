@@ -18,7 +18,6 @@ const FormField = ({
   onChange,
   labelFont
 }: any) => {
-
   return (
     <div>
       <FormLabel labelText={labelText} labelFont={labelFont} htmlFor={htmlFor}></FormLabel>
@@ -32,8 +31,7 @@ const FormField = ({
         onChange={onChange}
         type={type}
         id={id}
-        autoFocus={autoFocus}>
-      </FormInput>
+        autoFocus={autoFocus}></FormInput>
     </div>
   );
 };

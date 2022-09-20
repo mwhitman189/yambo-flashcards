@@ -2,10 +2,10 @@ import React, { ChangeEvent, FormEvent, useState } from "react";
 import styled from "styled-components";
 import { TailSpin } from "react-loader-spinner";
 
-import FormField from "./FormField";
-import Header from "./Header";
-import Deck from "./Deck";
-import ErrorModal from "./ErrorModal";
+import FormField from "../../components/forms/FormField";
+import Header from "../../layouts/header/Header";
+import Deck from "../../components/Deck";
+import ErrorModal from "../../features/modals/error/ErrorModal";
 
 interface Props {
   cardView: string;
@@ -43,7 +43,7 @@ const Input = styled.input`
   width: 6rem;
   border-radius: 4px;
   border: none;
-  background-color: ${({ theme }) => theme?.colors?.colorWhite};
+  background-color: white;
   opacity: 0.5;
 `;
 
@@ -192,7 +192,7 @@ const DefinitionSection = styled.div<{ theme: { [key: string]: any }; cardView?:
 interface ICard {
   front: string | undefined;
   back: string | undefined;
-  tempIndex: number | undefined
+  tempIndex: number | undefined;
 }
 
 const CardCreate = ({ url }: any) => {
@@ -201,52 +201,38 @@ const CardCreate = ({ url }: any) => {
     back: "",
     tempIndex: undefined
   });
-
   const [cardPlaceholder, setCardPlaceholder] = useState<string | undefined>("例");
-
   const [cardView, setCardView] = useState<string>("front");
-
   const [error, setError] = useState<string>("");
-
   const [disableTab, setDisableTab] = useState<boolean>(true);
-
   const [loader, setLoader] = useState<boolean>(false);
-
   const [cards, setCards] = useState<ICard[]>([]);
-
   const { front, back } = card;
 
   const handleChange = (e: ChangeEvent<HTMLTextAreaElement>): void => {
     e.preventDefault();
-
     const { name, value }: any = e.target;
-
     setCard((prevValue) => {
       return {
         ...prevValue,
         [name]: value
       };
     });
-
     setDisableTab(false);
-
     setCardView("back");
   };
 
   const handleSave = () => {
-
     //Handle cards pulled from the deck to be edited
     if (card.tempIndex !== undefined) {
       const cardsClone = [...cards];
       cardsClone.splice(card.tempIndex, 1, card);
       setCards(cardsClone);
-
       setCard({
         front: "",
         back: "",
         tempIndex: undefined
       });
-
       return;
     }
 
@@ -255,13 +241,11 @@ const CardCreate = ({ url }: any) => {
       setCards((prevValue) => {
         return [...prevValue, newCard];
       });
-
       setCard({
         front: "",
         back: "",
         tempIndex: undefined
       });
-
       setDisableTab(!disableTab);
       setCardPlaceholder("Add a card...");
       setCardView("front");
@@ -277,7 +261,6 @@ const CardCreate = ({ url }: any) => {
         });
       });
     }
-
     setCard({
       front: "",
       back: "",
@@ -290,9 +273,7 @@ const CardCreate = ({ url }: any) => {
 
   function handleLookup(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-
     setLoader(true);
-
     const fetchData = async () => {
       try {
         const response = await fetch(url, {
@@ -306,13 +287,10 @@ const CardCreate = ({ url }: any) => {
             no_english: false
           })
         });
-
         if (!response.ok) throw new Error();
         const data = await response.json();
-
         const { words } = data;
         const [word] = words;
-
         if (word) {
           setLoader(false);
           setCard((prevValue) => {
@@ -321,9 +299,7 @@ const CardCreate = ({ url }: any) => {
               back: `${word.reading.kana}\n${word.senses[0].glosses.join("; ")}`
             };
           });
-
           setDisableTab(false);
-
           setCardView("back");
         } else {
           setLoader(false);
@@ -372,10 +348,7 @@ const CardCreate = ({ url }: any) => {
             <Input></Input>
           </InputWrapper>
           <div className="position-relative">
-            {error && (
-              <ErrorModal error={error}>
-              </ErrorModal>
-            )}
+            {error && <ErrorModal error={error}></ErrorModal>}
             <FormField
               fieldType="textarea"
               required={true}
@@ -412,16 +385,23 @@ const CardCreate = ({ url }: any) => {
           <CardControls>
             {front ? (
               <div>
-                <CardControlLinks onClick={handleSave}>{card.tempIndex !== undefined ? "Save" : "Add Card"}</CardControlLinks>
+                <CardControlLinks onClick={handleSave}>
+                  {card.tempIndex !== undefined ? "Save" : "Add Card"}
+                </CardControlLinks>
                 <Pipe> | </Pipe>
-                <CardControlLinks onClick={handleClear}>{card.tempIndex !== undefined ? "Delete" : "Clear"}</CardControlLinks>
+                <CardControlLinks onClick={handleClear}>
+                  {card.tempIndex !== undefined ? "Delete" : "Clear"}
+                </CardControlLinks>
               </div>
-            ) : card.tempIndex !== undefined ? (<div><CardControlDisabled>Save</CardControlDisabled>
-              <Pipe> | </Pipe>
-              <CardControlLinks onClick={handleClear}>Delete</CardControlLinks>
-            </div>) :
+            ) : card.tempIndex !== undefined ? (
+              <div>
+                <CardControlDisabled>Save</CardControlDisabled>
+                <Pipe> | </Pipe>
+                <CardControlLinks onClick={handleClear}>Delete</CardControlLinks>
+              </div>
+            ) : (
               "Preview"
-            }
+            )}
           </CardControls>
           <TabFront tabIndex={3} cardView={cardView} onClick={() => setCardView("front")}>
             front

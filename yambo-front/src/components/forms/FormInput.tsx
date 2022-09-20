@@ -32,13 +32,12 @@ const FormTextArea = styled.textarea`
 `;
 
 const Input = styled.input`
-{
   box-sizing: border-box;
   width: 100%;
   flex-grow: 1;
   margin-right: 0.25rem;
   margin-top: 0.25rem;
-  margin-bottom: .75rem;
+  margin-bottom: 0.75rem;
   padding-left: 0.75rem;
   border-radius: 4px;
   text-align: left;
@@ -74,9 +73,8 @@ const FormField = ({
   placeholder,
   value,
   tabIndex,
-  onChange,
+  onChange
 }: any) => {
-
   return (
     <div>
       {fieldType === "textarea" ? (
@@ -98,9 +96,7 @@ const FormField = ({
           onChange={onChange}
           type={type}
           id={id}
-          autoFocus={autoFocus}>
-        </Input>
-
+          autoFocus={autoFocus}></Input>
       )}
     </div>
   );

@@ -1,8 +1,9 @@
+import React from "react";
 import { render, screen, fireEvent, waitForElementToBeRemoved } from "@testing-library/react";
 import { rest } from "msw";
 import { setupServer } from "msw/node";
-import CardCreate from "../components/CardCreate";
-import { MOCK_DATA } from "../mocks/MOCK_DATA";
+import CardCreate from "../pages/CardCreate/CardCreate";
+import { MOCK_DATA } from "../data/mocks/MOCK_DATA";
 
 //Set up msw server
 const server = setupServer(
