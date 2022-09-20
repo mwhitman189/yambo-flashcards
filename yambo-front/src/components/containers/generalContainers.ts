@@ -4,13 +4,22 @@ export const AppContainer = styled.div``;
 
 export const OverallPageContainer = styled.div`
   min-height: 100vh;
+  align-self: stretch;
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
 `;
 
+export const NavContainer = styled.div`
+  width: 100vw;
+  display: flex;
+  justify-content: space-evenly;
+  padding: 1rem;
+`;
+
 export const FooterContainer = styled.div`
-  padding: 0.5rem 1rem;
+  padding: 1rem;
   width: 100%;
   display: flex;
   align-items: center;
